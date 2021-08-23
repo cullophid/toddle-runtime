@@ -41,6 +41,12 @@ export type UpdateVariableAction = {
   condition?: Formula;
   value: Formula | string | number | boolean;
 };
+export type UpdateQueryAction = {
+  type: "Update Query";
+  paramName: string;
+  condition?: Formula;
+  value: Formula | string | number | boolean;
+};
 
 export type TriggerMutationAction = {
   type: "Trigger Mutation";
@@ -84,6 +90,7 @@ export type NavigationAction = {
 
 export type ActionModel =
   | UpdateVariableAction
+  | UpdateQueryAction
   | TriggerMutationAction
   | SaveLocalStorageAction
   | LogoutAction

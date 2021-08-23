@@ -17,14 +17,14 @@ import {
 } from "./NodeModel";
 import { print as printQuery } from "graphql/language/printer";
 import { css } from "./stitches";
-import { Signal, signal } from "./signal";
+import { signal, Signal } from "./signal";
 
 export const renderComponent = (
   parent: HTMLElement,
   name: string,
-  components: Record<string, ComponentModel>
+  components: Record<string, ComponentModel>,
+  attributesSignal: Signal<Record<string, any>>
 ) => {
-  const attributesSignal = signal<Record<string, any>>({});
   const { elem } = createComponent(name, components, attributesSignal);
   parent.appendChild(elem);
 };
@@ -144,36 +144,38 @@ const createComponent = (
 
   const cleanUp: Function[] = [];
 
-  const dataSignal: Signal<NodeData> = attributesSignal.map(
-    (Attributes): NodeData => {
-      return {
-        Variables: Object.fromEntries(
-          component.variables.map((variable) => [
-            variable.name,
-            applyFormula(variable.initialValue, {}),
-          ])
-        ),
-        Props: Attributes,
-        Queries: Object.fromEntries(
-          component.queries
-            .filter((q) => q.type === "query")
-            .map((q) => [q.name, { data: null, isLoading: false, error: null }])
-        ),
-        Mutations: Object.fromEntries(
-          component.queries
-            .filter((q) => q.type === "mutation")
-            .map((q) => [
-              q.name,
-              {
-                data: null,
-                isLoading: false,
-                error: null,
-                __trigger: () => {},
-              },
-            ])
-        ),
-      };
-    }
+  const dataSignal = signal(<NodeData>{
+    Variables: Object.fromEntries(
+      component.variables.map((variable) => [
+        variable.name,
+        applyFormula(variable.initialValue, {}),
+      ])
+    ),
+    Props: attributesSignal.value,
+    Queries: Object.fromEntries(
+      component.queries
+        .filter((q) => q.type === "query")
+        .map((q) => [q.name, { data: null, isLoading: false, error: null }])
+    ),
+    Mutations: Object.fromEntries(
+      component.queries
+        .filter((q) => q.type === "mutation")
+        .map((q) => [
+          q.name,
+          {
+            data: null,
+            isLoading: false,
+            error: null,
+            __trigger: () => {},
+          },
+        ])
+    ),
+  });
+  attributesSignal.subscribe((Attributes) =>
+    dataSignal.set({
+      ...dataSignal.value,
+      Props: Attributes,
+    })
   );
 
   component.queries.forEach((q) => {
@@ -194,6 +196,14 @@ const createComponent = (
             [action.variableName]: applyFormula(action.value, data),
           },
         });
+        break;
+      }
+      case "Update Query": {
+        attributesSignal.set({
+          ...attributesSignal.value,
+          [action.paramName]: applyFormula(action.value, data),
+        });
+        break;
       }
     }
   };

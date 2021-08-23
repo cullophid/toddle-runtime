@@ -31,5 +31,8 @@ export const parseQuery = (queryString: string) =>
     queryString
       .replace("?", "")
       .split("&")
-      .map((pair: string) => pair.split("=").map(decodeURIComponent))
+      .filter((pair) => pair !== "")
+      .map((pair: string) => {
+        return pair.split("=").map(decodeURIComponent);
+      })
   );

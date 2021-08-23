@@ -3,7 +3,9 @@ import { ComponentModel } from "./ComponentModel";
 import { ComponentNodeModel } from "./NodeModel";
 import { colors, spacing } from "./theme";
 import { parseQuery } from "./util";
+import { signal } from "./signal";
 
+const DEFAULT_SLUG = "demo";
 const fetchSubComponents = async (
   projectId: string,
   names: string[],
@@ -132,15 +134,40 @@ const fetchPage = async (slug: string, path: string) => {
 
 const main = async () => {
   insertTheme();
-  console.log(window.location.search);
   const [, subDomain] = /(.*)\.toddle.dev/.exec(window.location.hostname) ?? [];
-  const slug = subDomain ? subDomain : "test";
+  const slug = subDomain ? subDomain : DEFAULT_SLUG;
   const root = document.getElementById("App");
   if (!root) {
     throw new Error("Cant find node with id 'App'");
   }
   const { components, page } = await fetchPage(slug, window.location.pathname);
-  renderComponent(root, page.component.name, components as any);
+  const attributeSignal = signal(parseQuery(window.location.search));
+
+  const queryStringSignal = attributeSignal.map(
+    (query) =>
+      "?" +
+      Object.entries(query)
+        .map(([key, value]) => {
+          return `${encodeURIComponent(key)}=${encodeURIComponent(
+            String(value)
+          )}`;
+        })
+        .join("&")
+  );
+  queryStringSignal.subscribe((queryString) => {
+    window.history.replaceState(
+      {},
+      "",
+      `${window.location.pathname}${queryString}`
+    );
+  });
+
+  renderComponent(
+    root,
+    page.component.name,
+    components as any,
+    attributeSignal
+  );
 };
 
 const insertTheme = () => {
@@ -157,6 +184,7 @@ const insertTheme = () => {
         height:100%;
         --spacing:${spacing};
         ${colorVars.join(";\n")};
+        font-family:sans-serif;
       }
       button {
         border:none;
