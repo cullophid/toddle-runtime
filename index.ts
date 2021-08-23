@@ -134,7 +134,7 @@ const main = async () => {
   insertTheme();
   console.log(window.location.search);
   const [, subDomain] = /(.*)\.toddle.dev/.exec(window.location.hostname) ?? [];
-  const slug = subDomain ? subDomain : "demo";
+  const slug = subDomain ? subDomain : "test";
   const root = document.getElementById("App");
   if (!root) {
     throw new Error("Cant find node with id 'App'");
