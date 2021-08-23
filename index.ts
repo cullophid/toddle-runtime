@@ -133,15 +133,13 @@ const fetchPage = async (slug: string, path: string) => {
 const main = async () => {
   insertTheme();
   console.log(window.location.search);
-  const query = parseQuery(window.location.search);
+  const [, subDomain] = /(.*)\.toddle.dev/.exec(window.location.hostname) ?? [];
+  const slug = subDomain ? subDomain : "demo";
   const root = document.getElementById("App");
   if (!root) {
     throw new Error("Cant find node with id 'App'");
   }
-  const { components, page } = await fetchPage(
-    "TEST",
-    window.location.pathname
-  );
+  const { components, page } = await fetchPage(slug, window.location.pathname);
   renderComponent(root, page.component.name, components as any);
 };
 
