@@ -2,8 +2,7 @@ import { renderComponent } from "./runtime";
 import { ComponentModel } from "./ComponentModel";
 import { ComponentNodeModel } from "./NodeModel";
 import { colors, spacing } from "./theme";
-import { parseQuery } from "./util";
-import { signal } from "./signal";
+import { locationSignal } from "./router";
 
 const DEFAULT_SLUG = "demo";
 const fetchSubComponents = async (
@@ -141,32 +140,12 @@ const main = async () => {
     throw new Error("Cant find node with id 'App'");
   }
   const { components, page } = await fetchPage(slug, window.location.pathname);
-  const attributeSignal = signal(parseQuery(window.location.search));
-
-  const queryStringSignal = attributeSignal.map(
-    (query) =>
-      "?" +
-      Object.entries(query)
-        .map(([key, value]) => {
-          return `${encodeURIComponent(key)}=${encodeURIComponent(
-            String(value)
-          )}`;
-        })
-        .join("&")
-  );
-  queryStringSignal.subscribe((queryString) => {
-    window.history.replaceState(
-      {},
-      "",
-      `${window.location.pathname}${queryString}`
-    );
-  });
 
   renderComponent(
     root,
     page.component.name,
     components as any,
-    attributeSignal
+    locationSignal.map(({ query }) => query)
   );
 };
 

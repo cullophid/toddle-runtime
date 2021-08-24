@@ -18,6 +18,7 @@ import {
 import { print as printQuery } from "graphql/language/printer";
 import { css } from "./stitches";
 import { signal, Signal } from "./signal";
+import { locationSignal } from "./router";
 
 export const renderComponent = (
   parent: HTMLElement,
@@ -199,9 +200,12 @@ const createComponent = (
         break;
       }
       case "Update Query": {
-        attributesSignal.set({
-          ...attributesSignal.value,
-          [action.paramName]: applyFormula(action.value, data),
+        locationSignal.set({
+          ...locationSignal.value,
+          query: {
+            ...locationSignal.value.query,
+            [action.paramName]: applyFormula(action.value, data),
+          },
         });
         break;
       }

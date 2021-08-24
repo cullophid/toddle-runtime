@@ -25,14 +25,3 @@ export const groupBy = <T>(items: T[], f: (t: T) => string) =>
   }, {});
 
 export const last = <T>(items: T[]) => items[items.length - 1];
-
-export const parseQuery = (queryString: string) =>
-  Object.fromEntries(
-    queryString
-      .replace("?", "")
-      .split("&")
-      .filter((pair) => pair !== "")
-      .map((pair: string) => {
-        return pair.split("=").map(decodeURIComponent);
-      })
-  );
