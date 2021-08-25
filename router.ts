@@ -11,6 +11,14 @@ export const parseQuery = (queryString: string) =>
       })
   );
 
+export const stringifyQuery = (query: Record<string, unknown>) =>
+  Object.entries(query)
+    .map(
+      ([key, value]) =>
+        `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`
+    )
+    .join("&");
+
 export const locationSignal = signal({
   query: parseQuery(window.location.search),
   path: window.location.pathname,

@@ -3,6 +3,7 @@ import { v4 as uuid } from "uuid";
 import { Component_Insert_Input, ApiQuery_Insert_Input } from "./types";
 import { Formula } from "./formula/formula";
 import { ComponentEventModel } from "./EventModel";
+import { Signal } from "signal";
 
 export type ComponentProp = {
   id: string;
@@ -85,7 +86,7 @@ export type ComponentData = {
   >;
   Auth?: Record<string, unknown>;
   Event?: unknown;
-  Functions?: Record<string, unknown>;
+  Functions?: ProxyHandler<Record<string, unknown>>;
 };
 
 export type NodeData = ComponentData & {

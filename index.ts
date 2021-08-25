@@ -1,10 +1,11 @@
 import { renderComponent } from "./runtime";
 import { ComponentModel } from "./ComponentModel";
 import { ComponentNodeModel } from "./NodeModel";
-import { colors, spacing } from "./theme";
-import { locationSignal } from "./router";
 
-const DEFAULT_SLUG = "demo";
+import { locationSignal } from "./router";
+import { insertTheme } from "./theme";
+
+const DEFAULT_SLUG = "toddle";
 const fetchSubComponents = async (
   projectId: string,
   names: string[],
@@ -140,48 +141,25 @@ const main = async () => {
     throw new Error("Cant find node with id 'App'");
   }
   const { components, page } = await fetchPage(slug, window.location.pathname);
+  const rootComponent = components[page.component.name];
+  if (!rootComponent) {
+    throw new Error(`Could not render component ${page.component.name}`);
+  }
 
   renderComponent(
     root,
     page.component.name,
     components as any,
-    locationSignal.map(({ query }) => query)
+    locationSignal.map(({ query }) =>
+      Object.fromEntries(
+        rootComponent.props.map((p) => [
+          p.name,
+          query[p.name] ?? p.initialValue,
+        ])
+      )
+    ),
+    (event: string, data: unknown) => console.log("EVENT FIRED", event, data)
   );
-};
-
-const insertTheme = () => {
-  const colorVars = Object.entries(colors).flatMap(([color, variants]) =>
-    Object.entries(variants).map(
-      ([variant, value]) => `--${color}-${variant}:${value}`
-    )
-  );
-  const styleElem = document.createElement("style");
-  styleElem.setAttribute("type", "text/css");
-  styleElem.innerText = `
-      body {
-        margin:0;
-        height:100%;
-        --spacing:${spacing};
-        ${colorVars.join(";\n")};
-        font-family:sans-serif;
-      }
-      button {
-        border:none;
-      }
-      #App, html {
-        height:100%;
-      }
-      ul, li {
-        margin:0;
-        padding:0;
-        list-style-type:none;
-      }
-      * {
-        box-sizing:border-box;
-        position:relative;
-      }
-  `;
-  document.head.appendChild(styleElem);
 };
 
 main();

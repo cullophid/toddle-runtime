@@ -97,3 +97,59 @@ export const colors = {
     900: "#4C1D95",
   },
 };
+
+const reset = `
+  body {
+        margin:0;
+        height:100%;
+        font-family:sans-serif;
+      }
+      input, button {
+        border:none;
+        background:transparent;
+      }
+      input:focus {
+        outline:none;
+      }
+      a {
+        color:inherit;
+        text-decoration:none;
+      }
+      a:visited {
+        color:inherit;
+      }
+      button {
+        border:none;
+      }
+      #App, html {
+        height:100%;
+      }
+      ul, li {
+        margin:0;
+        padding:0;
+        list-style-type:none;
+      }
+      * {
+        box-sizing:border-box;
+        position:relative;
+      }
+      `;
+
+export const insertTheme = () => {
+  const colorVars = Object.entries(colors).flatMap(([color, variants]) =>
+    Object.entries(variants).map(
+      ([variant, value]) => `--${color}-${variant}:${value}`
+    )
+  );
+  const styleElem = document.createElement("style");
+  styleElem.setAttribute("type", "text/css");
+  styleElem.innerText = `
+    ${reset}
+
+    body {
+      --spacing:${spacing};
+        ${colorVars.join(";\n")};
+    }
+  `;
+  document.head.appendChild(styleElem);
+};

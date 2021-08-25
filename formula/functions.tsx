@@ -6,6 +6,7 @@ import * as CEILING from "./functions/CEILING";
 import * as CONCAT from "./functions/CONCAT";
 import * as COUNT from "./functions/COUNT";
 import * as DIVIDE from "./functions/DIVIDE";
+import * as ENTRIES from "./functions/ENTRIES";
 import * as EQ from "./functions/EQ";
 import * as FILTER from "./functions/FILTER";
 import * as FIND from "./functions/FIND";
@@ -34,6 +35,7 @@ import * as STRING from "./functions/STRING";
 import * as SUBSTRING from "./functions/SUBSTRING";
 import * as SUM from "./functions/SUM";
 import * as UPPER from "./functions/UPPER";
+import * as GET from "./functions/GET";
 
 export const functions: Record<
   string,
@@ -54,6 +56,7 @@ export const functions: Record<
   CONCAT,
   COUNT,
   DIVIDE,
+  ENTRIES,
   EQ,
   FILTER,
   FIND,
@@ -71,6 +74,7 @@ export const functions: Record<
   MULTIPLY,
   NEQ,
   NOT,
+  GET,
   NUMBER,
   OR,
   RANGE,

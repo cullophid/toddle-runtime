@@ -80,12 +80,22 @@ export const applyFormula = (
     case "string":
     case "boolean":
       return formula.value;
-    case "path":
+    case "path": {
+      if (formula.path[0] === "Functions") {
+        const [, functionName, ...rest] = formula.path;
+        const f = input.Functions[functionName];
+        return rest.reduce(
+          (input, key) =>
+            input && typeof input === "object" ? input[key] : null,
+          applyFormula(f, input)
+        );
+      }
       return formula.path.reduce(
         (input, key) =>
           input && typeof input === "object" ? input[key] : null,
         input
       );
+    }
     case "function":
       return functions[formula.name]?.resolver(formula, input);
     case "null":

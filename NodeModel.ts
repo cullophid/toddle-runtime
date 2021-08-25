@@ -84,6 +84,11 @@ export interface StyleVariant {
   style: StyleDeclarationBlock;
 }
 
+export type StyleVariable = {
+  name: string;
+  value: Formula | string;
+};
+
 export interface NodeStyleModel extends StyleDeclarationBlock {
   variants?: StyleVariant[];
   breakpoints?: {
@@ -122,6 +127,7 @@ export type ElementNodeModel = {
   tag: string;
   attrs: NodeAttrs;
   style: NodeStyleModel;
+  styleVariables: StyleVariable[];
   children: string[];
   events: NodeEventModel[];
 };
@@ -152,11 +158,9 @@ export type ComponentNodeModel = {
 export type TextNodeModel = {
   id: string;
   type: "text";
-  style: NodeStyleModel;
   condition?: Formula;
   repeat?: Formula;
   value: string | Formula;
-  children?: undefined;
 };
 
 export type LinkDestination = {
@@ -177,13 +181,15 @@ type FontStyle = {
 export const getFonts = (nodes: Record<string, NodeModel>): FontStyle[] => {
   const fonts = new Map<string, FontStyle>();
   Object.values(nodes).forEach((node) => {
-    const { fontStyle, fontFamily, fontWeight } = node.style ?? {};
-    if (fontFamily) {
-      fonts.set(`${fontFamily}:${fontStyle}:${fontWeight}}`, {
-        fontFamily,
-        fontStyle,
-        fontWeight,
-      });
+    if (node.type === "element") {
+      const { fontStyle, fontFamily, fontWeight } = node.style ?? {};
+      if (fontFamily) {
+        fonts.set(`${fontFamily}:${fontStyle}:${fontWeight}}`, {
+          fontFamily,
+          fontStyle,
+          fontWeight,
+        });
+      }
     }
   });
   return Array.from(fonts.values());
@@ -212,6 +218,9 @@ export const getFontUrls = (nodes: Record<string, NodeModel>): string[] => {
 export const getColors = (nodes: Record<string, NodeModel>): Set<string> => {
   const colors = new Set<string>();
   Object.values(nodes).forEach((node) => {
+    if (node.type !== "element") {
+      return;
+    }
     if (node.style?.color) {
       colors.add(node.style.color);
     }
@@ -253,7 +262,9 @@ export const deleteNode = (
   const findNodes = (nodeId: string) => {
     nodesToDelete.add(nodeId);
     const node = nodes[nodeId];
-    node?.children?.forEach(findNodes);
+    if (node.type !== "text") {
+      node?.children?.forEach(findNodes);
+    }
   };
   findNodes(nodeId);
   return Object.entries(nodes).reduce<Record<string, NodeModel>>(
@@ -287,7 +298,9 @@ export const getSubTree = (
     } else {
       subTree[id] = node;
     }
-    node.children?.forEach(run);
+    if (node.type !== "text") {
+      node.children?.forEach(run);
+    }
   };
   run(nodeId);
   return cloneNodeTree(subTree);
@@ -363,7 +376,8 @@ export const insertNodeTree = (
 ): Record<string, NodeModel> => {
   const parent = nodes[parentId];
   const childId = nanoid();
-  const childIndex = index ?? parent.children?.length ?? 0;
+  const childIndex =
+    index ?? (parent.type !== "text" ? parent.children?.length : 0) ?? 0;
   if (parent?.type === "text") {
     return nodes;
   }
@@ -387,7 +401,7 @@ export const getPath = (nodes: Record<string, NodeModel>, nodeId: string) => {
       return path;
     }
     const node = id ? nodes[id] : undefined;
-    if (node?.children !== undefined) {
+    if (node?.type !== "text" && node?.children !== undefined) {
       for (let child of node.children) {
         const childPath = run([...path, child]);
         if (childPath) {

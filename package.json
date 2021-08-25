@@ -33,11 +33,6 @@
     "@stitches/core": "^0.2.5",
     "fast-deep-equal": "^3.1.3",
     "graphql": "^15.5.1",
-    "nanoid": "^3.1.25",
-    "observable": "^2.1.4",
-    "qs": "^6.10.1",
-    "router": "^1.3.5",
-    "signal": "^7.0.6",
-    "utils": "^0.3.1"
+    "nanoid": "^3.1.25"
   }
 }
