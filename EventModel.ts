@@ -9,20 +9,18 @@ export type NodeEventModel = {
   actions: ActionModel[];
 };
 
-export type MutationFailedEventModel = {
-  type: "MutationEvent";
+export type QueryFailedEventModel = {
+  type: "QueryEvent";
   trigger: "Failed";
   actions: ActionModel[];
 };
 
-export type MutationCompletedEventModel = {
-  type: "MutationEvent";
-  trigger: "Completed" | "Failed";
+export type QueryCompletedEventModel = {
+  type: "QueryEvent";
+  trigger: "Completed";
   actions: ActionModel[];
 };
-export type MutationEventModel =
-  | MutationFailedEventModel
-  | MutationCompletedEventModel;
+export type QueryEventModel = QueryFailedEventModel | QueryCompletedEventModel;
 
 export type ComponentEventModel = {
   type: "ComponentEvent";
@@ -30,10 +28,7 @@ export type ComponentEventModel = {
   actions: ActionModel[];
 };
 
-export type EventModel =
-  | NodeEventModel
-  | MutationEventModel
-  | ComponentEventModel;
+export type EventModel = NodeEventModel | QueryEventModel | ComponentEventModel;
 
 export type UpdateVariableAction = {
   type: "Update Variable";
@@ -53,8 +48,8 @@ export type TriggerMutationAction = {
   condition?: Formula;
   mutationName: string;
   variables: Record<string, string | number | boolean | Formula>;
-  onCompleted: MutationCompletedEventModel;
-  onFailed: MutationFailedEventModel;
+  onCompleted: QueryCompletedEventModel;
+  onFailed: QueryFailedEventModel;
 };
 
 export type TriggerEventAction = {

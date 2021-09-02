@@ -36,6 +36,8 @@ import * as SUBSTRING from "./functions/SUBSTRING";
 import * as SUM from "./functions/SUM";
 import * as UPPER from "./functions/UPPER";
 import * as GET from "./functions/GET";
+import * as SET from "./functions/SET";
+import * as DEFAULT from "./functions/DEFAULT";
 
 export const functions: Record<
   string,
@@ -86,4 +88,6 @@ export const functions: Record<
   SUBSTRING,
   SUM,
   UPPER,
+  SET,
+  DEFAULT,
 };

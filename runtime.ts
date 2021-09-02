@@ -1,4 +1,4 @@
-import { createContext, CSSProperties } from "react";
+import { CSSProperties } from "react";
 import { mapObject, mapValues, omit } from "./util";
 import {
   ComponentData,
@@ -79,6 +79,16 @@ const createQuery = (
             },
           },
         });
+        console.log(query.name, { query });
+        query.onCompleted?.actions?.forEach((action) =>
+          handleAction(action, ctx.dataSignal.value, ctx)
+        );
+      })
+      .catch((error) => {
+        console.log("Error", query.name, error);
+        query.onFailed?.actions?.forEach((action) =>
+          handleAction(action, ctx.dataSignal.value, ctx)
+        );
       });
   });
   return () => variablesSignal.destroy();
@@ -100,7 +110,7 @@ const createMutation = (query: ComponentQuery, ctx: ComponentContext) => {
       },
     });
 
-    fetch(query.api.url, {
+    return fetch(query.api.url, {
       method: "POST",
       headers: mapObject(query.api.headers, ([header, value]) => [
         header,
@@ -195,6 +205,11 @@ const createComponent = (
     ),
   });
 
+  if (component.name === "TreeNode") {
+    const expandedSignal = dataSignal.map((data) => data.Variables.expanded);
+    expandedSignal.subscribe((expanded) => console.log("Expanded", expanded));
+  }
+
   const updateData = (f: (data: ComponentData) => ComponentData) => {
     dataSignal.set(f(dataSignal.value));
   };
@@ -255,7 +270,10 @@ const renderNode = (
             dataSignal.map(
               (data): NodeData => ({
                 ...data,
-                ListItem: applyFormula(node.repeat, data)?.[index],
+                ListItem: {
+                  Item: applyFormula(node.repeat, data)?.[index],
+                  Index: index,
+                },
               })
             ),
             ctx
@@ -281,12 +299,11 @@ const renderNode = (
         Boolean(applyFormula(node.condition, data))
       );
       showSignal.subscribe((show) => {
+        console.log("SHOW", show, id);
         if (show) {
           return parent.appendChild(elem);
         }
-        if (elem.parentNode === parent) {
-          parent.removeChild(elem);
-        }
+        elem.parentNode?.removeChild(elem);
       });
     } else {
       parent.appendChild(elem);
@@ -328,6 +345,7 @@ const createNode = (
           case "value":
           case "min":
           case "max":
+          case "src":
           case "type": {
             if (isFormula(value)) {
               const o = dataSignal.map((data) =>
@@ -504,6 +522,32 @@ const handleAction = (
       });
       break;
     }
+    case "Trigger Mutation": {
+      const trigger = data.Mutations?.[action.mutationName]?.__trigger;
+      if (!trigger) {
+        console.log("Could not trigger the mutation ", action.mutationName);
+        return;
+      }
+      const vars = mapValues(action.variables, (variable) =>
+        applyFormula(variable, data)
+      );
+      console.log("VARS", vars);
+      trigger(vars).then(
+        (data: any) => {
+          console.log("COMPLETED", action.mutationName, data);
+          action.onCompleted.actions.forEach((a) =>
+            handleAction(a, ctx.dataSignal.value, ctx)
+          );
+        },
+        (err: any) => {
+          console.log("COMPLETED", action.mutationName, err);
+          action.onFailed.actions.forEach((a) =>
+            handleAction(a, ctx.dataSignal.value, ctx)
+          );
+        }
+      );
+      break;
+    }
     case "Update Query": {
       locationSignal.set({
         ...locationSignal.value,
@@ -515,6 +559,7 @@ const handleAction = (
       break;
     }
     case "Trigger Event": {
+      console.log(action.event, applyFormula(action.data, data));
       ctx.onEvent(action.event, applyFormula(action.data, data));
       break;
     }

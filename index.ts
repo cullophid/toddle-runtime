@@ -42,6 +42,8 @@ const fetchSubComponents = async (
             documentNode
             name
             variables
+            onCompleted
+            onFailed
             api {
               id
               headers

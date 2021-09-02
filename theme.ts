@@ -1,3 +1,5 @@
+import { ComponentModel } from "ComponentModel";
+
 export const spacing = "0.25rem";
 
 export const colors = {
@@ -152,4 +154,16 @@ export const insertTheme = () => {
     }
   `;
   document.head.appendChild(styleElem);
+};
+
+export const insertFonts = (components: ComponentModel[]) => {
+  const fonts = {};
+  components
+    .flatMap((comp) => Object.values(comp.nodes))
+    .forEach((node) => {
+      if (node.type !== "element") {
+        return;
+      }
+      const style = node.style;
+    });
 };
