@@ -148,11 +148,11 @@ const main = async () => {
     throw new Error(`Could not render component ${page.component.name}`);
   }
 
-  renderComponent(
-    root,
-    page.component.name,
-    components as any,
-    locationSignal.map(({ query }) =>
+  renderComponent({
+    parent: root,
+    components,
+    name: page.component.name,
+    attributesSignal: locationSignal.map(({ query }) =>
       Object.fromEntries(
         rootComponent.props.map((p) => [
           p.name,
@@ -160,8 +160,9 @@ const main = async () => {
         ])
       )
     ),
-    (event: string, data: unknown) => console.log("EVENT FIRED", event, data)
-  );
+    onEvent: (event: string, data: unknown) =>
+      console.log("EVENT FIRED", event, data),
+  });
 };
 
 main();

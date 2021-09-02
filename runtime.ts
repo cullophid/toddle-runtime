@@ -10,27 +10,20 @@ import {
 import { ActionModel } from "./EventModel";
 import { applyFormula, isFormula } from "./formula/formula";
 import {
+  ComponentNodeModel,
+  ElementNodeModel,
+  FragmentNodeModel,
   NodeModel,
   NodeStyleModel,
   resolveStyleBlock,
   StyleVariant,
+  TextNodeModel,
   variantSelector,
 } from "./NodeModel";
 import { print as printQuery } from "graphql/language/printer";
 import { css } from "./stitches";
 import { signal, Signal } from "./signal";
 import { locationSignal, stringifyQuery } from "./router";
-
-export const renderComponent = (
-  parent: HTMLElement,
-  name: string,
-  components: Record<string, ComponentModel>,
-  attributesSignal: Signal<Record<string, any>>,
-  onEvent: (event: string, data: unknown) => void
-) => {
-  const { elem } = createComponent(name, components, attributesSignal, onEvent);
-  parent.appendChild(elem);
-};
 
 const createQuery = (
   query: ComponentQuery,
@@ -159,17 +152,24 @@ type ComponentContext = {
   onEvent: (event: string, data: unknown) => void;
 };
 
-const createComponent = (
-  name: string,
-  components: Record<string, ComponentModel>,
-  attributesSignal: Signal<Record<string, any>>,
-  onEvent: (event: string, data: unknown) => void
-): { elem: DocumentFragment; destroy: () => void } => {
+type RenderComponentProps = {
+  parent: HTMLElement;
+  name: string;
+  components: Record<string, ComponentModel>;
+  attributesSignal: Signal<Record<string, any>>;
+  onEvent: (event: string, data: unknown) => void;
+};
+export const renderComponent = ({
+  parent,
+  name,
+  components,
+  attributesSignal,
+  onEvent,
+}: RenderComponentProps): (() => void) => {
   const component = components[name];
-  const fragment = document.createDocumentFragment();
 
   if (!component) {
-    return { elem: fragment, destroy: () => {} };
+    return () => {};
   }
 
   const cleanUp: Function[] = [];
@@ -236,271 +236,363 @@ const createComponent = (
     }
   });
 
-  const destroyRoot = renderNode("ROOT", dataSignal, fragment, ctx);
-  const destroy = () => {
+  const root = component.nodes.ROOT;
+  const destroyRoot = createNode({ node: root, dataSignal, parent, ctx });
+  return () => {
     destroyRoot();
     dataSignal.destroy();
     attributesSignal.destroy();
     cleanUp.forEach((f) => f());
   };
-  return { elem: fragment, destroy };
 };
 
-const renderNode = (
-  id: string,
-  dataSignal: Signal<NodeData>,
-  parent: Element | DocumentFragment,
-  ctx: ComponentContext
-): (() => void) => {
-  const node = ctx.nodes[id];
-  if (!node) {
-    return () => {};
-  }
-  if (node.repeat) {
-    let cleanUp: Function[] = [];
-    const listSignal = dataSignal.map((data) =>
-      applyFormula(node.repeat, data)
-    );
-
-    listSignal.subscribe((list) => {
-      list?.forEach?.((item: any, index: number) => {
-        if (index >= cleanUp.length) {
-          const { elem, destroy } = createNode(
-            node,
-            dataSignal.map(
-              (data): NodeData => ({
-                ...data,
-                ListItem: {
-                  Item: applyFormula(node.repeat, data)?.[index],
-                  Index: index,
-                },
-              })
-            ),
-            ctx
-          );
-          cleanUp.push(destroy);
-          parent.appendChild(elem);
-        }
-      });
-      cleanUp.slice(list?.length ?? 0).forEach((f) => {
-        f();
-        cleanUp.splice(cleanUp.indexOf(f), 1);
-      });
-    });
-
-    return () => {
-      cleanUp.forEach((f) => f());
-      listSignal.destroy();
-    };
-  } else {
-    const { elem, destroy } = createNode(node, dataSignal, ctx);
-    if (node.condition) {
-      const showSignal = dataSignal.map((data) =>
-        Boolean(applyFormula(node.condition, data))
-      );
-      showSignal.subscribe((show) => {
-        console.log("SHOW", show, id);
-        if (show) {
-          return parent.appendChild(elem);
-        }
-        elem.parentNode?.removeChild(elem);
-      });
-    } else {
-      parent.appendChild(elem);
-    }
-    return destroy;
-  }
+type NodeRenderer<NodeType> = {
+  node: NodeType;
+  dataSignal: Signal<NodeData>;
+  parent: HTMLElement;
+  ctx: ComponentContext;
 };
 
-const createNode = (
-  node: NodeModel,
-  dataSignal: Signal<NodeData>,
-  ctx: ComponentContext
-): { elem: Element | DocumentFragment; destroy: () => void } => {
-  const cleanUp: Array<() => void> = [];
+const createGenericNode = ({
+  node,
+  parent,
+  dataSignal,
+  ctx,
+}: NodeRenderer<NodeModel>): (() => void) => {
   switch (node.type) {
-    case "element": {
-      const elem = document.createElement(node.tag);
-      elem.setAttribute("data-id", node.id);
-      elem.classList.add((css as any)(resolveStyle(node.style))());
-      Object.entries(node.attrs).forEach(([attr, value]) => {
-        switch (attr) {
-          case "classList":
-            node.attrs.classList?.forEach((elemClass) => {
-              if (elemClass.formula) {
-                const classSignal = dataSignal.map((data) =>
-                  Boolean(applyFormula(elemClass.formula, data))
-                );
-                classSignal.subscribe((show) =>
-                  show
-                    ? elem.classList.add(elemClass.name)
-                    : elem.classList.remove(elemClass.name)
-                );
-                cleanUp.push(() => classSignal.destroy());
-              } else {
-                elem.classList.add(elemClass.name);
-              }
-            });
-            break;
-          case "value":
-          case "min":
-          case "max":
-          case "src":
-          case "type": {
-            if (isFormula(value)) {
-              const o = dataSignal.map((data) =>
-                String(applyFormula(value, data))
-              );
-              o.subscribe((val) => {
-                (elem as HTMLInputElement)[attr] = val;
-              });
-              cleanUp.push(() => o.destroy());
-            } else {
-              (elem as HTMLInputElement)[attr] = value;
-            }
-          }
-          case "href": {
-            const href = node.attrs.href;
-            if (!href) {
-              return;
-            }
-            if (
-              Object.values(href.queryParams ?? {}).some(isFormula) ||
-              isFormula(href?.url)
-            ) {
-              const urlSignal = dataSignal.map((data) => {
-                return `${
-                  href.page?.path ?? applyFormula(href?.url, data) ?? "#"
-                }${
-                  href.queryParams
-                    ? "?" +
-                      stringifyQuery(
-                        mapValues(href.queryParams ?? {}, (value) =>
-                          applyFormula(value, data)
-                        )
-                      )
-                    : ""
-                }`;
-              });
-              urlSignal.subscribe((url) => elem.setAttribute("href", url));
-            } else {
-              elem.setAttribute(
-                "href",
-                `${href.page?.path ?? href?.url ?? "#"}${
-                  href.queryParams
-                    ? "?" + stringifyQuery(href.queryParams ?? {})
-                    : ""
-                }`
-              );
-            }
-          }
-          default: {
-            if (isFormula(value)) {
-              const o = dataSignal.map((data) =>
-                String(applyFormula(value, data))
-              );
-              o.subscribe((val) => {
-                elem.setAttribute(attr, val);
-              });
-              cleanUp.push(() => o.destroy());
-            }
-          }
-        }
+    case "element":
+      return createElement({
+        parent,
+        node,
+        dataSignal,
+        ctx,
       });
-      node.styleVariables?.forEach((styleVariable) => {
-        if (isFormula(styleVariable.value)) {
-          const sig = dataSignal.map((data) =>
-            applyFormula(styleVariable.value, data)
-          );
-          cleanUp.push(
-            sig.subscribe((value) =>
-              elem.style.setProperty(`--${styleVariable.name}`, value)
-            )
-          );
-        } else {
-          elem.style.setProperty(
-            `--${styleVariable.name}`,
-            styleVariable.value
-          );
-        }
+    case "component":
+      return createComponent({
+        parent,
+        node,
+        dataSignal,
+        ctx,
       });
-      node.events.forEach((event) => {
-        const handler = (e: Event) => {
-          if (event.preventDefault) {
-            e.preventDefault();
-          }
-          if (event.stopPropagation) {
-            e.stopPropagation();
-          }
-          event.actions.forEach((action) =>
-            handleAction(action, { ...dataSignal.value, Event: e }, ctx)
-          );
-        };
-        elem.addEventListener(
-          event.trigger === "Change" ? "input" : event.trigger.toLowerCase(),
-          handler
-        );
+    case "text":
+      return createText({
+        ctx,
+        dataSignal,
+        node,
+        parent,
       });
-      node.children.forEach((childId) =>
-        renderNode(childId, dataSignal, elem, ctx)
-      );
-      const destroy = () => {
-        cleanUp.forEach((f) => f());
-        elem.remove();
-      };
-      return { elem, destroy };
-    }
-    case "text": {
-      const elem = document.createElement("span");
-      if (isFormula(node.value)) {
-        const sig = dataSignal.map((data) =>
-          String(applyFormula(node.value, data))
-        );
-        sig.subscribe((value) => (elem.innerText = value));
-        cleanUp.push(() => sig.destroy());
-      } else {
-        elem.innerText = String(node.value);
-      }
-      const destroy = () => {
-        cleanUp.forEach((f) => f());
-        elem.remove();
-      };
-      return { elem, destroy };
-    }
-    case "fragment": {
-      const elem = document.createDocumentFragment();
-      const cleanUp = node.children.map((childId) =>
-        renderNode(childId, dataSignal, elem, ctx)
-      );
-      const destroy = () => {
-        cleanUp.forEach((f) => f());
-      };
-      return { elem, destroy };
-    }
-    case "component": {
-      const attributesSignal = dataSignal.map((data) => {
-        return mapObject(node.attrs, ([attr, value]) => [
-          attr,
-          applyFormula(value, data),
-        ]);
+    case "fragment":
+      return createFragment({
+        ctx,
+        dataSignal,
+        node,
+        parent,
       });
-      return createComponent(
-        node.name,
-        ctx.components,
-        attributesSignal,
-        (eventTrigger, data) => {
-          const eventHandler = node.events.find(
-            (e) => e.trigger === eventTrigger
-          );
-          if (eventHandler) {
-            eventHandler.actions.forEach((action) =>
-              handleAction(action, { ...dataSignal.value, Event: data }, ctx)
-            );
-          }
-        }
-      );
-    }
   }
+};
+
+const repeatNode = ({
+  node,
+  dataSignal,
+  parent,
+  ctx,
+}: NodeRenderer<NodeModel>) => {
+  let cleanUp: Function[] = [];
+  const listSignal = dataSignal.map((data) => applyFormula(node.repeat, data));
+  listSignal.subscribe((list) => {
+    list?.forEach?.((item: any, index: number) => {
+      if (index >= cleanUp.length) {
+        const args = {
+          node,
+          dataSignal: dataSignal.map(
+            (data): NodeData => ({
+              ...data,
+              ListItem: {
+                Item: applyFormula(node.repeat, data)?.[index],
+                Index: index,
+              },
+            })
+          ),
+          ctx,
+          parent,
+        };
+        const destroy = node.condition
+          ? conditionalNode(args)
+          : createGenericNode(args);
+        cleanUp.push(destroy);
+      }
+    });
+    cleanUp.slice(list?.length ?? 0).forEach((f) => {
+      f();
+      cleanUp.splice(cleanUp.indexOf(f), 1);
+    });
+  });
+
+  return () => {
+    cleanUp.forEach((f) => f());
+    listSignal.destroy();
+  };
+};
+
+const conditionalNode = ({
+  node,
+  parent,
+  dataSignal,
+  ctx,
+}: NodeRenderer<NodeModel>) => {
+  let destroy: Function | undefined;
+  const showSignal = dataSignal.map((data) =>
+    Boolean(applyFormula(node.condition, data))
+  );
+  showSignal.subscribe((show) => {
+    if (show) {
+      destroy = createGenericNode({ node, dataSignal, ctx, parent });
+      return destroy;
+    }
+    destroy?.();
+  });
+  return () => {
+    destroy?.();
+    showSignal.destroy();
+  };
+};
+
+const createNode = ({
+  node,
+  dataSignal,
+  parent,
+  ctx,
+}: NodeRenderer<NodeModel>): (() => void) => {
+  if (node.repeat) {
+    return repeatNode({ node, dataSignal, parent, ctx });
+  }
+  if (node.condition) {
+    return conditionalNode({ node, dataSignal, ctx, parent });
+  }
+  return createGenericNode({ node, dataSignal, ctx, parent });
+};
+
+type RenderTextProps = {
+  parent: HTMLElement;
+  node: TextNodeModel;
+  dataSignal: Signal<NodeData>;
+  ctx: ComponentContext;
+};
+
+const createText = ({ parent, node, dataSignal, ctx }: RenderTextProps) => {
+  const elem = document.createElement("span");
+  const cleanUp: Function[] = [];
+  if (isFormula(node.value)) {
+    const sig = dataSignal.map((data) =>
+      String(applyFormula(node.value, data))
+    );
+    sig.subscribe((value) => (elem.innerText = value));
+    cleanUp.push(() => sig.destroy());
+  } else {
+    elem.innerText = String(node.value);
+  }
+  parent.appendChild(elem);
+  return () => {
+    cleanUp.forEach((f) => f());
+    elem.remove();
+  };
+};
+type RenderFragmentProps = {
+  parent: HTMLElement;
+  node: FragmentNodeModel;
+  dataSignal: Signal<NodeData>;
+  ctx: ComponentContext;
+};
+
+const createFragment = ({
+  parent,
+  node,
+  dataSignal,
+  ctx,
+}: RenderFragmentProps) => {
+  const cleanUp = node.children.map((childId) => {
+    const child = ctx.nodes[childId];
+    if (child) {
+      return createNode({ node: child, dataSignal, parent, ctx });
+    }
+    return () => {};
+  });
+  const destroy = () => {
+    cleanUp.forEach((f) => f());
+  };
+  return destroy;
+};
+
+type RenderComponentNodeProps = {
+  parent: HTMLElement;
+  node: ComponentNodeModel;
+  dataSignal: Signal<NodeData>;
+  ctx: ComponentContext;
+};
+
+const createComponent = ({
+  parent,
+  node,
+  dataSignal,
+  ctx,
+}: RenderComponentNodeProps) => {
+  const attributesSignal = dataSignal.map((data) => {
+    return mapObject(node.attrs, ([attr, value]) => [
+      attr,
+      applyFormula(value, data),
+    ]);
+  });
+  return renderComponent({
+    attributesSignal,
+    parent,
+    components: ctx.components,
+    name: node.name,
+    onEvent: (eventTrigger, data) => {
+      const eventHandler = node.events.find((e) => e.trigger === eventTrigger);
+      if (eventHandler) {
+        eventHandler.actions.forEach((action) =>
+          handleAction(action, { ...dataSignal.value, Event: data }, ctx)
+        );
+      }
+    },
+  });
+};
+
+const createElement = ({
+  node,
+  parent,
+  dataSignal,
+  ctx,
+}: NodeRenderer<ElementNodeModel>): (() => void) => {
+  const cleanUp: Function[] = [];
+  const elem = document.createElement(node.tag);
+  elem.setAttribute("data-id", node.id);
+  elem.classList.add((css as any)(resolveStyle(node.style))());
+  Object.entries(node.attrs).forEach(([attr, value]) => {
+    switch (attr) {
+      case "classList":
+        node.attrs.classList?.forEach((elemClass) => {
+          if (elemClass.formula) {
+            const classSignal = dataSignal.map((data) =>
+              Boolean(applyFormula(elemClass.formula, data))
+            );
+            classSignal.subscribe((show) =>
+              show
+                ? elem.classList.add(elemClass.name)
+                : elem.classList.remove(elemClass.name)
+            );
+            cleanUp.push(() => classSignal.destroy());
+          } else {
+            elem.classList.add(elemClass.name);
+          }
+        });
+        break;
+      case "value":
+      case "min":
+      case "max":
+      case "src":
+      case "type": {
+        if (isFormula(value)) {
+          const o = dataSignal.map((data) => String(applyFormula(value, data)));
+          o.subscribe((val) => {
+            (elem as HTMLInputElement)[attr] = val;
+          });
+          cleanUp.push(() => o.destroy());
+        } else {
+          (elem as HTMLInputElement)[attr] = value;
+        }
+      }
+      case "href": {
+        const href = node.attrs.href;
+        if (!href) {
+          return;
+        }
+        if (
+          Object.values(href.queryParams ?? {}).some(isFormula) ||
+          isFormula(href?.url)
+        ) {
+          const urlSignal = dataSignal.map((data) => {
+            return `${href.page?.path ?? applyFormula(href?.url, data) ?? "#"}${
+              href.queryParams
+                ? "?" +
+                  stringifyQuery(
+                    mapValues(href.queryParams ?? {}, (value) =>
+                      applyFormula(value, data)
+                    )
+                  )
+                : ""
+            }`;
+          });
+          urlSignal.subscribe((url) => elem.setAttribute("href", url));
+        } else {
+          elem.setAttribute(
+            "href",
+            `${href.page?.path ?? href?.url ?? "#"}${
+              href.queryParams
+                ? "?" + stringifyQuery(href.queryParams ?? {})
+                : ""
+            }`
+          );
+        }
+      }
+      default: {
+        if (isFormula(value)) {
+          const o = dataSignal.map((data) => String(applyFormula(value, data)));
+          o.subscribe((val) => {
+            elem.setAttribute(attr, val);
+          });
+          cleanUp.push(() => o.destroy());
+        }
+      }
+    }
+  });
+  node.styleVariables?.forEach((styleVariable) => {
+    if (isFormula(styleVariable.value)) {
+      const sig = dataSignal.map((data) =>
+        applyFormula(styleVariable.value, data)
+      );
+      cleanUp.push(
+        sig.subscribe((value) =>
+          elem.style.setProperty(`--${styleVariable.name}`, value)
+        )
+      );
+    } else {
+      elem.style.setProperty(`--${styleVariable.name}`, styleVariable.value);
+    }
+  });
+  node.events.forEach((event) => {
+    const handler = (e: Event) => {
+      if (event.preventDefault) {
+        e.preventDefault();
+      }
+      if (event.stopPropagation) {
+        e.stopPropagation();
+      }
+      event.actions.forEach((action) =>
+        handleAction(action, { ...dataSignal.value, Event: e }, ctx)
+      );
+    };
+    elem.addEventListener(
+      event.trigger === "Change" ? "input" : event.trigger.toLowerCase(),
+      handler
+    );
+  });
+  node.children.forEach((childId) => {
+    const child = ctx.nodes[childId];
+    if (child) {
+      createNode({
+        node: child,
+        dataSignal,
+        parent: elem,
+        ctx,
+      });
+    }
+  });
+  parent.appendChild(elem);
+  return () => {
+    cleanUp.forEach((f) => f());
+    elem.remove();
+  };
 };
 
 const handleAction = (
