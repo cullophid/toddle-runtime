@@ -38,6 +38,7 @@ import * as UPPER from "./functions/UPPER";
 import * as GET from "./functions/GET";
 import * as SET from "./functions/SET";
 import * as DEFAULT from "./functions/DEFAULT";
+import * as CUSTOM_FUNCTION from "./functions/CUSTOM_FUNCTION";
 
 export const functions: Record<
   string,
@@ -90,4 +91,5 @@ export const functions: Record<
   UPPER,
   SET,
   DEFAULT,
+  CUSTOM_FUNCTION,
 };

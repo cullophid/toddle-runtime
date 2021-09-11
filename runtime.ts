@@ -1,4 +1,3 @@
-import { CSSProperties } from "react";
 import { mapObject, mapValues, omit } from "./util";
 import {
   ComponentData,
@@ -14,14 +13,9 @@ import {
   ElementNodeModel,
   FragmentNodeModel,
   NodeModel,
-  NodeStyleModel,
-  resolveStyleBlock,
-  StyleVariant,
   TextNodeModel,
-  variantSelector,
 } from "./NodeModel";
 import { print as printQuery } from "graphql/language/printer";
-import { css } from "./stitches";
 import { signal, Signal } from "./signal";
 import { locationSignal, stringifyQuery } from "./router";
 
@@ -72,7 +66,6 @@ const createQuery = (
             },
           },
         });
-        console.log(query.name, { query });
         query.onCompleted?.actions?.forEach((action) =>
           handleAction(action, ctx.dataSignal.value, ctx)
         );
@@ -205,9 +198,8 @@ export const renderComponent = ({
     ),
   });
 
-  if (component.name === "TreeNode") {
-    const expandedSignal = dataSignal.map((data) => data.Variables.expanded);
-    expandedSignal.subscribe((expanded) => console.log("Expanded", expanded));
+  if (component.name === (window as any).toddlePage?.component.name) {
+    (window as any).dataSignal = dataSignal;
   }
 
   const updateData = (f: (data: ComponentData) => ComponentData) => {
@@ -345,6 +337,7 @@ const conditionalNode = ({
     Boolean(applyFormula(node.condition, data))
   );
   showSignal.subscribe((show) => {
+    console.log("TOOGLE", node);
     if (show) {
       destroy = createGenericNode({ node, dataSignal, ctx, parent });
       return destroy;
@@ -357,7 +350,7 @@ const conditionalNode = ({
   };
 };
 
-const createNode = ({
+export const createNode = ({
   node,
   dataSignal,
   parent,
@@ -465,9 +458,9 @@ const createElement = ({
   ctx,
 }: NodeRenderer<ElementNodeModel>): (() => void) => {
   const cleanUp: Function[] = [];
+
   const elem = document.createElement(node.tag);
   elem.setAttribute("data-id", node.id);
-  elem.classList.add((css as any)(resolveStyle(node.style))());
   Object.entries(node.attrs).forEach(([attr, value]) => {
     switch (attr) {
       case "classList":
@@ -537,9 +530,9 @@ const createElement = ({
       }
       default: {
         if (isFormula(value)) {
-          const o = dataSignal.map((data) => String(applyFormula(value, data)));
+          const o = dataSignal.map((data) => applyFormula(value, data));
           o.subscribe((val) => {
-            elem.setAttribute(attr, val);
+            (elem as any)[attr] = val;
           });
           cleanUp.push(() => o.destroy());
         }
@@ -572,10 +565,7 @@ const createElement = ({
         handleAction(action, { ...dataSignal.value, Event: e }, ctx)
       );
     };
-    elem.addEventListener(
-      event.trigger === "Change" ? "input" : event.trigger.toLowerCase(),
-      handler
-    );
+    elem.addEventListener(event.trigger, handler);
   });
   node.children.forEach((childId) => {
     const child = ctx.nodes[childId];
@@ -623,16 +613,13 @@ const handleAction = (
       const vars = mapValues(action.variables, (variable) =>
         applyFormula(variable, data)
       );
-      console.log("VARS", vars);
       trigger(vars).then(
         (data: any) => {
-          console.log("COMPLETED", action.mutationName, data);
           action.onCompleted.actions.forEach((a) =>
             handleAction(a, ctx.dataSignal.value, ctx)
           );
         },
         (err: any) => {
-          console.log("COMPLETED", action.mutationName, err);
           action.onFailed.actions.forEach((a) =>
             handleAction(a, ctx.dataSignal.value, ctx)
           );
@@ -651,48 +638,15 @@ const handleAction = (
       break;
     }
     case "Trigger Event": {
-      console.log(action.event, applyFormula(action.data, data));
       ctx.onEvent(action.event, applyFormula(action.data, data));
       break;
     }
+    case "Debug":
+      console.log(action.type, applyFormula(action.data, data));
+      break;
+
+    default: {
+      console.log("UNSUPPORTED ACTION", action, data);
+    }
   }
-};
-
-const resolveStyle = (style: NodeStyleModel): CSSProperties => {
-  const { variants, breakpoints, ...rest } = style;
-
-  const getVariantStyles = (vaariants: StyleVariant[] | undefined) =>
-    variants?.reduce((acc: Record<string, NodeStyleModel>, variant) => {
-      acc[variantSelector(variant)] = resolveStyleBlock(variant.style);
-      return acc;
-    }, {});
-  return {
-    position: "relative",
-    ...resolveStyleBlock(rest),
-    ...getVariantStyles(variants),
-    ...(breakpoints?.["@large"]
-      ? {
-          "@large": {
-            ...resolveStyleBlock(omit(breakpoints["@large"], ["variants"])),
-            ...getVariantStyles(breakpoints["@large"].variants),
-          },
-        }
-      : {}),
-    ...(breakpoints?.["@medium"]
-      ? {
-          "@medium": {
-            ...resolveStyleBlock(omit(breakpoints["@medium"], ["variants"])),
-            ...getVariantStyles(breakpoints["@medium"].variants),
-          },
-        }
-      : {}),
-    ...(breakpoints?.["@small"]
-      ? {
-          "@small": {
-            ...resolveStyleBlock(omit(breakpoints["@small"], ["variants"])),
-            ...getVariantStyles(breakpoints["@small"].variants),
-          },
-        }
-      : {}),
-  };
 };

@@ -4,17 +4,31 @@ import { ComponentNodeModel } from "./NodeModel";
 
 import { locationSignal } from "./router";
 import { insertTheme } from "./theme";
+import { Canvas } from "./components/canvas";
+import { applyFormula } from "./formula/formula";
+import { insertFonts, insertStyles } from "./style";
+import { StyleEditor } from "./components/style-editor";
+import { ElementCatalog } from "./components/element-catalog/element-catalog";
+
+declare global {
+  interface Window {
+    TODDLE_FUNCTIONS: Record<string, Function>;
+  }
+}
+
+window.TODDLE_FUNCTIONS = window.TODDLE_FUNCTIONS || {};
 
 const DEFAULT_SLUG = "toddle";
-const fetchSubComponents = async (
+const fetchSubComponents = (
   projectId: string,
   names: string[],
   componentMap: Record<string, ComponentModel>
 ): Promise<Record<string, ComponentModel>> => {
   if (names.length === 0) {
-    return componentMap;
+    return Promise.resolve(componentMap);
   }
-  const result = await fetch("https://toddle.onrender.com/v1/graphql", {
+
+  return fetch("https://toddle.onrender.com/v1/graphql", {
     method: "POST",
     headers: {
       "x-hasura-admin-secret": "wj75DVgisfBanV4",
@@ -61,29 +75,29 @@ const fetchSubComponents = async (
         names,
       },
     }),
-  });
+  })
+    .then((result) => result.json())
+    .then(({ data }) => {
+      const components = data.components as ComponentModel[];
 
-  const { data } = await result.json();
+      const subComponents: string[] = components
+        .flatMap((component) => Object.values(component.nodes))
+        .filter(
+          (node): node is ComponentNodeModel =>
+            node.type === "component" && componentMap[node.name] === undefined
+        )
+        .map((node) => node.name);
 
-  const components = data.components as ComponentModel[];
-
-  const subComponents: string[] = components
-    .flatMap((component) => Object.values(component.nodes))
-    .filter(
-      (node): node is ComponentNodeModel =>
-        node.type === "component" && componentMap[node.name] === undefined
-    )
-    .map((node) => node.name);
-
-  return fetchSubComponents(
-    projectId,
-    subComponents,
-    components.reduce((acc, c) => ({ ...acc, [c.name]: c }), componentMap)
-  );
+      return fetchSubComponents(
+        projectId,
+        subComponents,
+        components.reduce((acc, c) => ({ ...acc, [c.name]: c }), componentMap)
+      );
+    });
 };
 
-const fetchPage = async (slug: string, path: string) => {
-  const res = await fetch("https://toddle.onrender.com/v1/graphql", {
+const fetchPage = (slug: string, path: string) => {
+  return fetch("https://toddle.onrender.com/v1/graphql", {
     method: "POST",
     headers: {
       "x-hasura-admin-secret": "wj75DVgisfBanV4",
@@ -113,56 +127,85 @@ const fetchPage = async (slug: string, path: string) => {
         path,
       },
     }),
-  });
-  if (!res.ok) {
-    throw new Error(await res.text());
-  }
-  const { data, errors } = await res.json();
-  if (errors) {
-    throw new Error(errors);
-  }
-  const [page] = data.pages;
-  const components = await fetchSubComponents(
-    page._project,
-    [page.component.name],
-    {}
-  );
-
-  return {
-    page,
-    components,
-  };
+  })
+    .then((res) => {
+      if (!res.ok) {
+        return Promise.reject(res.text());
+      }
+      return res.json();
+    })
+    .then(({ errors, data }) => {
+      if (errors) {
+        throw new Error(errors);
+      }
+      const [page] = data.pages;
+      return fetchSubComponents(page._project, [page.component.name], {}).then(
+        (components) => ({
+          page,
+          components,
+        })
+      );
+    });
 };
 
-const main = async () => {
-  insertTheme();
+const main = () => {
+  customElements.define("canvas-iframe", Canvas, {});
+  customElements.define("style-editor", StyleEditor, {});
+  customElements.define("element-catalog", ElementCatalog, {});
+
   const [, subDomain] = /(.*)\.toddle.dev/.exec(window.location.hostname) ?? [];
   const slug = subDomain ? subDomain : DEFAULT_SLUG;
   const root = document.getElementById("App");
   if (!root) {
     throw new Error("Cant find node with id 'App'");
   }
-  const { components, page } = await fetchPage(slug, window.location.pathname);
-  const rootComponent = components[page.component.name];
-  if (!rootComponent) {
-    throw new Error(`Could not render component ${page.component.name}`);
-  }
+  fetchPage(slug, window.location.pathname).then(({ components, page }) => {
+    const rootComponent = components[page.component.name];
+    if (!rootComponent) {
+      throw new Error(`Could not render component ${page.component.name}`);
+    }
 
-  renderComponent({
-    parent: root,
-    components,
-    name: page.component.name,
-    attributesSignal: locationSignal.map(({ query }) =>
-      Object.fromEntries(
-        rootComponent.props.map((p) => [
-          p.name,
-          query[p.name] ?? p.initialValue,
-        ])
-      )
-    ),
-    onEvent: (event: string, data: unknown) =>
-      console.log("EVENT FIRED", event, data),
+    (window as any).toddlePage = page;
+    (window as any).toddleComponents = components;
+
+    insertTheme(document.head);
+    insertStyles(document.head, Object.values(components));
+    insertFonts(document.head, Object.values(components));
+
+    renderComponent({
+      parent: root,
+      components,
+      name: page.component.name,
+      attributesSignal: locationSignal.map(({ query }) =>
+        Object.fromEntries(
+          rootComponent.props.map((p) => [
+            p.name,
+            query[p.name] ?? p.initialValue,
+          ])
+        )
+      ),
+      onEvent: (event: string, data: unknown) =>
+        console.log("EVENT FIRED", event, data),
+    });
   });
 };
 
 main();
+
+(window as any).TODDLE_FUNCTIONS.getInitialComponentData = (
+  component: ComponentModel
+) => {
+  const Props = Object.fromEntries(
+    component.props.map((prop) => [prop.name, prop.initialValue])
+  );
+  const Variables = Object.fromEntries(
+    component.variables.map((variable) => [
+      variable.name,
+      applyFormula(variable.initialValue, { Props }),
+    ])
+  );
+  return {
+    Props,
+    Variables,
+  };
+};

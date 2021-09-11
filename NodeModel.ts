@@ -127,7 +127,7 @@ export type ElementNodeModel = {
   tag: string;
   attrs: NodeAttrs;
   style: NodeStyleModel;
-  styleVariables: StyleVariable[];
+  styleVariables?: StyleVariable[];
   children: string[];
   events: NodeEventModel[];
 };
@@ -137,10 +137,10 @@ export type FragmentNodeModel = {
   type: "fragment";
   condition?: Formula;
   repeat?: Formula;
-  attrs: undefined;
-  style: undefined;
+  attrs?: undefined;
+  style?: undefined;
   children: string[];
-  events: undefined;
+  events?: undefined;
 };
 
 export type ComponentNodeModel = {
@@ -433,7 +433,7 @@ export const fontUrl = (style: {
 
 export const variantSelector = (variant: StyleVariant) =>
   [
-    variant.className && `&.${variant.className}`,
+    variant.className && `.${variant.className}`,
     variant.active && ":active",
     variant.focus && ":focus",
     variant.focusWithin && ":focus-within",

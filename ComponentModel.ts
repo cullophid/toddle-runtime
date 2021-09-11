@@ -7,12 +7,11 @@ import {
   QueryCompletedEventModel,
   QueryFailedEventModel,
 } from "./EventModel";
-import { Signal } from "signal";
 
 export type ComponentProp = {
   id: string;
   name: string;
-  initialValue: string | number | boolean;
+  initialValue: unknown;
 };
 export type ComponentVariable = {
   id: string;
@@ -33,7 +32,7 @@ export type ComponentQuery = {
   api: {
     id: string;
     headers: Record<string, Formula | string>;
-    auth: {};
+    auth: null;
     name: string;
     url: string;
     _project: string;
@@ -45,8 +44,8 @@ export type ComponentQuery = {
       value: string | number | boolean | Formula;
     }
   >;
-  onCompleted?: QueryCompletedEventModel;
-  onFailed?: QueryFailedEventModel;
+  onCompleted: QueryCompletedEventModel | null;
+  onFailed: QueryFailedEventModel | null;
 };
 export type ComponentModel = {
   id: string;
