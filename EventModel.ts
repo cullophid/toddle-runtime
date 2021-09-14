@@ -62,6 +62,7 @@ export type TriggerEventAction = {
 export type DebugAction = {
   type: "Debug";
   condition?: Formula;
+  label?: string;
   data?: string | number | boolean | Formula;
 };
 

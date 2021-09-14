@@ -1,22 +1,33 @@
 import { renderComponent } from "./runtime";
-import { ComponentModel } from "./ComponentModel";
-import { ComponentNodeModel } from "./NodeModel";
+import { ComponentModel, NodeData } from "./ComponentModel";
+import { ComponentNodeModel, getPath, NodeModel } from "./NodeModel";
 
 import { locationSignal } from "./router";
 import { insertTheme } from "./theme";
-import { Canvas } from "./components/canvas";
+import { Canvas } from "./components/canvas-iframe";
 import { applyFormula } from "./formula/formula";
 import { insertFonts, insertStyles } from "./style";
 import { StyleEditor } from "./components/style-editor";
 import { ElementCatalog } from "./components/element-catalog/element-catalog";
+import { ElementAttributes } from "./components/element-attributes";
+import { ElementEvents } from "./components/element-events";
 
 declare global {
   interface Window {
     TODDLE_FUNCTIONS: Record<string, Function>;
+    toddle: {
+      formulas: Record<string, Function>;
+      actions: Record<string, Function>;
+      components: Record<string, ComponentModel>;
+    };
   }
 }
-
-window.TODDLE_FUNCTIONS = window.TODDLE_FUNCTIONS || {};
+window.toddle = {
+  formulas: {},
+  actions: {},
+  components: {},
+};
+window.TODDLE_FUNCTIONS = window.toddle.formulas;
 
 const DEFAULT_SLUG = "toddle";
 const fetchSubComponents = (
@@ -58,6 +69,8 @@ const fetchSubComponents = (
             variables
             onCompleted
             onFailed
+            throttle
+            debounce
             api {
               id
               headers
@@ -149,9 +162,11 @@ const fetchPage = (slug: string, path: string) => {
 };
 
 const main = () => {
-  customElements.define("canvas-iframe", Canvas, {});
+  customElements.define("element-attributes", ElementAttributes, {});
+  customElements.define("element-events", ElementEvents, {});
   customElements.define("style-editor", StyleEditor, {});
   customElements.define("element-catalog", ElementCatalog, {});
+  customElements.define("canvas-iframe", Canvas, {});
 
   const [, subDomain] = /(.*)\.toddle.dev/.exec(window.location.hostname) ?? [];
   const slug = subDomain ? subDomain : DEFAULT_SLUG;
@@ -172,10 +187,11 @@ const main = () => {
     insertStyles(document.head, Object.values(components));
     insertFonts(document.head, Object.values(components));
 
+    window.toddle.components = components;
     renderComponent({
       parent: root,
-      components,
-      name: page.component.name,
+      component: rootComponent,
+      isRootComponent: true,
       attributesSignal: locationSignal.map(({ query }) =>
         Object.fromEntries(
           rootComponent.props.map((p) => [
@@ -192,20 +208,47 @@ const main = () => {
 
 main();
 
-(window as any).TODDLE_FUNCTIONS.getInitialComponentData = (
+window.toddle.formulas.getInitialComponentData = (
   component: ComponentModel
 ) => {
   const Props = Object.fromEntries(
     component.props.map((prop) => [prop.name, prop.initialValue])
   );
+  const Functions = Object.fromEntries(
+    component.functions?.map((f) => [f.name, f.value]) ?? []
+  );
   const Variables = Object.fromEntries(
     component.variables.map((variable) => [
       variable.name,
-      applyFormula(variable.initialValue, { Props }),
+      applyFormula(variable.initialValue, { Props, Functions }),
     ])
   );
   return {
     Props,
     Variables,
+    Functions,
   };
 };
+
+window.toddle.formulas.getNodeData = (
+  nodeId: string,
+  nodes: Record<string, NodeModel>,
+  data: NodeData
+): NodeData => {
+  const path = getPath(nodes, nodeId) ?? [];
+  return path.reduce(
+    (acc, nodeId) => {
+      const node = nodes[nodeId];
+      const repeat = applyFormula(node.repeat, acc);
+      const [listItem] = Array.isArray(repeat) ? repeat : [];
+
+      if (listItem) {
+        acc.ListItem = { Item: listItem, Index: 0 };
+      }
+      return acc;
+    },
+    { ...data }
+  );
+};
+
+console.log(window.TODDLE_FUNCTIONS);

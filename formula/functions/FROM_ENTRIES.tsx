@@ -7,5 +7,10 @@ export const template: FunctionOperation = {
 };
 
 export const resolver = (f: FunctionOperation, input: any) => {
-  return Object.fromEntries(applyFormula(f.arguments[0]?.formula, input));
+  const list = applyFormula(f.arguments[0]?.formula, input);
+  if (Array.isArray(list) && list.every(Array.isArray)) {
+    return Object.fromEntries(applyFormula(f.arguments[0]?.formula, input));
+  } else {
+    return null;
+  }
 };

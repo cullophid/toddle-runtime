@@ -39,7 +39,7 @@ const Catalog = React.memo((props: Props) => {
 
   return (
     <div className="fixed left-0 top-0 h-full w-56">
-      <header className="p-2 flex items-center gap-2 bg-primary-300">
+      <header className="p-2 flex items-center gap-2">
         <div className="relative flex-1 grid grid-cols-[auto,1fr] items-center bg-grey-700 border border-grey-600 box-border rounded-full h-7 px-1 gap-1 hover:border-grey-400 focus-within:border-primary-300 focus-within:bg-grey-100">
           <SearchIcon size={24} color="#a3a3a3" />
           <input

@@ -1,7 +1,6 @@
-import { mapObject, mapValues, omit } from "./util";
+import { mapObject, mapValues } from "./util";
 import {
   ComponentData,
-  ComponentFunction,
   ComponentModel,
   ComponentQuery,
   NodeData,
@@ -18,6 +17,7 @@ import {
 import { print as printQuery } from "graphql/language/printer";
 import { signal, Signal } from "./signal";
 import { locationSignal, stringifyQuery } from "./router";
+import { debounce, throttle } from "lodash";
 
 const createQuery = (
   query: ComponentQuery,
@@ -28,13 +28,16 @@ const createQuery = (
       applyFormula(value.value, data)
     );
   });
-
-  variablesSignal.subscribe((variables) => {
+  const execute = (variables: Record<string, unknown>) => {
     ctx.dataSignal.set({
       ...ctx.dataSignal.value,
       Queries: {
         ...ctx.dataSignal.value.Queries,
-        [query.name]: { data: null, isLoading: true, error: null },
+        [query.name]: {
+          data: ctx.dataSignal.value.Queries?.[query.name]?.data ?? null,
+          isLoading: true,
+          error: null,
+        },
       },
     });
 
@@ -66,21 +69,29 @@ const createQuery = (
             },
           },
         });
-        query.onCompleted?.actions?.forEach((action) =>
-          handleAction(action, ctx.dataSignal.value, ctx)
-        );
+        query.onCompleted?.actions?.forEach((action) => {
+          handleAction(action, ctx.dataSignal.value, ctx);
+        });
       })
       .catch((error) => {
         console.log("Error", query.name, error);
-        query.onFailed?.actions?.forEach((action) =>
-          handleAction(action, ctx.dataSignal.value, ctx)
-        );
+        query.onFailed?.actions?.forEach((action) => {
+          handleAction(action, ctx.dataSignal.value, ctx);
+        });
       });
-  });
+  };
+
+  variablesSignal.subscribe(
+    typeof query.debounce === "number"
+      ? debounce(execute, query.debounce)
+      : typeof query.throttle === "number"
+      ? throttle(execute, query.throttle)
+      : execute
+  );
   return () => variablesSignal.destroy();
 };
 const createMutation = (query: ComponentQuery, ctx: ComponentContext) => {
-  const __trigger = (variables: Record<string, any>) => {
+  const triggerFunction = (variables: Record<string, any>) => {
     ctx.dataSignal.set({
       ...ctx.dataSignal.value,
       Mutations: {
@@ -127,44 +138,48 @@ const createMutation = (query: ComponentQuery, ctx: ComponentContext) => {
         });
       });
   };
+  const __trigger =
+    typeof query.debounce === "number"
+      ? debounce(triggerFunction, query.debounce)
+      : typeof query.throttle === "number"
+      ? throttle(triggerFunction, query.throttle)
+      : triggerFunction;
+
   ctx.dataSignal.set({
     ...ctx.dataSignal.value,
     Mutations: {
       ...ctx.dataSignal.value.Mutations,
-      [query.name]: { data: null, isLoading: false, error: null, __trigger },
+      [query.name]: {
+        data: null,
+        isLoading: false,
+        error: null,
+        __trigger,
+      },
     },
   });
 };
 
 type ComponentContext = {
-  components: Record<string, ComponentModel>;
-  componentName: string;
-  functions?: ComponentFunction[];
-  nodes: Record<string, NodeModel>;
+  component: ComponentModel;
+  isRootComponent: boolean;
   dataSignal: Signal<ComponentData>;
   onEvent: (event: string, data: unknown) => void;
 };
 
 type RenderComponentProps = {
-  parent: HTMLElement;
-  name: string;
-  components: Record<string, ComponentModel>;
+  parent: Element;
+  component: ComponentModel;
   attributesSignal: Signal<Record<string, any>>;
   onEvent: (event: string, data: unknown) => void;
+  isRootComponent: boolean;
 };
 export const renderComponent = ({
   parent,
-  name,
-  components,
+  component,
   attributesSignal,
   onEvent,
+  isRootComponent,
 }: RenderComponentProps): (() => void) => {
-  const component = components[name];
-
-  if (!component) {
-    return () => {};
-  }
-
   const cleanUp: Function[] = [];
 
   const dataSignal = signal<ComponentData>({
@@ -212,12 +227,10 @@ export const renderComponent = ({
 
   const ctx = {
     onEvent,
-    nodes: component.nodes,
-    components,
-    functions: component.functions,
-    componentName: component.name,
+    component,
     dataSignal,
     updateData,
+    isRootComponent,
   };
 
   component.queries.forEach((q) => {
@@ -241,7 +254,7 @@ export const renderComponent = ({
 type NodeRenderer<NodeType> = {
   node: NodeType;
   dataSignal: Signal<NodeData>;
-  parent: HTMLElement;
+  parent: Element;
   ctx: ComponentContext;
 };
 
@@ -337,7 +350,6 @@ const conditionalNode = ({
     Boolean(applyFormula(node.condition, data))
   );
   showSignal.subscribe((show) => {
-    console.log("TOOGLE", node);
     if (show) {
       destroy = createGenericNode({ node, dataSignal, ctx, parent });
       return destroy;
@@ -366,7 +378,7 @@ export const createNode = ({
 };
 
 type RenderTextProps = {
-  parent: HTMLElement;
+  parent: Element;
   node: TextNodeModel;
   dataSignal: Signal<NodeData>;
   ctx: ComponentContext;
@@ -374,6 +386,7 @@ type RenderTextProps = {
 
 const createText = ({ parent, node, dataSignal, ctx }: RenderTextProps) => {
   const elem = document.createElement("span");
+  elem.setAttribute("data-id", node.id);
   const cleanUp: Function[] = [];
   if (isFormula(node.value)) {
     const sig = dataSignal.map((data) =>
@@ -391,7 +404,7 @@ const createText = ({ parent, node, dataSignal, ctx }: RenderTextProps) => {
   };
 };
 type RenderFragmentProps = {
-  parent: HTMLElement;
+  parent: Element;
   node: FragmentNodeModel;
   dataSignal: Signal<NodeData>;
   ctx: ComponentContext;
@@ -404,7 +417,7 @@ const createFragment = ({
   ctx,
 }: RenderFragmentProps) => {
   const cleanUp = node.children.map((childId) => {
-    const child = ctx.nodes[childId];
+    const child = ctx.component.nodes[childId];
     if (child) {
       return createNode({ node: child, dataSignal, parent, ctx });
     }
@@ -417,7 +430,7 @@ const createFragment = ({
 };
 
 type RenderComponentNodeProps = {
-  parent: HTMLElement;
+  parent: Element;
   node: ComponentNodeModel;
   dataSignal: Signal<NodeData>;
   ctx: ComponentContext;
@@ -429,6 +442,11 @@ const createComponent = ({
   dataSignal,
   ctx,
 }: RenderComponentNodeProps) => {
+  const component = window.toddle.components?.[node.name];
+  if (!component) {
+    console.log(`Could not find a component with the name ${node.name}`);
+    return () => {};
+  }
   const attributesSignal = dataSignal.map((data) => {
     return mapObject(node.attrs, ([attr, value]) => [
       attr,
@@ -438,8 +456,8 @@ const createComponent = ({
   return renderComponent({
     attributesSignal,
     parent,
-    components: ctx.components,
-    name: node.name,
+    component,
+    isRootComponent: false,
     onEvent: (eventTrigger, data) => {
       const eventHandler = node.events.find((e) => e.trigger === eventTrigger);
       if (eventHandler) {
@@ -450,6 +468,20 @@ const createComponent = ({
     },
   });
 };
+const createDocumentElement = (tag: string) => {
+  switch (tag) {
+    case "svg":
+    case "path":
+    case "rect":
+    case "circle":
+    case "polyline":
+    case "line":
+      return document.createElementNS("http://www.w3.org/2000/svg", tag);
+
+    default:
+      return document.createElement(tag);
+  }
+};
 
 const createElement = ({
   node,
@@ -458,8 +490,7 @@ const createElement = ({
   ctx,
 }: NodeRenderer<ElementNodeModel>): (() => void) => {
   const cleanUp: Function[] = [];
-
-  const elem = document.createElement(node.tag);
+  const elem = createDocumentElement(node.tag);
   elem.setAttribute("data-id", node.id);
   Object.entries(node.attrs).forEach(([attr, value]) => {
     switch (attr) {
@@ -532,9 +563,19 @@ const createElement = ({
         if (isFormula(value)) {
           const o = dataSignal.map((data) => applyFormula(value, data));
           o.subscribe((val) => {
-            (elem as any)[attr] = val;
+            if (node.tag.indexOf("-") === -1) {
+              elem.setAttribute(attr, val);
+            } else {
+              (elem as any)[attr] = val;
+            }
           });
           cleanUp.push(() => o.destroy());
+        } else {
+          if (node.tag.indexOf("-") === -1) {
+            elem.setAttribute(attr, value);
+          } else {
+            (elem as any)[attr] = value;
+          }
         }
       }
     }
@@ -568,7 +609,7 @@ const createElement = ({
     elem.addEventListener(event.trigger, handler);
   });
   node.children.forEach((childId) => {
-    const child = ctx.nodes[childId];
+    const child = ctx.component.nodes[childId];
     if (child) {
       createNode({
         node: child,
@@ -613,7 +654,7 @@ const handleAction = (
       const vars = mapValues(action.variables, (variable) =>
         applyFormula(variable, data)
       );
-      trigger(vars).then(
+      trigger(vars)?.then(
         (data: any) => {
           action.onCompleted.actions.forEach((a) =>
             handleAction(a, ctx.dataSignal.value, ctx)
@@ -642,7 +683,7 @@ const handleAction = (
       break;
     }
     case "Debug":
-      console.log(action.type, applyFormula(action.data, data));
+      console.log(action.label, applyFormula(action.data, data));
       break;
 
     default: {

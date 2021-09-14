@@ -1,6 +1,6 @@
 import { ComponentModel } from "./ComponentModel";
 
-import { Canvas } from "./components/canvas";
+import { Canvas } from "./components/canvas-iframe";
 import { applyFormula } from "./formula/formula";
 import { StyleEditor } from "./components/style-editor";
 import { ElementCatalog } from "./components/element-catalog/element-catalog";

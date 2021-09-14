@@ -44,6 +44,8 @@ export type ComponentQuery = {
       value: string | number | boolean | Formula;
     }
   >;
+  throttle?: number | null;
+  debounce?: number | null;
   onCompleted: QueryCompletedEventModel | null;
   onFailed: QueryFailedEventModel | null;
 };

@@ -8,14 +8,48 @@ import {
   variantSelector,
 } from "./NodeModel";
 
+const SIZE_PROPERTIES = new Set([
+  "width",
+  "min-width",
+  "max-width",
+  "height",
+  "min-height",
+  "max-height",
+  "margin",
+  "margin-top",
+  "margin-left",
+  "margin-bottom",
+  "margin-right",
+  "padding",
+  "padding-top",
+  "padding-left",
+  "padding-bottom",
+  "padding-right",
+  "gap",
+  "gap-x",
+  "gap-y",
+  "border-radius",
+  "border-bottom-left-radius",
+  "border-bottom-right-radius",
+  "border-top-left-radius",
+  "border-top-right-radius",
+  "border-width",
+  "border-top-width",
+  "border-left-width",
+  "border-bottom-width",
+  "border-right-width",
+  "font-size",
+]);
+
 const styleToCss = (style: StyleDeclarationBlock) => {
   return Object.entries(style)
     .map(([property, value]) => {
-      return `${kebabCase(property)}:${
-        String(Number(value)) === value
+      const propertyName = kebabCase(property);
+      const propertyValue =
+        String(Number(value)) === value && SIZE_PROPERTIES.has(propertyName)
           ? `calc(${value} * var(--spacing))`
-          : value
-      };`;
+          : value;
+      return `${propertyName}:${propertyValue};`;
     })
     .join("\n");
 };
