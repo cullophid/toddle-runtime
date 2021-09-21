@@ -4,6 +4,16 @@ import { groupBy, last, mapValues } from "./util";
 import { nanoid } from "nanoid/non-secure";
 import { CSSProperties } from "react";
 
+export type DataValue =
+  | {
+      type: "value";
+      value: unknown;
+    }
+  | {
+      type: "formula";
+      formula: Formula;
+    };
+
 export enum ContainerNodeTag {
   div = "div",
   main = "main",
@@ -102,13 +112,6 @@ export type NodeClass = {
   name: string;
   formula?: Formula;
 };
-export type NodeAttrs = {
-  [key: string]: any;
-  classList?: NodeClass[];
-  id?: string;
-  value?: Formula | string | number;
-  href?: LinkDestination;
-};
 
 export type NodeModel =
   | FragmentNodeModel
@@ -125,7 +128,9 @@ export type ElementNodeModel = {
   condition?: Formula;
   repeat?: Formula;
   tag: string;
-  attrs: NodeAttrs;
+  classList: NodeClass[];
+  href?: LinkDestination;
+  attrs: Record<string, DataValue | undefined>;
   style: NodeStyleModel;
   styleVariables?: StyleVariable[];
   children: string[];
@@ -150,7 +155,7 @@ export type ComponentNodeModel = {
   condition?: Formula;
   repeat?: Formula;
   style?: undefined;
-  attrs: NodeAttrs;
+  attrs: Record<string, DataValue>;
   children: string[];
   events: ComponentEventModel[];
 };
@@ -160,7 +165,7 @@ export type TextNodeModel = {
   type: "text";
   condition?: Formula;
   repeat?: Formula;
-  value: string | Formula;
+  value: DataValue;
 };
 
 export type LinkDestination = {
@@ -304,6 +309,30 @@ export const getSubTree = (
   };
   run(nodeId);
   return cloneNodeTree(subTree);
+};
+
+export const cloneNode = (nodes: Record<string, NodeModel>, id: string) => {
+  const clone: Record<string, NodeModel> = {};
+  const run = (currentId: string, newId?: string) => {
+    const node = nodes[currentId];
+    if (!node) {
+      return;
+    }
+    const id = newId ?? nanoid();
+    clone[id] = {
+      ...node,
+      id,
+      children:
+        node.type === "text"
+          ? undefined
+          : node.children
+              .map((childId) => run(childId))
+              .filter((id): id is string => typeof id === "string"),
+    } as NodeModel;
+    return id;
+  };
+  run(id, "ROOT");
+  return clone;
 };
 
 export const cloneNodeTree = (

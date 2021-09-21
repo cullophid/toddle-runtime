@@ -22,13 +22,23 @@ export type QueryCompletedEventModel = {
 };
 export type QueryEventModel = QueryFailedEventModel | QueryCompletedEventModel;
 
+export type ComponentLoadedEventModel = {
+  type: "ComponentEvent";
+  trigger: "ComponentLoaded";
+  actions: ActionModel[];
+};
+
 export type ComponentEventModel = {
   type: "ComponentEvent";
   trigger: string;
   actions: ActionModel[];
 };
 
-export type EventModel = NodeEventModel | QueryEventModel | ComponentEventModel;
+export type EventModel =
+  | NodeEventModel
+  | QueryEventModel
+  | ComponentEventModel
+  | ComponentLoadedEventModel;
 
 export type UpdateVariableAction = {
   type: "Update Variable";
@@ -36,6 +46,7 @@ export type UpdateVariableAction = {
   condition?: Formula;
   value: Formula | string | number | boolean;
 };
+
 export type UpdateQueryAction = {
   type: "Update Query";
   paramName: string;
@@ -66,12 +77,20 @@ export type DebugAction = {
   data?: string | number | boolean | Formula;
 };
 
+export type CustomAction = {
+  type: "Custom";
+  condition?: Formula;
+  name: string;
+  data?: string | number | boolean | Formula;
+};
+
 export type SaveLocalStorageAction = {
   type: "Save to local storage";
   condition?: Formula;
   key: string;
   value: any;
 };
+
 export type LogoutAction = {
   type: "Logout";
   condition?: Formula;
@@ -92,4 +111,5 @@ export type ActionModel =
   | LogoutAction
   | NavigationAction
   | TriggerEventAction
+  | CustomAction
   | DebugAction;

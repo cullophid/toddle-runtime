@@ -117,7 +117,6 @@ export const SelectList = ({
     if (isOpen) {
       setTimeout(() => {
         (ref.current?.firstChild as HTMLElement)?.focus?.();
-        console.log(ref.current?.firstChild);
       }, 100);
     }
   }, [isOpen]);

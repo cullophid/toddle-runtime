@@ -46,3 +46,6 @@ export class Signal<T> {
 }
 
 export const signal = <T>(value: T) => new Signal(value);
+
+(window as any).signal = signal;
+(window as any).deepEqual = deepEqual;

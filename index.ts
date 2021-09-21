@@ -1,5 +1,15 @@
-import { renderComponent } from "./runtime";
-import { ComponentModel, NodeData } from "./ComponentModel";
+import {
+  ComponentContext,
+  createMutation,
+  createQuery,
+  renderComponent,
+} from "./runtime";
+import {
+  ComponentData,
+  ComponentModel,
+  NodeData,
+  Project,
+} from "./ComponentModel";
 import { ComponentNodeModel, getPath, NodeModel } from "./NodeModel";
 
 import { locationSignal } from "./router";
@@ -11,21 +21,26 @@ import { StyleEditor } from "./components/style-editor";
 import { ElementCatalog } from "./components/element-catalog/element-catalog";
 import { ElementAttributes } from "./components/element-attributes";
 import { ElementEvents } from "./components/element-events";
+import { FormulaEditor } from "./components/formula-editor";
+import { editorLoaded } from "./customActions/editorLoaded";
 
 declare global {
   interface Window {
     TODDLE_FUNCTIONS: Record<string, Function>;
     toddle: {
       formulas: Record<string, Function>;
-      actions: Record<string, Function>;
-      components: Record<string, ComponentModel>;
+      actions: Record<string, (data: unknown, ctx: ComponentContext) => void>;
+      components: ComponentModel[];
+      project?: Project;
+      data: Record<string, unknown>;
     };
   }
 }
 window.toddle = {
   formulas: {},
   actions: {},
-  components: {},
+  components: [],
+  data: {},
 };
 window.TODDLE_FUNCTIONS = window.toddle.formulas;
 
@@ -61,25 +76,7 @@ const fetchSubComponents = (
             path
             requireAuth
           }
-          queries {
-            id
-            type
-            documentNode
-            name
-            variables
-            onCompleted
-            onFailed
-            throttle
-            debounce
-            api {
-              id
-              headers
-              auth
-              name
-              url
-              _project
-            }
-          }
+          queries
         }
       }
     `,
@@ -132,6 +129,34 @@ const fetchPage = (slug: string, path: string) => {
             id
             name
           }
+          project {
+            id
+            name
+            slug
+            apis {
+              id
+              name
+              auth
+              headers
+              url
+            }
+             components {
+              id
+              name
+              _project
+              variables
+              props
+              functions
+              events
+              nodes
+              page {
+                id
+                path
+                requireAuth
+              }
+              queries
+            }
+          }
         }
       }
   `,
@@ -152,12 +177,10 @@ const fetchPage = (slug: string, path: string) => {
         throw new Error(errors);
       }
       const [page] = data.pages;
-      return fetchSubComponents(page._project, [page.component.name], {}).then(
-        (components) => ({
-          page,
-          components,
-        })
-      );
+      return {
+        page,
+        components: page.project.components as ComponentModel[],
+      };
     });
 };
 
@@ -167,6 +190,7 @@ const main = () => {
   customElements.define("style-editor", StyleEditor, {});
   customElements.define("element-catalog", ElementCatalog, {});
   customElements.define("canvas-iframe", Canvas, {});
+  customElements.define("formula-editor", FormulaEditor, {});
 
   const [, subDomain] = /(.*)\.toddle.dev/.exec(window.location.hostname) ?? [];
   const slug = subDomain ? subDomain : DEFAULT_SLUG;
@@ -175,7 +199,9 @@ const main = () => {
     throw new Error("Cant find node with id 'App'");
   }
   fetchPage(slug, window.location.pathname).then(({ components, page }) => {
-    const rootComponent = components[page.component.name];
+    const rootComponent = components.find(
+      (comp) => comp.name === page.component.name
+    );
     if (!rootComponent) {
       throw new Error(`Could not render component ${page.component.name}`);
     }
@@ -184,10 +210,11 @@ const main = () => {
     (window as any).toddleComponents = components;
 
     insertTheme(document.head);
-    insertStyles(document.head, Object.values(components));
-    insertFonts(document.head, Object.values(components));
+    insertStyles(document.head, components);
+    insertFonts(document.head, components);
 
     window.toddle.components = components;
+    window.toddle.project = page.project;
     renderComponent({
       parent: root,
       component: rootComponent,
@@ -201,7 +228,7 @@ const main = () => {
         )
       ),
       onEvent: (event: string, data: unknown) =>
-        console.log("EVENT FIRED", event, data),
+        console.info("EVENT FIRED", event, data),
     });
   });
 };
@@ -250,5 +277,4 @@ window.toddle.formulas.getNodeData = (
     { ...data }
   );
 };
-
-console.log(window.TODDLE_FUNCTIONS);
+window.toddle.actions.editorLoaded = editorLoaded;

@@ -236,7 +236,6 @@ const getComponentTriggers = (component: ComponentModel) => {
     event.actions.forEach(addTriggerFromAction);
   });
 
-  console.log("TRIGGERS", component, triggers);
   return Array.from(triggers);
 };
 

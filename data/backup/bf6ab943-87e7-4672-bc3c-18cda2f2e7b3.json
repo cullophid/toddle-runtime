@@ -1,0 +1,140 @@
+{
+  "id": "bf6ab943-87e7-4672-bc3c-18cda2f2e7b3",
+  "name": "IconChevronRight",
+  "props": [
+    {
+      "id": "69b1608e-1a86-4374-815f-b608285b8fad",
+      "name": "size",
+      "initialValue": "24"
+    },
+    {
+      "id": "39ecc596-8f2a-46d1-b6c2-bc1eee3e317e",
+      "name": "color",
+      "initialValue": "#fff"
+    }
+  ],
+  "_project": "d41e9972-8714-4fed-af45-8407985afbe4",
+  "nodes": {
+    "ROOT": {
+      "id": "ROOT",
+      "type": "fragment",
+      "children": [
+        "6VquP9fkucZlfcEEbwy1j"
+      ]
+    },
+    "6VquP9fkucZlfcEEbwy1j": {
+      "id": "6VquP9fkucZlfcEEbwy1j",
+      "tag": "svg",
+      "type": "element",
+      "attrs": {
+        "fill": {
+          "type": "value",
+          "value": "none"
+        },
+        "width": {
+          "type": "formula",
+          "formula": {
+            "name": "Data",
+            "path": [
+              "Props",
+              "size"
+            ],
+            "type": "path"
+          }
+        },
+        "xmlns": {
+          "type": "value",
+          "value": "http://www.w3.org/2000/svg"
+        },
+        "height": {
+          "type": "formula",
+          "formula": {
+            "name": "Data",
+            "path": [
+              "Props",
+              "size"
+            ],
+            "type": "path"
+          }
+        },
+        "stroke": {
+          "type": "formula",
+          "formula": {
+            "name": "Data",
+            "path": [
+              "Props",
+              "color"
+            ],
+            "type": "path"
+          }
+        },
+        "viewBox": {
+          "type": "value",
+          "value": "0 0 24 24"
+        },
+        "stroke-width": {
+          "type": "value",
+          "value": "1.5"
+        },
+        "stroke-linecap": {
+          "type": "value",
+          "value": "round"
+        },
+        "stroke-linejoin": {
+          "type": "value",
+          "value": "round"
+        }
+      },
+      "style": {},
+      "events": [],
+      "children": [
+        "dgLkS3Gd81ahttPNIPlUU",
+        "AjhKQ-kCDY0aja5lhkZzJ"
+      ],
+      "classList": []
+    },
+    "AjhKQ-kCDY0aja5lhkZzJ": {
+      "id": "AjhKQ-kCDY0aja5lhkZzJ",
+      "tag": "polyline",
+      "type": "element",
+      "attrs": {
+        "points": {
+          "type": "value",
+          "value": "9 6 15 12 9 18"
+        }
+      },
+      "style": {},
+      "events": [],
+      "children": [],
+      "classList": []
+    },
+    "dgLkS3Gd81ahttPNIPlUU": {
+      "id": "dgLkS3Gd81ahttPNIPlUU",
+      "tag": "path",
+      "type": "element",
+      "attrs": {
+        "d": {
+          "type": "value",
+          "value": "M0 0h24v24H0z"
+        },
+        "fill": {
+          "type": "value",
+          "value": "none"
+        },
+        "stroke": {
+          "type": "value",
+          "value": "none"
+        }
+      },
+      "style": {},
+      "events": [],
+      "children": [],
+      "classList": []
+    }
+  },
+  "events": [],
+  "variables": [],
+  "functions": [],
+  "queries": [],
+  "onLoad": []
+}

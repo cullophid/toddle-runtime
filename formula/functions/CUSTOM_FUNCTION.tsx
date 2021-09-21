@@ -21,6 +21,6 @@ export const resolver = (f: FunctionOperation, input: any) => {
   if (typeof func === "function") {
     return func(...args);
   }
-  console.log("COULD NOT FIND CUSTOM FUNCTION ", functionName);
+  console.error("COULD NOT FIND CUSTOM FUNCTION ", functionName);
   return null;
 };

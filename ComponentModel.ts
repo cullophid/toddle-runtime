@@ -4,12 +4,26 @@ import { Component_Insert_Input, ApiQuery_Insert_Input } from "./types";
 import { Formula } from "./formula/formula";
 import {
   ComponentEventModel,
+  ComponentLoadedEventModel,
   QueryCompletedEventModel,
   QueryFailedEventModel,
 } from "./EventModel";
 
-export type ComponentProp = {
+export type Api = {
   id: string;
+  name: string;
+  url: string;
+  headers: Record<string, Formula | string>;
+  auth: {};
+};
+
+export type Project = {
+  id: string;
+  name: string;
+  slug: string;
+  apis: Api[];
+};
+export type ComponentProp = {
   name: string;
   initialValue: unknown;
 };
@@ -28,15 +42,9 @@ export type ComponentQuery = {
   id: string;
   name: string;
   type: "mutation" | "query";
+  condition?: Formula;
   documentNode: unknown;
-  api: {
-    id: string;
-    headers: Record<string, Formula | string>;
-    auth: null;
-    name: string;
-    url: string;
-    _project: string;
-  };
+  _api: string;
   variables: Record<
     string,
     {
@@ -59,6 +67,7 @@ export type ComponentModel = {
   events: ComponentEventModel[];
   props: ComponentProp[];
   queries: ComponentQuery[];
+  onLoad?: ComponentLoadedEventModel;
 };
 
 export const createComponent = (): Omit<Component_Insert_Input, "queries"> & {
@@ -88,12 +97,11 @@ export type ComponentData = {
       data: unknown;
       isLoading: boolean;
       error: Error[] | null;
-      __trigger: Function;
     }
   >;
   Auth?: Record<string, unknown>;
   Event?: unknown;
-  Functions?: ProxyHandler<Record<string, unknown>>;
+  Functions?: Record<string, Formula>;
 };
 
 export type NodeData = ComponentData & {

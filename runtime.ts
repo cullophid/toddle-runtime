@@ -19,7 +19,7 @@ import { signal, Signal } from "./signal";
 import { locationSignal, stringifyQuery } from "./router";
 import { debounce, throttle } from "lodash";
 
-const createQuery = (
+export const createQuery = (
   query: ComponentQuery,
   ctx: ComponentContext
 ): (() => void) => {
@@ -40,10 +40,17 @@ const createQuery = (
         },
       },
     });
+    const api = window.toddle.project?.apis.find(
+      (api) => api.id === query._api
+    );
+    if (!api) {
+      console.error("Error: could not find api for query ", query.name);
+      return;
+    }
 
-    fetch(query.api.url, {
+    fetch(api.url, {
       method: "POST",
-      headers: mapObject(query.api.headers, ([header, value]) => [
+      headers: mapObject(api.headers, ([header, value]) => [
         header,
         applyFormula(value, ctx.dataSignal.value),
       ]),
@@ -74,23 +81,33 @@ const createQuery = (
         });
       })
       .catch((error) => {
-        console.log("Error", query.name, error);
+        console.error("Error", query.name, error);
         query.onFailed?.actions?.forEach((action) => {
           handleAction(action, ctx.dataSignal.value, ctx);
         });
       });
   };
-
-  variablesSignal.subscribe(
+  const trigger =
     typeof query.debounce === "number"
       ? debounce(execute, query.debounce)
       : typeof query.throttle === "number"
       ? throttle(execute, query.throttle)
-      : execute
-  );
+      : execute;
+
+  variablesSignal.subscribe((variables) => {
+    if (
+      !query.condition ||
+      applyFormula(query.condition, ctx.dataSignal.get())
+    ) {
+      trigger(variables);
+    }
+  });
   return () => variablesSignal.destroy();
 };
-const createMutation = (query: ComponentQuery, ctx: ComponentContext) => {
+export const createMutation = (
+  query: ComponentQuery,
+  ctx: ComponentContext
+) => {
   const triggerFunction = (variables: Record<string, any>) => {
     ctx.dataSignal.set({
       ...ctx.dataSignal.value,
@@ -106,10 +123,17 @@ const createMutation = (query: ComponentQuery, ctx: ComponentContext) => {
         },
       },
     });
+    const api = window.toddle.project?.apis.find(
+      (api) => api.id === query._api
+    );
+    if (!api) {
+      console.error("Error: could not find api for query ", query.name);
+      return;
+    }
 
-    return fetch(query.api.url, {
+    return fetch(api.url, {
       method: "POST",
-      headers: mapObject(query.api.headers, ([header, value]) => [
+      headers: mapObject(api.headers, ([header, value]) => [
         header,
         applyFormula(value, ctx.dataSignal.value),
       ]),
@@ -132,7 +156,6 @@ const createMutation = (query: ComponentQuery, ctx: ComponentContext) => {
               data: res.data,
               isLoading: false,
               error: res.error,
-              __trigger,
             },
           },
         });
@@ -153,17 +176,26 @@ const createMutation = (query: ComponentQuery, ctx: ComponentContext) => {
         data: null,
         isLoading: false,
         error: null,
-        __trigger,
       },
     },
   });
+  return __trigger;
 };
 
-type ComponentContext = {
+export type ComponentContext = {
   component: ComponentModel;
   isRootComponent: boolean;
   dataSignal: Signal<ComponentData>;
   onEvent: (event: string, data: unknown) => void;
+  mutations: Record<string, Function>;
+};
+
+export type ActionContext = {
+  dataSignal: Signal<NodeData>;
+  updateVariables: (
+    update: (variables: Record<string, unknown>) => Record<string, unknown>
+  ) => void;
+  mutations: Record<string, Function>;
 };
 
 type RenderComponentProps = {
@@ -186,7 +218,7 @@ export const renderComponent = ({
     Variables: Object.fromEntries(
       component.variables.map((variable) => [
         variable.name,
-        applyFormula(variable.initialValue, {}),
+        applyFormula(variable.initialValue, { Props: attributesSignal.get() }),
       ])
     ),
     Props: attributesSignal.value,
@@ -212,32 +244,26 @@ export const renderComponent = ({
       component.functions?.map((f) => [f.name, f.value]) ?? []
     ),
   });
-
-  if (component.name === (window as any).toddlePage?.component.name) {
-    (window as any).dataSignal = dataSignal;
-  }
-
-  const updateData = (f: (data: ComponentData) => ComponentData) => {
-    dataSignal.set(f(dataSignal.value));
-  };
-
   attributesSignal.subscribe((Attributes) =>
-    updateData((data) => ({ ...data, Props: Attributes }))
+    dataSignal.set({
+      ...dataSignal.get(),
+      Props: Attributes,
+    })
   );
 
-  const ctx = {
+  const ctx: ComponentContext = {
     onEvent,
     component,
     dataSignal,
-    updateData,
     isRootComponent,
+    mutations: {},
   };
 
   component.queries.forEach((q) => {
     if (q.type === "query") {
       cleanUp.push(createQuery(q, ctx));
     } else {
-      createMutation(q, ctx);
+      ctx.mutations[q.name] = createMutation(q, ctx);
     }
   });
 
@@ -346,9 +372,13 @@ const conditionalNode = ({
   ctx,
 }: NodeRenderer<NodeModel>) => {
   let destroy: Function | undefined;
-  const showSignal = dataSignal.map((data) =>
-    Boolean(applyFormula(node.condition, data))
-  );
+  const showSignal = dataSignal.map((data) => {
+    const show = Boolean(applyFormula(node.condition, data));
+    if (ctx.component.name === "TreeNode") {
+      console.log(node.id, show, data);
+    }
+    return show;
+  });
   showSignal.subscribe((show) => {
     if (show) {
       destroy = createGenericNode({ node, dataSignal, ctx, parent });
@@ -385,17 +415,19 @@ type RenderTextProps = {
 };
 
 const createText = ({ parent, node, dataSignal, ctx }: RenderTextProps) => {
+  const { value } = node;
   const elem = document.createElement("span");
   elem.setAttribute("data-id", node.id);
+  elem.setAttribute("data-node-type", "text");
   const cleanUp: Function[] = [];
-  if (isFormula(node.value)) {
+  if (value.type === "formula") {
     const sig = dataSignal.map((data) =>
-      String(applyFormula(node.value, data))
+      String(applyFormula(value.formula, data))
     );
     sig.subscribe((value) => (elem.innerText = value));
     cleanUp.push(() => sig.destroy());
   } else {
-    elem.innerText = String(node.value);
+    elem.innerText = String(value.value);
   }
   parent.appendChild(elem);
   return () => {
@@ -442,15 +474,19 @@ const createComponent = ({
   dataSignal,
   ctx,
 }: RenderComponentNodeProps) => {
-  const component = window.toddle.components?.[node.name];
+  const component = window.toddle.components?.find(
+    (comp) => comp.name === node.name
+  );
   if (!component) {
-    console.log(`Could not find a component with the name ${node.name}`);
+    console.error(`Could not find a component with the name ${node.name}`);
     return () => {};
   }
   const attributesSignal = dataSignal.map((data) => {
     return mapObject(node.attrs, ([attr, value]) => [
       attr,
-      applyFormula(value, data),
+      value.type === "formula"
+        ? applyFormula(value.formula, data)
+        : value.value,
     ]);
   });
   return renderComponent({
@@ -492,76 +528,75 @@ const createElement = ({
   const cleanUp: Function[] = [];
   const elem = createDocumentElement(node.tag);
   elem.setAttribute("data-id", node.id);
+  if (node.classList) {
+    node.classList?.forEach((elemClass) => {
+      if (elemClass.formula) {
+        const classSignal = dataSignal.map((data) =>
+          Boolean(applyFormula(elemClass.formula, data))
+        );
+        classSignal.subscribe((show) =>
+          show
+            ? elem.classList.add(elemClass.name)
+            : elem.classList.remove(elemClass.name)
+        );
+        cleanUp.push(() => classSignal.destroy());
+      } else {
+        elem.classList.add(elemClass.name);
+      }
+    });
+  }
+  if (node.href) {
+    if (
+      Object.values(node.href.queryParams ?? {}).some(isFormula) ||
+      isFormula(node.href?.url)
+    ) {
+      const urlSignal = dataSignal.map((data) => {
+        return `${
+          node.href?.page?.path ?? applyFormula(node.href?.url, data) ?? "#"
+        }${
+          node.href?.queryParams
+            ? "?" +
+              stringifyQuery(
+                mapValues(node.href.queryParams ?? {}, (value) =>
+                  applyFormula(value, data)
+                )
+              )
+            : ""
+        }`;
+      });
+      urlSignal.subscribe((url) => elem.setAttribute("href", url));
+    } else {
+      elem.setAttribute(
+        "href",
+        `${node.href.page?.path ?? node.href?.url ?? "#"}${
+          node.href.queryParams
+            ? "?" + stringifyQuery(node.href.queryParams ?? {})
+            : ""
+        }`
+      );
+    }
+  }
   Object.entries(node.attrs).forEach(([attr, value]) => {
     switch (attr) {
-      case "classList":
-        node.attrs.classList?.forEach((elemClass) => {
-          if (elemClass.formula) {
-            const classSignal = dataSignal.map((data) =>
-              Boolean(applyFormula(elemClass.formula, data))
-            );
-            classSignal.subscribe((show) =>
-              show
-                ? elem.classList.add(elemClass.name)
-                : elem.classList.remove(elemClass.name)
-            );
-            cleanUp.push(() => classSignal.destroy());
-          } else {
-            elem.classList.add(elemClass.name);
-          }
-        });
-        break;
       case "value":
-      case "min":
-      case "max":
       case "src":
       case "type": {
-        if (isFormula(value)) {
-          const o = dataSignal.map((data) => String(applyFormula(value, data)));
+        if (value?.type === "formula") {
+          const o = dataSignal.map((data) =>
+            String(applyFormula(value.formula, data))
+          );
           o.subscribe((val) => {
             (elem as HTMLInputElement)[attr] = val;
           });
           cleanUp.push(() => o.destroy());
         } else {
-          (elem as HTMLInputElement)[attr] = value;
+          (elem as any)[attr] = value?.value;
         }
-      }
-      case "href": {
-        const href = node.attrs.href;
-        if (!href) {
-          return;
-        }
-        if (
-          Object.values(href.queryParams ?? {}).some(isFormula) ||
-          isFormula(href?.url)
-        ) {
-          const urlSignal = dataSignal.map((data) => {
-            return `${href.page?.path ?? applyFormula(href?.url, data) ?? "#"}${
-              href.queryParams
-                ? "?" +
-                  stringifyQuery(
-                    mapValues(href.queryParams ?? {}, (value) =>
-                      applyFormula(value, data)
-                    )
-                  )
-                : ""
-            }`;
-          });
-          urlSignal.subscribe((url) => elem.setAttribute("href", url));
-        } else {
-          elem.setAttribute(
-            "href",
-            `${href.page?.path ?? href?.url ?? "#"}${
-              href.queryParams
-                ? "?" + stringifyQuery(href.queryParams ?? {})
-                : ""
-            }`
-          );
-        }
+        break;
       }
       default: {
-        if (isFormula(value)) {
-          const o = dataSignal.map((data) => applyFormula(value, data));
+        if (value?.type === "formula") {
+          const o = dataSignal.map((data) => applyFormula(value.formula, data));
           o.subscribe((val) => {
             if (node.tag.indexOf("-") === -1) {
               elem.setAttribute(attr, val);
@@ -572,9 +607,9 @@ const createElement = ({
           cleanUp.push(() => o.destroy());
         } else {
           if (node.tag.indexOf("-") === -1) {
-            elem.setAttribute(attr, value);
+            elem.setAttribute(attr, String(value?.value));
           } else {
-            (elem as any)[attr] = value;
+            (elem as any)[attr] = value?.value;
           }
         }
       }
@@ -626,14 +661,11 @@ const createElement = ({
   };
 };
 
-const handleAction = (
+export const handleAction = (
   action: ActionModel,
   data: NodeData,
   ctx: ComponentContext
 ) => {
-  if (action.condition && !applyFormula(action.condition, data)) {
-    return;
-  }
   switch (action.type) {
     case "Update Variable": {
       ctx.dataSignal.set({
@@ -645,10 +677,19 @@ const handleAction = (
       });
       break;
     }
+    case "Custom": {
+      const handler = window.toddle.actions[action.name];
+      try {
+        handler?.(applyFormula(action.data, data), ctx);
+      } catch (err) {
+        console.error("Error in Custom Action", err);
+      }
+      break;
+    }
     case "Trigger Mutation": {
-      const trigger = data.Mutations?.[action.mutationName]?.__trigger;
+      const trigger = ctx.mutations[action.mutationName];
       if (!trigger) {
-        console.log("Could not trigger the mutation ", action.mutationName);
+        console.error("Could not trigger the mutation ", action.mutationName);
         return;
       }
       const vars = mapValues(action.variables, (variable) =>
@@ -683,11 +724,11 @@ const handleAction = (
       break;
     }
     case "Debug":
-      console.log(action.label, applyFormula(action.data, data));
+      console.info(action.label, applyFormula(action.data, data));
       break;
 
     default: {
-      console.log("UNSUPPORTED ACTION", action, data);
+      console.error("UNSUPPORTED ACTION", action, data);
     }
   }
 };

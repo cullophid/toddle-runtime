@@ -12,12 +12,35 @@ type Props = {
   onDismiss: () => void;
   selectedNodeId: string;
   component: ComponentModel;
+  components: ComponentModel[];
   onChange: (component: ComponentModel) => void;
 };
 
 const Catalog = React.memo((props: Props) => {
   const [search, setSearch] = useState("");
   const listRef = useRef<HTMLDivElement>(null);
+
+  const components: SwatchElement[] = props.components?.map((c) => ({
+    name: c.name,
+    section: "Components",
+    label: c.name,
+    components: [
+      {
+        id: "1234",
+        component: c,
+      },
+    ],
+    nodes: {
+      ROOT: {
+        id: "ROOT",
+        type: "component",
+        name: c.name,
+        attrs: {},
+        children: [],
+        events: [],
+      },
+    },
+  }));
 
   const onSelect = (newNodes: Record<string, NodeModel>) => {
     const nodeTree = cloneNodeTree(newNodes);
@@ -35,10 +58,11 @@ const Catalog = React.memo((props: Props) => {
 
   const sections = {
     Basic: [divElement, textNode],
+    Components: components,
   };
 
   return (
-    <div className="fixed left-0 top-0 h-full w-56">
+    <div className="fixed left-0 top-0 w-56 h-80 flex flex-col">
       <header className="p-2 flex items-center gap-2">
         <div className="relative flex-1 grid grid-cols-[auto,1fr] items-center bg-grey-700 border border-grey-600 box-border rounded-full h-7 px-1 gap-1 hover:border-grey-400 focus-within:border-primary-300 focus-within:bg-grey-100">
           <SearchIcon size={24} color="#a3a3a3" />
@@ -61,7 +85,7 @@ const Catalog = React.memo((props: Props) => {
       )}
       {props.selectedNodeId && (
         <div
-          className="overflow-auto flex-1 bg-grey-700 relative"
+          className="overflow-auto flex-1 bg-grey-700 relative flex-1"
           ref={listRef}
         >
           {Object.entries(sections).map(([section, elements]) => {
@@ -101,7 +125,7 @@ const ElementGroup = (props: ElementGroupProps) => {
   }
   return (
     <section data-section={props.title}>
-      <h3 className="bg-grey-800 px-4 py-1 m-0 font-sans font-bold text-sm uppercase text-grey-400 sticky top-0">
+      <h3 className="bg-grey-800 px-4 py-1 m-0 font-sans font-bold text-sm uppercase text-grey-400 sticky top-0 z-10">
         {props.title}
       </h3>
       <ul>
@@ -180,17 +204,14 @@ const PreviewNode = ({ nodes, nodeId }: NodeProps) => {
         </>
       );
     case "element":
-      if (node.tag === "img") {
-        return <img src={node.attrs.src} style={style} />;
-      } else {
-        return (
-          <div style={style}>
-            {node.children.map((child, i) => (
-              <PreviewNode key={i} nodeId={child} nodes={nodes} />
-            ))}
-          </div>
-        );
-      }
+      return (
+        <div style={style}>
+          {node.children.map((child, i) => (
+            <PreviewNode key={i} nodeId={child} nodes={nodes} />
+          ))}
+        </div>
+      );
+
     case "text":
       return <span style={style}> {node.value}</span>;
   }
@@ -214,6 +235,7 @@ export const divElement: SwatchElement = {
       type: "element",
       tag: "div",
       events: [],
+      classList: [],
       attrs: {},
       style: {},
       children: [],
@@ -232,7 +254,7 @@ export const textNode: SwatchElement = {
         fontSize: "14px",
       },
       type: "text",
-      value: "Text",
+      value: { type: "value", value: "Text" },
     },
   },
 };
@@ -262,6 +284,7 @@ export const SearchIcon = (props: IconProps) => (
 export class ElementCatalog extends HTMLElement {
   _selectedNodeId?: string;
   _component?: ComponentModel;
+  _components?: ComponentModel[];
   constructor() {
     super();
     this.render();
@@ -283,13 +306,21 @@ export class ElementCatalog extends HTMLElement {
     this._component = component;
     this.render();
   }
+  get components() {
+    return this._components;
+  }
+  set components(components) {
+    this._components = components;
+    this.render();
+  }
 
   render() {
-    if (this.component && this.selectedNodeId) {
+    if (this.component && this.selectedNodeId && this.components) {
       ReactDom.render(
         <Catalog
           selectedNodeId={this.selectedNodeId}
           component={this.component}
+          components={this.components}
           onChange={(component) =>
             this.dispatchEvent(new CustomEvent("change", { detail: component }))
           }

@@ -76,41 +76,6 @@ const AttributePanel = (props: AttributePanelProps) => {
           />
         </InputGroup>
       </div>
-      {["input"].includes(node.tag) && (
-        <>
-          <SectionHeader>
-            <SectionTitle>Value</SectionTitle>
-          </SectionHeader>
-          <InputGroup>
-            <Input
-              value={String(
-                isFormula(node.attrs.value)
-                  ? applyFormula(node.attrs.value, nodeData)
-                  : node.attrs.value
-              )}
-              onChange={(value) =>
-                onChange({
-                  ...node,
-                  attrs: { ...node.attrs, value },
-                })
-              }
-            />
-            <FormulaEditButton
-              component={props.component}
-              input={nodeData}
-              formula={
-                isFormula(node.attrs.value) ? node.attrs.value : undefined
-              }
-              onChange={(value) =>
-                onChange({
-                  ...node,
-                  attrs: { ...node.attrs, value },
-                })
-              }
-            />
-          </InputGroup>
-        </>
-      )}
 
       <AttributeSection
         node={node}
@@ -160,7 +125,6 @@ export class ElementAttributes extends HTMLElement {
           node={this.node}
           component={this.component}
           onChange={(node) => {
-            console.log("CHANGE ATTRS", node);
             this.dispatchEvent(new CustomEvent("update", { detail: node }));
           }}
         />,

@@ -1,0 +1,224 @@
+{
+  "id": "0175fc4f-2596-48ba-9591-c1e53d8d4096",
+  "name": "IconComponent",
+  "props": [
+    {
+      "id": "05063644-dd01-49f4-ba0e-1c308a8c41f5",
+      "name": "size",
+      "initialValue": "24"
+    },
+    {
+      "id": "9441e51e-413e-4146-abf9-68077330c5b7",
+      "name": "color",
+      "initialValue": "#ffffff"
+    }
+  ],
+  "_project": "d41e9972-8714-4fed-af45-8407985afbe4",
+  "nodes": {
+    "ROOT": {
+      "id": "ROOT",
+      "type": "fragment",
+      "children": [
+        "xtYBl2TKfvFxypSHvccDD"
+      ]
+    },
+    "48Gm_-6ele5RTaI289Toq": {
+      "id": "48Gm_-6ele5RTaI289Toq",
+      "tag": "polyline",
+      "type": "element",
+      "attrs": {
+        "points": {
+          "type": "value",
+          "value": "12 3 20 7.5 20 16.5 12 21 4 16.5 4 7.5 12 3"
+        }
+      },
+      "style": {},
+      "events": [],
+      "children": [],
+      "classList": []
+    },
+    "YcJ17CQmR8VMnK15ZZ16h": {
+      "id": "YcJ17CQmR8VMnK15ZZ16h",
+      "tag": "line",
+      "type": "element",
+      "attrs": {
+        "x1": {
+          "type": "value",
+          "value": "12"
+        },
+        "x2": {
+          "type": "value",
+          "value": "12"
+        },
+        "y1": {
+          "type": "value",
+          "value": "12"
+        },
+        "y2": {
+          "type": "value",
+          "value": "21"
+        }
+      },
+      "style": {},
+      "events": [],
+      "children": [],
+      "classList": []
+    },
+    "_0bVMF2by6PcKTc_pQIIY": {
+      "id": "_0bVMF2by6PcKTc_pQIIY",
+      "tag": "line",
+      "type": "element",
+      "attrs": {
+        "x1": {
+          "type": "value",
+          "value": "12"
+        },
+        "x2": {
+          "type": "value",
+          "value": "4"
+        },
+        "y1": {
+          "type": "value",
+          "value": "12"
+        },
+        "y2": {
+          "type": "value",
+          "value": "7.5"
+        }
+      },
+      "style": {},
+      "events": [],
+      "children": [],
+      "classList": []
+    },
+    "kgKTVQMPsJs5iOHGzvhMk": {
+      "id": "kgKTVQMPsJs5iOHGzvhMk",
+      "tag": "path",
+      "type": "element",
+      "attrs": {
+        "d": {
+          "type": "value",
+          "value": "M0 0h24v24H0z"
+        },
+        "fill": {
+          "type": "value",
+          "value": "none"
+        },
+        "stroke": {
+          "type": "value",
+          "value": "none"
+        }
+      },
+      "style": {},
+      "events": [],
+      "children": [],
+      "classList": []
+    },
+    "rJriLH34epLxPGow0WYkC": {
+      "id": "rJriLH34epLxPGow0WYkC",
+      "tag": "line",
+      "type": "element",
+      "attrs": {
+        "x1": {
+          "type": "value",
+          "value": "12"
+        },
+        "x2": {
+          "type": "value",
+          "value": "20"
+        },
+        "y1": {
+          "type": "value",
+          "value": "12"
+        },
+        "y2": {
+          "type": "value",
+          "value": "7.5"
+        }
+      },
+      "style": {},
+      "events": [],
+      "children": [],
+      "classList": []
+    },
+    "xtYBl2TKfvFxypSHvccDD": {
+      "id": "xtYBl2TKfvFxypSHvccDD",
+      "tag": "svg",
+      "type": "element",
+      "attrs": {
+        "fill": {
+          "type": "value",
+          "value": "none"
+        },
+        "width": {
+          "type": "formula",
+          "formula": {
+            "name": "Data",
+            "path": [
+              "Props",
+              "size"
+            ],
+            "type": "path"
+          }
+        },
+        "xmlns": {
+          "type": "value",
+          "value": "http://www.w3.org/2000/svg"
+        },
+        "height": {
+          "type": "formula",
+          "formula": {
+            "name": "Data",
+            "path": [
+              "Props",
+              "size"
+            ],
+            "type": "path"
+          }
+        },
+        "stroke": {
+          "type": "formula",
+          "formula": {
+            "name": "Data",
+            "path": [
+              "Props",
+              "color"
+            ],
+            "type": "path"
+          }
+        },
+        "viewBox": {
+          "type": "value",
+          "value": "0 0 24 24"
+        },
+        "stroke-width": {
+          "type": "value",
+          "value": "1.5"
+        },
+        "stroke-linecap": {
+          "type": "value",
+          "value": "round"
+        },
+        "stroke-linejoin": {
+          "type": "value",
+          "value": "round"
+        }
+      },
+      "style": {},
+      "events": [],
+      "children": [
+        "kgKTVQMPsJs5iOHGzvhMk",
+        "48Gm_-6ele5RTaI289Toq",
+        "rJriLH34epLxPGow0WYkC",
+        "YcJ17CQmR8VMnK15ZZ16h",
+        "_0bVMF2by6PcKTc_pQIIY"
+      ],
+      "classList": []
+    }
+  },
+  "events": [],
+  "variables": [],
+  "functions": [],
+  "queries": [],
+  "onLoad": []
+}

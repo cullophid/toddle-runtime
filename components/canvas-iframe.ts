@@ -1,13 +1,12 @@
 import { createNode } from "../runtime";
 import { ComponentData, ComponentModel } from "../ComponentModel";
-import { NodeModel } from "../NodeModel";
 import { signal, Signal } from "../signal";
 import { insertFonts, insertStyles } from "../style";
 import { insertTheme } from "../theme";
 
 export class Canvas extends HTMLElement {
   _component?: ComponentModel;
-  _components?: Record<string, ComponentModel>;
+  _components?: ComponentModel[];
   dataSignal: Signal<ComponentData>;
   iframe: HTMLIFrameElement;
   selectionOverlay: HTMLDivElement;
@@ -30,7 +29,7 @@ export class Canvas extends HTMLElement {
 
     this.selectionOverlay = document.createElement("div");
     this.selectionOverlay.style.position = "absolute";
-    this.selectionOverlay.style.boxShadow = "0px 0px 0px 1px  #ff5877";
+    this.selectionOverlay.style.border = "1px solid #ff5877";
     this.shadowRoot?.appendChild(this.selectionOverlay);
 
     this.highlightOverlay = document.createElement("div");
@@ -45,7 +44,7 @@ export class Canvas extends HTMLElement {
         { x: e.clientX, y: e.clientY },
         e.metaKey
       );
-      if (typeof elementId === "string") {
+      if (typeof elementId === "string" && elementId !== this._selectedNodeId) {
         this.dispatchEvent(
           new CustomEvent("select", {
             detail: elementId,
@@ -59,12 +58,14 @@ export class Canvas extends HTMLElement {
         { x: e.clientX, y: e.clientY },
         e.metaKey
       );
-      this.dispatchEvent(
-        new CustomEvent("highlight", {
-          detail: elementId,
-          composed: true,
-        })
-      );
+      if (elementId !== this.highlightedNodeId) {
+        this.dispatchEvent(
+          new CustomEvent("highlight", {
+            detail: elementId,
+            composed: true,
+          })
+        );
+      }
     });
     this.addEventListener("mouseleave", () => {
       this.dispatchEvent(
@@ -74,7 +75,10 @@ export class Canvas extends HTMLElement {
         })
       );
     });
-    this.dataSignal = signal<ComponentData>(null as any);
+    this.dataSignal = signal<ComponentData>({
+      Props: {},
+      Variables: {},
+    });
 
     this.render();
   }
@@ -106,6 +110,8 @@ export class Canvas extends HTMLElement {
           elements[i + 1]?.getAttribute("data-id") === this.selectedNodeId
         ) {
           return elem;
+        } else {
+          return null;
         }
       }
       return elem;
@@ -118,41 +124,32 @@ export class Canvas extends HTMLElement {
   }
 
   render() {
-    console.log("RENDER?");
     // dont render inside an iframe
     // so we dont have infinite recusion when rendering toddle editor :)
-    if (window.parent !== window) {
+    if (getIframeDepth() > 3) {
       return;
     }
-    if (!this.dataSignal.value || !this._component || !this._components) {
-      console.log(
-        "MISSING",
-        this.dataSignal,
-        this._component,
-        this._components
-      );
+    if (!this._component) {
+      return;
+    }
+    if (!this._components) {
       return;
     }
     const root = this._component?.nodes["ROOT"];
-    if (!this.iframe.contentDocument || !root) {
-      console.log("ROOT", root, this.iframe.contentDocument);
+    if (!this.iframe.contentDocument || !this.iframe.contentWindow || !root) {
       return;
     }
-    console.log("RENDER");
 
     this.destroy?.();
 
     insertTheme(this.iframe.contentDocument.head);
-    insertStyles(
-      this.iframe.contentDocument.head,
-      Object.values(this.components)
-    );
-    insertFonts(
-      this.iframe.contentDocument.head,
-      Object.values(this.components)
-    );
+    insertStyles(this.iframe.contentDocument.head, this.components);
+    insertFonts(this.iframe.contentDocument.head, this.components);
 
-    (this.iframe.contentWindow as any).toddle = window.toddle;
+    this.iframe.contentWindow.toddle = {
+      ...window.toddle,
+      components: this.components,
+    };
 
     this.destroy = createNode({
       node: root,
@@ -163,19 +160,22 @@ export class Canvas extends HTMLElement {
         component: this._component,
         dataSignal: this.dataSignal,
         onEvent: console.log,
+        mutations: {},
       },
     });
   }
   onHighlightChange(highlightedNodeId: string | undefined) {
     this._highlightedNodeId = highlightedNodeId;
+
     if (!highlightedNodeId || highlightedNodeId === this.selectedNodeId) {
       this.highlightOverlay.style.display = "none";
       return;
     }
+    const node = this._component?.nodes[highlightedNodeId];
     const elem = this.iframe?.contentDocument?.querySelector(
       `[data-id="${highlightedNodeId}"]`
     );
-    if (!elem) {
+    if (!elem || !node) {
       this.highlightOverlay.style.display = "none";
       return;
     }
@@ -198,7 +198,8 @@ export class Canvas extends HTMLElement {
     const elem = this.iframe?.contentDocument?.querySelector(
       `[data-id="${nodeId}"]`
     );
-    if (!elem) {
+    const node = this._component?.nodes[nodeId];
+    if (!elem || !node) {
       this.selectionOverlay.style.display = "none";
       return;
     }
@@ -208,6 +209,8 @@ export class Canvas extends HTMLElement {
     this.selectionOverlay.style.top = `${rect.top}px`;
     this.selectionOverlay.style.width = `${rect.width}px`;
     this.selectionOverlay.style.height = `${rect.height}px`;
+    this.selectionOverlay.style.borderStyle =
+      node.type === "text" ? "dashed" : "solid";
   }
   renderOverlay() {}
   set component(component: ComponentModel) {
@@ -232,24 +235,33 @@ export class Canvas extends HTMLElement {
   }
 
   set data(data: ComponentData) {
-    console.log("SET DATA", data);
     if (!data.Variables || !data.Props) {
-      console.log(`INVALID DATA ${JSON.stringify(data)}`);
       return;
     }
     this.dataSignal.set(data);
-    this.render();
   }
   get data() {
     return this.dataSignal.get();
   }
 
-  set components(components: Record<string, ComponentModel>) {
-    console.log("COMPONENTS", components);
+  set components(components: ComponentModel[]) {
     this._components = components;
     this.render();
   }
   get components() {
-    return this._components ?? {};
+    return this._components ?? [];
+  }
+  set interactions(interactions: boolean) {
+    this.iframe.style.pointerEvents = interactions ? "default" : "none";
   }
 }
+
+const getIframeDepth = () => {
+  const run = (currentWindow: Window, currentDepths: number): number => {
+    if (currentWindow === currentWindow.parent) {
+      return currentDepths;
+    }
+    return run(currentWindow.parent, currentDepths + 1);
+  };
+  return run(window, 0);
+};

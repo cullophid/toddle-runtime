@@ -102,26 +102,26 @@ const PathOp = (props: {
   component: ComponentModel;
   onChange: (operation: Formula) => void;
 }) => {
-  const getName = (key: string, i: number) => {
-    if (i !== 1) {
-      return key;
-    }
-    const [parent] = props.operation.path;
+  // const getName = (key: string, i: number) => {
+  //   if (i !== 1) {
+  //     return key;
+  //   }
+  //   const [parent] = props.operation.path;
 
-    switch (parent) {
-      case "Variables":
-        return (
-          props.component.variables?.find((v) => v.id === key)?.name ?? key
-        );
-      case "Queries":
-        return props.component.queries?.find((v) => v.id === key)?.name ?? key;
-      case "Variables":
-        return props.component.props?.find((v) => v.id === key)?.name ?? key;
-      default: {
-        return key;
-      }
-    }
-  };
+  //   switch (parent) {
+  //     case "Variables":
+  //       return (
+  //         props.component.variables?.find((v) => v.id === key)?.name ?? key
+  //       );
+  //     case "Queries":
+  //       return props.component.queries?.find((v) => v.id === key)?.name ?? key;
+  //     case "Variables":
+  //       return props.component.props?.find((v) => v.id === key)?.name ?? key;
+  //     default: {
+  //       return key;
+  //     }
+  //   }
+  // };
   const result = applyFormula(props.operation, props.data);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
 
@@ -194,7 +194,7 @@ const PathOp = (props: {
                   }
                 }}
               >
-                {getName(key, i)}
+                {key}
               </Crumb>
             </React.Fragment>
           ))}
@@ -236,7 +236,7 @@ const PathOp = (props: {
                 }
               }}
             >
-              {getName(key, index)}
+              {key}
             </PathKey>
           ))
         ) : (

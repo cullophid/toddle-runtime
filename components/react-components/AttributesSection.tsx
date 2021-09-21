@@ -30,7 +30,10 @@ export const AttributeSection = (props: Props) => {
               ...node,
               attrs: {
                 ...node.attrs,
-                [`Attribute ${Object.keys(node.attrs).length}`]: "Value",
+                [`Attribute ${Object.keys(node.attrs).length}`]: {
+                  type: "value",
+                  value: "Value",
+                },
               },
             })
           }
@@ -47,10 +50,20 @@ export const AttributeSection = (props: Props) => {
         <InputGroup>
           <InputLabel>ID</InputLabel>
           <Input
-            value={node.attrs.id ?? ""}
-            onChange={(id) =>
-              updateNode({ ...node, attrs: { ...node.attrs, id } })
+            value={
+              node.attrs.id?.type === "formula"
+                ? applyFormula(node.attrs.id.formula, nodeData)
+                : node.attrs.id?.value ?? ""
             }
+            onChange={(value) => {
+              updateNode({
+                ...node,
+                attrs: {
+                  ...node.attrs,
+                  id: { type: "value", value: value },
+                },
+              });
+            }}
           />
         </InputGroup>
 
@@ -82,13 +95,17 @@ export const AttributeSection = (props: Props) => {
                 </InputGroup>
                 <InputGroup>
                   <Input
-                    value={applyFormula(value, nodeData)}
+                    value={
+                      value?.type === "formula"
+                        ? applyFormula(value.formula, nodeData)
+                        : value?.value ?? ""
+                    }
                     onChange={(value) =>
                       updateNode({
                         ...node,
                         attrs: {
                           ...node.attrs,
-                          [key]: value,
+                          [key]: { type: "value", value },
                         },
                       })
                     }
@@ -97,15 +114,17 @@ export const AttributeSection = (props: Props) => {
                     component={props.component}
                     formula={isFormula(value) ? value : undefined}
                     input={nodeData}
-                    onChange={(formula) =>
+                    onChange={(formula) => {
                       updateNode({
                         ...node,
                         attrs: {
                           ...node.attrs,
-                          [key]: formula,
+                          [key]: formula
+                            ? { type: "formula", formula }
+                            : undefined,
                         },
-                      })
-                    }
+                      });
+                    }}
                   />
                 </InputGroup>
                 <button
@@ -139,10 +158,7 @@ export const ClassList = (props: Props) => {
           onClick={() =>
             updateNode({
               ...node,
-              attrs: {
-                ...node.attrs,
-                classList: [...(node.attrs.classList ?? []), { name: "class" }],
-              },
+              classList: [...(node.classList ?? []), { name: "class" }],
             })
           }
         >
@@ -151,7 +167,7 @@ export const ClassList = (props: Props) => {
       </div>
       <ul className="grid gap-2">
         {node?.type === "element" &&
-          node?.attrs.classList?.map((nodeClass, i) => (
+          node?.classList?.map((nodeClass, i) => (
             <li key={i} className="flex gap-2 items-center">
               <input
                 className="block bg-grey-800 text-grey-200 flex-1 w-0 px-2 rounded focus:border-primary-300 border border-transparent focus:outline-none"
@@ -159,24 +175,18 @@ export const ClassList = (props: Props) => {
                 onChange={(e) => {
                   updateNode({
                     ...node,
-                    attrs: {
-                      ...node.attrs,
-                      classList: node.attrs.classList?.map((nc) =>
-                        nc === nodeClass ? { ...nc, name: e.target.value } : nc
-                      ),
-                    },
+                    classList: node.classList?.map((nc) =>
+                      nc === nodeClass ? { ...nc, name: e.target.value } : nc
+                    ),
                   });
                 }}
                 onBlur={() => {
                   if (nodeClass.name === "") {
                     updateNode({
                       ...node,
-                      attrs: {
-                        ...node.attrs,
-                        classList: node.attrs.classList?.filter(
-                          (nc) => nc !== nodeClass
-                        ),
-                      },
+                      classList: node.classList?.filter(
+                        (nc) => nc !== nodeClass
+                      ),
                     });
                   }
                 }}
@@ -188,12 +198,9 @@ export const ClassList = (props: Props) => {
                 onChange={(formula) => {
                   updateNode({
                     ...node,
-                    attrs: {
-                      ...node.attrs,
-                      classList: node.attrs.classList?.map((nc) =>
-                        nc === nodeClass ? { ...nc, formula } : nc
-                      ),
-                    },
+                    classList: node.classList?.map((nc) =>
+                      nc === nodeClass ? { ...nc, formula } : nc
+                    ),
                   });
                 }}
               />
