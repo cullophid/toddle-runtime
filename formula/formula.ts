@@ -65,7 +65,7 @@ export type Formula =
   | ApplyFunctionOperation;
 
 export const isFormula = (f: any): f is Formula => {
-  return typeof f === "object" && f.type;
+  return f && typeof f === "object" && f.type;
 };
 
 export const applyFormula = (

@@ -10,7 +10,6 @@ import { applyFormula, isFormula } from "./formula/formula";
 import {
   ComponentNodeModel,
   ElementNodeModel,
-  FragmentNodeModel,
   NodeModel,
   TextNodeModel,
 } from "./NodeModel";
@@ -18,6 +17,7 @@ import { print as printQuery } from "graphql/language/printer";
 import { signal, Signal } from "./signal";
 import { locationSignal, stringifyQuery } from "./router";
 import { debounce, throttle } from "lodash";
+import { getClassName } from "./hash";
 
 export const createQuery = (
   query: ComponentQuery,
@@ -204,6 +204,7 @@ type RenderComponentProps = {
   attributesSignal: Signal<Record<string, any>>;
   onEvent: (event: string, data: unknown) => void;
   isRootComponent: boolean;
+  id?: string;
 };
 export const renderComponent = ({
   parent,
@@ -211,6 +212,7 @@ export const renderComponent = ({
   attributesSignal,
   onEvent,
   isRootComponent,
+  id,
 }: RenderComponentProps): (() => void) => {
   const cleanUp: Function[] = [];
 
@@ -267,8 +269,13 @@ export const renderComponent = ({
     }
   });
 
-  const root = component.nodes.ROOT;
-  const destroyRoot = createNode({ node: root, dataSignal, parent, ctx });
+  const destroyRoot = createNode({
+    node: component.root,
+    id: id ?? (ctx.isRootComponent ? "0" : undefined),
+    dataSignal,
+    parent,
+    ctx,
+  });
   return () => {
     destroyRoot();
     dataSignal.destroy();
@@ -280,45 +287,28 @@ export const renderComponent = ({
 type NodeRenderer<NodeType> = {
   node: NodeType;
   dataSignal: Signal<NodeData>;
+  id?: string;
   parent: Element;
   ctx: ComponentContext;
 };
 
 const createGenericNode = ({
   node,
-  parent,
-  dataSignal,
-  ctx,
+  ...props
 }: NodeRenderer<NodeModel>): (() => void) => {
   switch (node.type) {
     case "element":
       return createElement({
-        parent,
         node,
-        dataSignal,
-        ctx,
+        ...props,
       });
     case "component":
       return createComponent({
-        parent,
         node,
-        dataSignal,
-        ctx,
+        ...props,
       });
     case "text":
-      return createText({
-        ctx,
-        dataSignal,
-        node,
-        parent,
-      });
-    case "fragment":
-      return createFragment({
-        ctx,
-        dataSignal,
-        node,
-        parent,
-      });
+      return createText({ ...props, node });
   }
 };
 
@@ -326,6 +316,7 @@ const repeatNode = ({
   node,
   dataSignal,
   parent,
+  id,
   ctx,
 }: NodeRenderer<NodeModel>) => {
   let cleanUp: Function[] = [];
@@ -344,6 +335,7 @@ const repeatNode = ({
               },
             })
           ),
+          id: index === 0 ? id : undefined,
           ctx,
           parent,
         };
@@ -369,19 +361,17 @@ const conditionalNode = ({
   node,
   parent,
   dataSignal,
+  id,
   ctx,
 }: NodeRenderer<NodeModel>) => {
   let destroy: Function | undefined;
   const showSignal = dataSignal.map((data) => {
     const show = Boolean(applyFormula(node.condition, data));
-    if (ctx.component.name === "TreeNode") {
-      console.log(node.id, show, data);
-    }
     return show;
   });
   showSignal.subscribe((show) => {
     if (show) {
-      destroy = createGenericNode({ node, dataSignal, ctx, parent });
+      destroy = createGenericNode({ node, dataSignal, ctx, parent, id });
       return destroy;
     }
     destroy?.();
@@ -396,28 +386,35 @@ export const createNode = ({
   node,
   dataSignal,
   parent,
+  id,
   ctx,
 }: NodeRenderer<NodeModel>): (() => void) => {
   if (node.repeat) {
-    return repeatNode({ node, dataSignal, parent, ctx });
+    return repeatNode({ node, dataSignal, parent, ctx, id });
   }
   if (node.condition) {
-    return conditionalNode({ node, dataSignal, ctx, parent });
+    return conditionalNode({ node, dataSignal, ctx, parent, id });
   }
-  return createGenericNode({ node, dataSignal, ctx, parent });
+  return createGenericNode({ node, dataSignal, ctx, parent, id });
 };
 
 type RenderTextProps = {
   parent: Element;
   node: TextNodeModel;
   dataSignal: Signal<NodeData>;
+  id?: string;
   ctx: ComponentContext;
 };
 
-const createText = ({ parent, node, dataSignal, ctx }: RenderTextProps) => {
+const createText = ({ parent, node, id, dataSignal, ctx }: RenderTextProps) => {
   const { value } = node;
   const elem = document.createElement("span");
-  elem.setAttribute("data-id", node.id);
+  if (typeof id === "string") {
+    elem.setAttribute("data-id", id);
+  }
+  if (ctx.isRootComponent === false) {
+    elem.setAttribute("data-component", ctx.component.name);
+  }
   elem.setAttribute("data-node-type", "text");
   const cleanUp: Function[] = [];
   if (value.type === "formula") {
@@ -435,34 +432,10 @@ const createText = ({ parent, node, dataSignal, ctx }: RenderTextProps) => {
     elem.remove();
   };
 };
-type RenderFragmentProps = {
-  parent: Element;
-  node: FragmentNodeModel;
-  dataSignal: Signal<NodeData>;
-  ctx: ComponentContext;
-};
-
-const createFragment = ({
-  parent,
-  node,
-  dataSignal,
-  ctx,
-}: RenderFragmentProps) => {
-  const cleanUp = node.children.map((childId) => {
-    const child = ctx.component.nodes[childId];
-    if (child) {
-      return createNode({ node: child, dataSignal, parent, ctx });
-    }
-    return () => {};
-  });
-  const destroy = () => {
-    cleanUp.forEach((f) => f());
-  };
-  return destroy;
-};
 
 type RenderComponentNodeProps = {
   parent: Element;
+  id?: string;
   node: ComponentNodeModel;
   dataSignal: Signal<NodeData>;
   ctx: ComponentContext;
@@ -471,6 +444,7 @@ type RenderComponentNodeProps = {
 const createComponent = ({
   parent,
   node,
+  id,
   dataSignal,
   ctx,
 }: RenderComponentNodeProps) => {
@@ -493,6 +467,7 @@ const createComponent = ({
     attributesSignal,
     parent,
     component,
+    id,
     isRootComponent: false,
     onEvent: (eventTrigger, data) => {
       const eventHandler = node.events.find((e) => e.trigger === eventTrigger);
@@ -523,11 +498,19 @@ const createElement = ({
   node,
   parent,
   dataSignal,
+  id,
   ctx,
 }: NodeRenderer<ElementNodeModel>): (() => void) => {
   const cleanUp: Function[] = [];
   const elem = createDocumentElement(node.tag);
-  elem.setAttribute("data-id", node.id);
+  if (id) {
+    elem.setAttribute("data-id", id);
+  }
+  if (ctx.isRootComponent === false) {
+    elem.setAttribute("data-component", ctx.component.name);
+  }
+  const classHash = getClassName(node.style);
+  elem.classList.add(classHash);
   if (node.classList) {
     node.classList?.forEach((elemClass) => {
       if (elemClass.formula) {
@@ -643,11 +626,14 @@ const createElement = ({
     };
     elem.addEventListener(event.trigger, handler);
   });
-  node.children.forEach((childId) => {
-    const child = ctx.component.nodes[childId];
+  node.children.forEach((child, i) => {
     if (child) {
       createNode({
         node: child,
+        id:
+          typeof id === "string" && ctx.isRootComponent
+            ? id + "." + i
+            : undefined,
         dataSignal,
         parent: elem,
         ctx,

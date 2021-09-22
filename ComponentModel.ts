@@ -1,6 +1,4 @@
 import { NodeModel } from "./NodeModel";
-import { v4 as uuid } from "uuid";
-import { Component_Insert_Input, ApiQuery_Insert_Input } from "./types";
 import { Formula } from "./formula/formula";
 import {
   ComponentEventModel,
@@ -61,7 +59,7 @@ export type ComponentModel = {
   id: string;
   name: string;
   _project: string;
-  nodes: Record<string, NodeModel>;
+  root: NodeModel;
   variables: ComponentVariable[];
   functions: ComponentFunction[];
   events: ComponentEventModel[];
@@ -69,16 +67,6 @@ export type ComponentModel = {
   queries: ComponentQuery[];
   onLoad?: ComponentLoadedEventModel;
 };
-
-export const createComponent = (): Omit<Component_Insert_Input, "queries"> & {
-  queries: ApiQuery_Insert_Input[];
-} => ({
-  id: uuid(),
-  queries: [],
-  props: [],
-  initialState: [],
-  root: {},
-});
 
 export type ComponentData = {
   Variables: Record<string, unknown>;

@@ -10,7 +10,7 @@ import {
   NodeData,
   Project,
 } from "./ComponentModel";
-import { ComponentNodeModel, getPath, NodeModel } from "./NodeModel";
+import { NodeModel } from "./NodeModel";
 
 import { locationSignal } from "./router";
 import { insertTheme } from "./theme";
@@ -45,66 +45,6 @@ window.toddle = {
 window.TODDLE_FUNCTIONS = window.toddle.formulas;
 
 const DEFAULT_SLUG = "toddle";
-const fetchSubComponents = (
-  projectId: string,
-  names: string[],
-  componentMap: Record<string, ComponentModel>
-): Promise<Record<string, ComponentModel>> => {
-  if (names.length === 0) {
-    return Promise.resolve(componentMap);
-  }
-
-  return fetch("https://toddle.onrender.com/v1/graphql", {
-    method: "POST",
-    headers: {
-      "x-hasura-admin-secret": "wj75DVgisfBanV4",
-    },
-    body: JSON.stringify({
-      query: `
-    query getComponentsByName($names: [String!]!, $project: uuid!) {
-        components(where: { name: { _in: $names }, _project: { _eq: $project } }) {
-          id
-          name
-          _project
-          variables
-          props
-          functions
-          events
-          nodes
-          page {
-            id
-            path
-            requireAuth
-          }
-          queries
-        }
-      }
-    `,
-      variables: {
-        project: projectId,
-        names,
-      },
-    }),
-  })
-    .then((result) => result.json())
-    .then(({ data }) => {
-      const components = data.components as ComponentModel[];
-
-      const subComponents: string[] = components
-        .flatMap((component) => Object.values(component.nodes))
-        .filter(
-          (node): node is ComponentNodeModel =>
-            node.type === "component" && componentMap[node.name] === undefined
-        )
-        .map((node) => node.name);
-
-      return fetchSubComponents(
-        projectId,
-        subComponents,
-        components.reduce((acc, c) => ({ ...acc, [c.name]: c }), componentMap)
-      );
-    });
-};
 
 const fetchPage = (slug: string, path: string) => {
   return fetch("https://toddle.onrender.com/v1/graphql", {
@@ -148,7 +88,7 @@ const fetchPage = (slug: string, path: string) => {
               props
               functions
               events
-              nodes
+              root
               page {
                 id
                 path
@@ -202,7 +142,7 @@ const main = () => {
     const rootComponent = components.find(
       (comp) => comp.name === page.component.name
     );
-    if (!rootComponent) {
+    if (!rootComponent || !rootComponent.root) {
       throw new Error(`Could not render component ${page.component.name}`);
     }
 
@@ -262,7 +202,7 @@ window.toddle.formulas.getNodeData = (
   nodes: Record<string, NodeModel>,
   data: NodeData
 ): NodeData => {
-  const path = getPath(nodes, nodeId) ?? [];
+  const path = nodeId.split(".").map(Number);
   return path.reduce(
     (acc, nodeId) => {
       const node = nodes[nodeId];

@@ -1,0 +1,1336 @@
+{
+  "id": "bab8bf2a-5343-4ee9-9395-75b6ac5d363d",
+  "name": "LeftPanel",
+  "props": {
+    "id": "bab8bf2a-5343-4ee9-9395-75b6ac5d363d",
+    "name": "LeftPanel",
+    "nodes": {
+      "ROOT": {
+        "id": "ROOT",
+        "type": "fragment",
+        "children": [
+          "JHXACz3JOt6ulkcohMD3j",
+          "ZrcplKNk-9ox-vBnjk_EW",
+          "yp4NlLBFV8XeMfucvgXp8"
+        ]
+      },
+      "G9MZ3QSIG3W8-6-zazX3-": {
+        "id": "G9MZ3QSIG3W8-6-zazX3-",
+        "tag": "h2",
+        "type": "element",
+        "attrs": {},
+        "style": {
+          "width": "auto",
+          "margin": "0px",
+          "padding": "0px",
+          "fontSize": "14px",
+          "position": "relative",
+          "boxSizing": "border-box",
+          "marginTop": "0",
+          "marginLeft": "0",
+          "paddingTop": "0",
+          "marginRight": "0",
+          "paddingLeft": "0",
+          "marginBottom": "0",
+          "paddingRight": "0",
+          "paddingBottom": "0"
+        },
+        "events": [],
+        "children": ["c3BV2j-fEsaoAeh0ie-dg"],
+        "classList": []
+      },
+      "J6wB2ESudsNOTtLhSqbk8": {
+        "id": "J6wB2ESudsNOTtLhSqbk8",
+        "name": "TreeNode",
+        "type": "component",
+        "attrs": {
+          "id": {
+            "type": "value",
+            "value": "ROOT"
+          },
+          "nodes": {
+            "type": "formula",
+            "formula": {
+              "name": "Data",
+              "path": ["Props", "component", "nodes"],
+              "type": "path"
+            }
+          },
+          "indent": {
+            "type": "value",
+            "vlaue": 0
+          },
+          "selectedNodeId": {
+            "type": "formula",
+            "formula": {
+              "name": "Data",
+              "path": ["Props", "selectedNodeId"],
+              "type": "path"
+            }
+          },
+          "highlightedNodeId": {
+            "type": "formula",
+            "formula": {
+              "name": "Data",
+              "path": ["Props", "highlightedNodeId"],
+              "type": "path"
+            }
+          }
+        },
+        "events": [
+          {
+            "type": "ComponentEvent",
+            "actions": [
+              {
+                "data": {
+                  "name": "Data",
+                  "path": ["Event"],
+                  "type": "path"
+                },
+                "type": "Trigger Event",
+                "event": "nodeSelected"
+              }
+            ],
+            "trigger": "selectNode"
+          },
+          {
+            "type": "ComponentEvent",
+            "actions": [
+              {
+                "data": {
+                  "name": "Data",
+                  "path": ["Event"],
+                  "type": "path"
+                },
+                "type": "Trigger Event",
+                "event": "nodeHighlighted"
+              }
+            ],
+            "trigger": "highlightNode"
+          }
+        ],
+        "children": []
+      },
+      "UYAcp7V3stzsW6PTuh3Of": {
+        "id": "UYAcp7V3stzsW6PTuh3Of",
+        "tag": "div",
+        "type": "element",
+        "attrs": {},
+        "style": {
+          "display": "flex",
+          "position": "relative",
+          "alignItems": "center",
+          "paddingLeft": "4",
+          "paddingRight": "4",
+          "flexDirection": "row",
+          "justifyContent": "space-between"
+        },
+        "events": [],
+        "children": ["G9MZ3QSIG3W8-6-zazX3-", "isVI4dsPUBTwR_gYvJuda"],
+        "classList": []
+      },
+      "ZrcplKNk-9ox-vBnjk_EW": {
+        "id": "ZrcplKNk-9ox-vBnjk_EW",
+        "tag": "div",
+        "type": "element",
+        "attrs": {},
+        "style": {
+          "color": "var(--grey-200)",
+          "width": "64",
+          "display": "block",
+          "overflow": "auto",
+          "position": "relative",
+          "paddingTop": "4",
+          "paddingBottom": "4",
+          "backgroundColor": "var(--grey-800)",
+          "border-right-color": "var(--grey-900)",
+          "border-right-style": "solid",
+          "border-right-width": "1px"
+        },
+        "events": [
+          {
+            "type": "NodeEvent",
+            "actions": [],
+            "trigger": "click",
+            "preventDefault": false,
+            "stopPropagation": true
+          }
+        ],
+        "children": ["UYAcp7V3stzsW6PTuh3Of", "J6wB2ESudsNOTtLhSqbk8"],
+        "classList": []
+      },
+      "c3BV2j-fEsaoAeh0ie-dg": {
+        "id": "c3BV2j-fEsaoAeh0ie-dg",
+        "type": "text",
+        "value": {
+          "type": "formula",
+          "formula": "Elements"
+        }
+      },
+      "isVI4dsPUBTwR_gYvJuda": {
+        "id": "isVI4dsPUBTwR_gYvJuda",
+        "tag": "button",
+        "type": "element",
+        "attrs": {},
+        "style": {
+          "color": "var(--grey-200)",
+          "height": "5",
+          "display": "inline-flex",
+          "position": "relative",
+          "boxSizing": "border-box",
+          "alignItems": "center",
+          "paddingLeft": "2",
+          "borderRadius": 3,
+          "paddingRight": "2",
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "backgroundColor": "var(--grey-600)",
+          "borderTopLeftRadius": "1",
+          "borderTopRightRadius": "1",
+          "borderBottomLeftRadius": "1",
+          "borderBottomRightRadius": "1"
+        },
+        "events": [
+          {
+            "type": "NodeEvent",
+            "actions": [
+              {
+                "type": "Update Variable",
+                "value": "true",
+                "condition": {
+                  "name": "Data",
+                  "path": ["Props", "selectedNodeId"],
+                  "type": "path"
+                },
+                "variableName": "showElementCatalog"
+              }
+            ],
+            "trigger": "click",
+            "preventDefault": false,
+            "stopPropagation": true
+          }
+        ],
+        "children": ["sxfA7bYOaGvkgb3SOZxWa"],
+        "classList": []
+      },
+      "sxfA7bYOaGvkgb3SOZxWa": {
+        "id": "sxfA7bYOaGvkgb3SOZxWa",
+        "type": "text",
+        "value": {
+          "type": "formula",
+          "formula": "+"
+        }
+      },
+      "yp4NlLBFV8XeMfucvgXp8": {
+        "id": "yp4NlLBFV8XeMfucvgXp8",
+        "tag": "element-catalog",
+        "type": "element",
+        "attrs": {
+          "component": {
+            "type": "formula",
+            "formula": {
+              "name": "Data",
+              "path": ["Props", "component"],
+              "type": "path"
+            }
+          },
+          "components": {
+            "type": "formula",
+            "formula": {
+              "name": "None",
+              "type": "null"
+            }
+          },
+          "selectedNodeId": {
+            "type": "formula",
+            "formula": {
+              "name": "Data",
+              "path": ["Props", "selectedNodeId"],
+              "type": "path"
+            }
+          }
+        },
+        "style": {},
+        "events": [
+          {
+            "type": "NodeEvent",
+            "actions": [
+              {
+                "type": "Update Variable",
+                "value": "",
+                "variableName": "showElementCatalog"
+              },
+              {
+                "data": {
+                  "name": "Data",
+                  "path": ["Event", "detail"],
+                  "type": "path"
+                },
+                "type": "Trigger Event",
+                "event": "updateComponent"
+              },
+              {
+                "data": {
+                  "name": "Event",
+                  "path": ["Event"],
+                  "type": "path"
+                },
+                "type": "Debug"
+              }
+            ],
+            "trigger": "change",
+            "preventDefault": false,
+            "stopPropagation": false
+          },
+          {
+            "type": "NodeEvent",
+            "actions": [
+              {
+                "type": "Update Variable",
+                "value": "",
+                "variableName": "showElementCatalog"
+              }
+            ],
+            "trigger": "dismiss",
+            "preventDefault": false,
+            "stopPropagation": false
+          }
+        ],
+        "children": [],
+        "classList": [],
+        "condition": {
+          "name": "Data",
+          "path": ["Variables", "showElementCatalog"],
+          "type": "path"
+        }
+      }
+    },
+    "props": [
+      {
+        "name": "component",
+        "initialValue": {
+          "id": "4d5c161c-89e9-4c3c-9364-68e0a5b894a0",
+          "name": "SizeStyles",
+          "nodes": {
+            "ROOT": {
+              "id": "ROOT",
+              "type": "fragment",
+              "children": ["ggMGPB1z-Vi-WZMFCBuvi"]
+            },
+            "CgQ4CWSKnskS8kQrPALoS": {
+              "id": "CgQ4CWSKnskS8kQrPALoS",
+              "tag": "div",
+              "type": "element",
+              "attrs": {},
+              "style": {
+                "gap": "2",
+                "display": "flex",
+                "position": "relative",
+                "paddingLeft": "2",
+                "paddingRight": "2",
+                "flexDirection": "column"
+              },
+              "events": [],
+              "children": ["GY-U_vcv0KKFfGmFh0_0y", "dYD4c_xK04GzItKKhMaMm"]
+            },
+            "GY-U_vcv0KKFfGmFh0_0y": {
+              "id": "GY-U_vcv0KKFfGmFh0_0y",
+              "tag": "div",
+              "type": "element",
+              "attrs": {},
+              "style": {
+                "gap": "2",
+                "display": "flex",
+                "position": "relative"
+              },
+              "events": [],
+              "children": ["oWXNKhz856pMQEouzEG27", "SS2aLrNQoGgDy3msPTHN4"]
+            },
+            "KyAmTWUZdWBDn2BElt4Mc": {
+              "id": "KyAmTWUZdWBDn2BElt4Mc",
+              "name": "UnitInput",
+              "type": "component",
+              "attrs": {
+                "label": "Min H",
+                "value": {
+                  "name": "Data",
+                  "path": ["Props", "style", "minHeight"],
+                  "type": "path"
+                }
+              },
+              "events": [
+                {
+                  "type": "ComponentEvent",
+                  "actions": [
+                    {
+                      "data": {
+                        "name": "SET",
+                        "type": "function",
+                        "arguments": [
+                          {
+                            "name": "Object",
+                            "formula": {
+                              "name": "Data",
+                              "path": ["Props", "style"],
+                              "type": "path"
+                            }
+                          },
+                          {
+                            "name": "Key",
+                            "formula": {
+                              "name": "String",
+                              "type": "string",
+                              "value": "minHeight"
+                            }
+                          },
+                          {
+                            "name": "Value",
+                            "formula": {
+                              "name": "Data",
+                              "path": ["Event"],
+                              "type": "path"
+                            }
+                          }
+                        ]
+                      },
+                      "type": "Trigger Event",
+                      "event": "change"
+                    }
+                  ],
+                  "trigger": "input"
+                }
+              ],
+              "children": []
+            },
+            "QsRvnTvSbHsak1cac9cMP": {
+              "id": "QsRvnTvSbHsak1cac9cMP",
+              "type": "text",
+              "style": {
+                "fontSize": 16,
+                "fontWeight": 400
+              },
+              "value": "Size"
+            },
+            "SS2aLrNQoGgDy3msPTHN4": {
+              "id": "SS2aLrNQoGgDy3msPTHN4",
+              "name": "UnitInput",
+              "type": "component",
+              "attrs": {
+                "label": "H",
+                "value": {
+                  "name": "Data",
+                  "path": ["Props", "style", "height"],
+                  "type": "path"
+                }
+              },
+              "events": [
+                {
+                  "type": "ComponentEvent",
+                  "actions": [
+                    {
+                      "data": {
+                        "name": "SET",
+                        "type": "function",
+                        "arguments": [
+                          {
+                            "name": "Object",
+                            "formula": {
+                              "name": "Data",
+                              "path": ["Props", "style"],
+                              "type": "path"
+                            }
+                          },
+                          {
+                            "name": "Key",
+                            "formula": {
+                              "name": "String",
+                              "type": "string",
+                              "value": "height"
+                            }
+                          },
+                          {
+                            "name": "Value",
+                            "formula": {
+                              "name": "Data",
+                              "path": ["Event"],
+                              "type": "path"
+                            }
+                          }
+                        ]
+                      },
+                      "type": "Trigger Event",
+                      "event": "change"
+                    }
+                  ],
+                  "trigger": "input"
+                }
+              ],
+              "children": []
+            },
+            "_uv69hJbH1V6r-7eKnSAA": {
+              "id": "_uv69hJbH1V6r-7eKnSAA",
+              "tag": "h3",
+              "type": "element",
+              "attrs": {},
+              "style": {
+                "color": "var(--grey-100)",
+                "width": "auto",
+                "margin": "0px",
+                "padding": "0px",
+                "fontSize": "16px",
+                "position": "relative",
+                "boxSizing": "border-box"
+              },
+              "events": [],
+              "children": ["QsRvnTvSbHsak1cac9cMP"]
+            },
+            "dYD4c_xK04GzItKKhMaMm": {
+              "id": "dYD4c_xK04GzItKKhMaMm",
+              "tag": "div",
+              "type": "element",
+              "attrs": {},
+              "style": {
+                "gap": "2",
+                "display": "flex",
+                "position": "relative"
+              },
+              "events": [],
+              "children": ["vtd7HX2eGHsY65vbw-gco", "KyAmTWUZdWBDn2BElt4Mc"]
+            },
+            "gAkFqG40xzoDC7cIQ51Ne": {
+              "id": "gAkFqG40xzoDC7cIQ51Ne",
+              "tag": "div",
+              "type": "element",
+              "attrs": {},
+              "style": {},
+              "events": [],
+              "children": ["_uv69hJbH1V6r-7eKnSAA"]
+            },
+            "ggMGPB1z-Vi-WZMFCBuvi": {
+              "id": "ggMGPB1z-Vi-WZMFCBuvi",
+              "tag": "div",
+              "type": "element",
+              "attrs": {},
+              "style": {
+                "gap": "2",
+                "display": "flex",
+                "position": "relative",
+                "flexDirection": "column"
+              },
+              "events": [],
+              "children": ["gAkFqG40xzoDC7cIQ51Ne", "CgQ4CWSKnskS8kQrPALoS"]
+            },
+            "oWXNKhz856pMQEouzEG27": {
+              "id": "oWXNKhz856pMQEouzEG27",
+              "name": "UnitInput",
+              "type": "component",
+              "attrs": {
+                "label": "W",
+                "value": {
+                  "name": "Data",
+                  "path": ["Props", "style", "width"],
+                  "type": "path"
+                }
+              },
+              "events": [
+                {
+                  "type": "ComponentEvent",
+                  "actions": [
+                    {
+                      "data": {
+                        "name": "SET",
+                        "type": "function",
+                        "arguments": [
+                          {
+                            "name": "Object",
+                            "formula": {
+                              "name": "Data",
+                              "path": ["Props", "style"],
+                              "type": "path"
+                            }
+                          },
+                          {
+                            "name": "Key",
+                            "formula": {
+                              "name": "String",
+                              "type": "string",
+                              "value": "width"
+                            }
+                          },
+                          {
+                            "name": "Value",
+                            "formula": {
+                              "name": "Data",
+                              "path": ["Event"],
+                              "type": "path"
+                            }
+                          }
+                        ]
+                      },
+                      "type": "Trigger Event",
+                      "event": "change"
+                    }
+                  ],
+                  "trigger": "input"
+                }
+              ],
+              "children": []
+            },
+            "vtd7HX2eGHsY65vbw-gco": {
+              "id": "vtd7HX2eGHsY65vbw-gco",
+              "name": "UnitInput",
+              "type": "component",
+              "attrs": {
+                "label": "Min W",
+                "value": {
+                  "name": "Data",
+                  "path": ["Props", "style", "minWidth"],
+                  "type": "path"
+                }
+              },
+              "events": [
+                {
+                  "type": "ComponentEvent",
+                  "actions": [
+                    {
+                      "data": {
+                        "name": "SET",
+                        "type": "function",
+                        "arguments": [
+                          {
+                            "name": "Object",
+                            "formula": {
+                              "name": "Data",
+                              "path": ["Props", "style"],
+                              "type": "path"
+                            }
+                          },
+                          {
+                            "name": "Key",
+                            "formula": {
+                              "name": "String",
+                              "type": "string",
+                              "value": "minWidth"
+                            }
+                          },
+                          {
+                            "name": "Value",
+                            "formula": {
+                              "name": "Data",
+                              "path": ["Event"],
+                              "type": "path"
+                            }
+                          }
+                        ]
+                      },
+                      "type": "Trigger Event",
+                      "event": "change"
+                    }
+                  ],
+                  "trigger": "input"
+                }
+              ],
+              "children": []
+            }
+          },
+          "props": [
+            {
+              "id": "d3ba4f1e-0ef2-4465-aa2b-803070059b80",
+              "name": "style",
+              "initialValue": {
+                "width": "100%",
+                "height": "100%",
+                "maxWidth": "100%",
+                "minWidth": "100%",
+                "maxHeight": "100%",
+                "minHeight": "100%"
+              }
+            }
+          ],
+          "events": [],
+          "queries": [],
+          "_project": "d41e9972-8714-4fed-af45-8407985afbe4",
+          "functions": [],
+          "variables": []
+        }
+      },
+      {
+        "name": "components",
+        "initialValue": [
+          {
+            "id": "4d5c161c-89e9-4c3c-9364-68e0a5b894a0",
+            "name": "SizeStyles",
+            "nodes": {
+              "ROOT": {
+                "id": "ROOT",
+                "type": "fragment",
+                "children": ["ggMGPB1z-Vi-WZMFCBuvi"]
+              },
+              "CgQ4CWSKnskS8kQrPALoS": {
+                "id": "CgQ4CWSKnskS8kQrPALoS",
+                "tag": "div",
+                "type": "element",
+                "attrs": {},
+                "style": {
+                  "gap": "2",
+                  "display": "flex",
+                  "position": "relative",
+                  "paddingLeft": "2",
+                  "paddingRight": "2",
+                  "flexDirection": "column"
+                },
+                "events": [],
+                "children": ["GY-U_vcv0KKFfGmFh0_0y", "dYD4c_xK04GzItKKhMaMm"]
+              },
+              "GY-U_vcv0KKFfGmFh0_0y": {
+                "id": "GY-U_vcv0KKFfGmFh0_0y",
+                "tag": "div",
+                "type": "element",
+                "attrs": {},
+                "style": {
+                  "gap": "2",
+                  "display": "flex",
+                  "position": "relative"
+                },
+                "events": [],
+                "children": ["oWXNKhz856pMQEouzEG27", "SS2aLrNQoGgDy3msPTHN4"]
+              },
+              "KyAmTWUZdWBDn2BElt4Mc": {
+                "id": "KyAmTWUZdWBDn2BElt4Mc",
+                "name": "UnitInput",
+                "type": "component",
+                "attrs": {
+                  "label": "Min H",
+                  "value": {
+                    "name": "Data",
+                    "path": ["Props", "style", "minHeight"],
+                    "type": "path"
+                  }
+                },
+                "events": [
+                  {
+                    "type": "ComponentEvent",
+                    "actions": [
+                      {
+                        "data": {
+                          "name": "SET",
+                          "type": "function",
+                          "arguments": [
+                            {
+                              "name": "Object",
+                              "formula": {
+                                "name": "Data",
+                                "path": ["Props", "style"],
+                                "type": "path"
+                              }
+                            },
+                            {
+                              "name": "Key",
+                              "formula": {
+                                "name": "String",
+                                "type": "string",
+                                "value": "minHeight"
+                              }
+                            },
+                            {
+                              "name": "Value",
+                              "formula": {
+                                "name": "Data",
+                                "path": ["Event"],
+                                "type": "path"
+                              }
+                            }
+                          ]
+                        },
+                        "type": "Trigger Event",
+                        "event": "change"
+                      }
+                    ],
+                    "trigger": "input"
+                  }
+                ],
+                "children": []
+              },
+              "QsRvnTvSbHsak1cac9cMP": {
+                "id": "QsRvnTvSbHsak1cac9cMP",
+                "type": "text",
+                "style": {
+                  "fontSize": 16,
+                  "fontWeight": 400
+                },
+                "value": "Size"
+              },
+              "SS2aLrNQoGgDy3msPTHN4": {
+                "id": "SS2aLrNQoGgDy3msPTHN4",
+                "name": "UnitInput",
+                "type": "component",
+                "attrs": {
+                  "label": "H",
+                  "value": {
+                    "name": "Data",
+                    "path": ["Props", "style", "height"],
+                    "type": "path"
+                  }
+                },
+                "events": [
+                  {
+                    "type": "ComponentEvent",
+                    "actions": [
+                      {
+                        "data": {
+                          "name": "SET",
+                          "type": "function",
+                          "arguments": [
+                            {
+                              "name": "Object",
+                              "formula": {
+                                "name": "Data",
+                                "path": ["Props", "style"],
+                                "type": "path"
+                              }
+                            },
+                            {
+                              "name": "Key",
+                              "formula": {
+                                "name": "String",
+                                "type": "string",
+                                "value": "height"
+                              }
+                            },
+                            {
+                              "name": "Value",
+                              "formula": {
+                                "name": "Data",
+                                "path": ["Event"],
+                                "type": "path"
+                              }
+                            }
+                          ]
+                        },
+                        "type": "Trigger Event",
+                        "event": "change"
+                      }
+                    ],
+                    "trigger": "input"
+                  }
+                ],
+                "children": []
+              },
+              "_uv69hJbH1V6r-7eKnSAA": {
+                "id": "_uv69hJbH1V6r-7eKnSAA",
+                "tag": "h3",
+                "type": "element",
+                "attrs": {},
+                "style": {
+                  "color": "var(--grey-100)",
+                  "width": "auto",
+                  "margin": "0px",
+                  "padding": "0px",
+                  "fontSize": "16px",
+                  "position": "relative",
+                  "boxSizing": "border-box"
+                },
+                "events": [],
+                "children": ["QsRvnTvSbHsak1cac9cMP"]
+              },
+              "dYD4c_xK04GzItKKhMaMm": {
+                "id": "dYD4c_xK04GzItKKhMaMm",
+                "tag": "div",
+                "type": "element",
+                "attrs": {},
+                "style": {
+                  "gap": "2",
+                  "display": "flex",
+                  "position": "relative"
+                },
+                "events": [],
+                "children": ["vtd7HX2eGHsY65vbw-gco", "KyAmTWUZdWBDn2BElt4Mc"]
+              },
+              "gAkFqG40xzoDC7cIQ51Ne": {
+                "id": "gAkFqG40xzoDC7cIQ51Ne",
+                "tag": "div",
+                "type": "element",
+                "attrs": {},
+                "style": {},
+                "events": [],
+                "children": ["_uv69hJbH1V6r-7eKnSAA"]
+              },
+              "ggMGPB1z-Vi-WZMFCBuvi": {
+                "id": "ggMGPB1z-Vi-WZMFCBuvi",
+                "tag": "div",
+                "type": "element",
+                "attrs": {},
+                "style": {
+                  "gap": "2",
+                  "display": "flex",
+                  "position": "relative",
+                  "flexDirection": "column"
+                },
+                "events": [],
+                "children": ["gAkFqG40xzoDC7cIQ51Ne", "CgQ4CWSKnskS8kQrPALoS"]
+              },
+              "oWXNKhz856pMQEouzEG27": {
+                "id": "oWXNKhz856pMQEouzEG27",
+                "name": "UnitInput",
+                "type": "component",
+                "attrs": {
+                  "label": "W",
+                  "value": {
+                    "name": "Data",
+                    "path": ["Props", "style", "width"],
+                    "type": "path"
+                  }
+                },
+                "events": [
+                  {
+                    "type": "ComponentEvent",
+                    "actions": [
+                      {
+                        "data": {
+                          "name": "SET",
+                          "type": "function",
+                          "arguments": [
+                            {
+                              "name": "Object",
+                              "formula": {
+                                "name": "Data",
+                                "path": ["Props", "style"],
+                                "type": "path"
+                              }
+                            },
+                            {
+                              "name": "Key",
+                              "formula": {
+                                "name": "String",
+                                "type": "string",
+                                "value": "width"
+                              }
+                            },
+                            {
+                              "name": "Value",
+                              "formula": {
+                                "name": "Data",
+                                "path": ["Event"],
+                                "type": "path"
+                              }
+                            }
+                          ]
+                        },
+                        "type": "Trigger Event",
+                        "event": "change"
+                      }
+                    ],
+                    "trigger": "input"
+                  }
+                ],
+                "children": []
+              },
+              "vtd7HX2eGHsY65vbw-gco": {
+                "id": "vtd7HX2eGHsY65vbw-gco",
+                "name": "UnitInput",
+                "type": "component",
+                "attrs": {
+                  "label": "Min W",
+                  "value": {
+                    "name": "Data",
+                    "path": ["Props", "style", "minWidth"],
+                    "type": "path"
+                  }
+                },
+                "events": [
+                  {
+                    "type": "ComponentEvent",
+                    "actions": [
+                      {
+                        "data": {
+                          "name": "SET",
+                          "type": "function",
+                          "arguments": [
+                            {
+                              "name": "Object",
+                              "formula": {
+                                "name": "Data",
+                                "path": ["Props", "style"],
+                                "type": "path"
+                              }
+                            },
+                            {
+                              "name": "Key",
+                              "formula": {
+                                "name": "String",
+                                "type": "string",
+                                "value": "minWidth"
+                              }
+                            },
+                            {
+                              "name": "Value",
+                              "formula": {
+                                "name": "Data",
+                                "path": ["Event"],
+                                "type": "path"
+                              }
+                            }
+                          ]
+                        },
+                        "type": "Trigger Event",
+                        "event": "change"
+                      }
+                    ],
+                    "trigger": "input"
+                  }
+                ],
+                "children": []
+              }
+            },
+            "props": [
+              {
+                "id": "d3ba4f1e-0ef2-4465-aa2b-803070059b80",
+                "name": "style",
+                "initialValue": {
+                  "width": "100%",
+                  "height": "100%",
+                  "maxWidth": "100%",
+                  "minWidth": "100%",
+                  "maxHeight": "100%",
+                  "minHeight": "100%"
+                }
+              }
+            ],
+            "events": [],
+            "queries": [],
+            "_project": "d41e9972-8714-4fed-af45-8407985afbe4",
+            "functions": [],
+            "variables": []
+          }
+        ]
+      },
+      {
+        "name": "selectedNodeId",
+        "initialValue": ""
+      },
+      {
+        "id": "eceacd31-bf09-4c91-9f17-03831b111d81",
+        "name": "highlightedNodeId",
+        "initialValue": ""
+      }
+    ],
+    "events": [],
+    "onLoad": [],
+    "queries": [],
+    "_project": "d41e9972-8714-4fed-af45-8407985afbe4",
+    "functions": [],
+    "variables": [
+      {
+        "id": "5bdecf57-4a16-4841-ba92-a29cd28b6fe2",
+        "name": "showElementCatalog",
+        "initialValue": ""
+      }
+    ]
+  },
+  "_project": "d41e9972-8714-4fed-af45-8407985afbe4",
+  "root": {
+    "id": "ZrcplKNk-9ox-vBnjk_EW",
+    "tag": "div",
+    "type": "element",
+    "attrs": {},
+    "style": {
+      "color": "var(--grey-200)",
+      "width": "64",
+      "display": "block",
+      "overflow": "auto",
+      "position": "relative",
+      "paddingTop": "4",
+      "paddingBottom": "4",
+      "backgroundColor": "var(--grey-800)",
+      "border-right-color": "var(--grey-900)",
+      "border-right-style": "solid",
+      "border-right-width": "1px"
+    },
+    "events": [
+      {
+        "type": "NodeEvent",
+        "actions": [],
+        "trigger": "click",
+        "preventDefault": false,
+        "stopPropagation": true
+      }
+    ],
+    "children": [
+      {
+        "id": "UYAcp7V3stzsW6PTuh3Of",
+        "tag": "div",
+        "type": "element",
+        "attrs": {},
+        "style": {
+          "display": "flex",
+          "position": "relative",
+          "alignItems": "center",
+          "paddingLeft": "4",
+          "paddingRight": "4",
+          "flexDirection": "row",
+          "justifyContent": "space-between"
+        },
+        "events": [],
+        "children": [
+          {
+            "id": "G9MZ3QSIG3W8-6-zazX3-",
+            "tag": "h2",
+            "type": "element",
+            "attrs": {},
+            "style": {
+              "width": "auto",
+              "margin": "0px",
+              "padding": "0px",
+              "fontSize": "14px",
+              "position": "relative",
+              "boxSizing": "border-box",
+              "marginTop": "0",
+              "marginLeft": "0",
+              "paddingTop": "0",
+              "marginRight": "0",
+              "paddingLeft": "0",
+              "marginBottom": "0",
+              "paddingRight": "0",
+              "paddingBottom": "0"
+            },
+            "events": [],
+            "children": [
+              {
+                "id": "c3BV2j-fEsaoAeh0ie-dg",
+                "type": "text",
+                "value": {
+                  "type": "formula",
+                  "formula": "Elements"
+                }
+              }
+            ],
+            "classList": []
+          },
+          {
+            "id": "isVI4dsPUBTwR_gYvJuda",
+            "tag": "button",
+            "type": "element",
+            "attrs": {},
+            "style": {
+              "color": "var(--grey-200)",
+              "height": "5",
+              "display": "inline-flex",
+              "position": "relative",
+              "boxSizing": "border-box",
+              "alignItems": "center",
+              "paddingLeft": "2",
+              "borderRadius": 3,
+              "paddingRight": "2",
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "backgroundColor": "var(--grey-600)",
+              "borderTopLeftRadius": "1",
+              "borderTopRightRadius": "1",
+              "borderBottomLeftRadius": "1",
+              "borderBottomRightRadius": "1"
+            },
+            "events": [
+              {
+                "type": "NodeEvent",
+                "actions": [
+                  {
+                    "type": "Update Variable",
+                    "value": "true",
+                    "condition": {
+                      "name": "Data",
+                      "path": ["Props", "selectedNodeId"],
+                      "type": "path"
+                    },
+                    "variableName": "showElementCatalog"
+                  }
+                ],
+                "trigger": "click",
+                "preventDefault": false,
+                "stopPropagation": true
+              }
+            ],
+            "children": [
+              {
+                "id": "sxfA7bYOaGvkgb3SOZxWa",
+                "type": "text",
+                "value": {
+                  "type": "formula",
+                  "formula": "+"
+                }
+              }
+            ],
+            "classList": []
+          }
+        ],
+        "classList": []
+      },
+      {
+        "name": "TreeNode",
+        "type": "component",
+        "attrs": {
+          "id": {
+            "type": "value",
+            "value": "0"
+          },
+          "node": {
+            "type": "formula",
+            "formula": {
+              "name": "Data",
+              "path": ["Props", "component", "root"],
+              "type": "path"
+            }
+          },
+          "indent": {
+            "type": "value",
+            "value": 0
+          },
+          "selectedNodeId": {
+            "type": "formula",
+            "formula": {
+              "name": "Data",
+              "path": ["Props", "selectedNodeId"],
+              "type": "path"
+            }
+          },
+          "highlightedNodeId": {
+            "type": "formula",
+            "formula": {
+              "name": "Data",
+              "path": ["Props", "highlightedNodeId"],
+              "type": "path"
+            }
+          }
+        },
+        "events": [
+          {
+            "type": "ComponentEvent",
+            "actions": [
+              {
+                "data": {
+                  "name": "Data",
+                  "path": ["Event"],
+                  "type": "path"
+                },
+                "type": "Trigger Event",
+                "event": "nodeSelected"
+              }
+            ],
+            "trigger": "selectNode"
+          },
+          {
+            "type": "ComponentEvent",
+            "actions": [
+              {
+                "data": {
+                  "name": "Data",
+                  "path": ["Event"],
+                  "type": "path"
+                },
+                "type": "Trigger Event",
+                "event": "nodeHighlighted"
+              }
+            ],
+            "trigger": "highlightNode"
+          }
+        ],
+        "children": []
+      },
+      {
+        "id": "yp4NlLBFV8XeMfucvgXp8",
+        "tag": "element-catalog",
+        "type": "element",
+        "attrs": {
+          "component": {
+            "type": "formula",
+            "formula": {
+              "name": "Data",
+              "path": ["Props", "component"],
+              "type": "path"
+            }
+          },
+          "components": {
+            "type": "formula",
+            "formula": {
+              "name": "Data",
+              "path": ["Props", "components"],
+              "type": "path"
+            }
+          },
+          "selectedNodeId": {
+            "type": "formula",
+            "formula": {
+              "name": "Data",
+              "path": ["Props", "selectedNodeId"],
+              "type": "path"
+            }
+          }
+        },
+        "style": {},
+        "events": [
+          {
+            "type": "NodeEvent",
+            "actions": [
+              {
+                "type": "Update Variable",
+                "value": "",
+                "variableName": "showElementCatalog"
+              },
+              {
+                "data": {
+                  "name": "Data",
+                  "path": ["Event", "detail"],
+                  "type": "path"
+                },
+                "type": "Trigger Event",
+                "event": "updateComponent"
+              },
+              {
+                "data": {
+                  "name": "Event",
+                  "path": ["Event"],
+                  "type": "path"
+                },
+                "type": "Debug"
+              }
+            ],
+            "trigger": "change",
+            "preventDefault": false,
+            "stopPropagation": false
+          },
+          {
+            "type": "NodeEvent",
+            "actions": [
+              {
+                "type": "Update Variable",
+                "value": "",
+                "variableName": "showElementCatalog"
+              }
+            ],
+            "trigger": "dismiss",
+            "preventDefault": false,
+            "stopPropagation": false
+          }
+        ],
+        "children": [],
+        "classList": [],
+        "condition": {
+          "name": "Data",
+          "path": ["Variables", "showElementCatalog"],
+          "type": "path"
+        }
+      }
+    ],
+    "classList": []
+  },
+  "events": [],
+  "variables": [
+    {
+      "id": "5bdecf57-4a16-4841-ba92-a29cd28b6fe2",
+      "name": "showElementCatalog",
+      "initialValue": ""
+    }
+  ],
+  "functions": [],
+  "queries": [],
+  "onLoad": []
+}

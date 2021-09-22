@@ -1,0 +1,2011 @@
+{
+  "id": "96db02b9-9df6-433d-8155-4029894471fe",
+  "name": "/",
+  "props": [],
+  "_project": "d41e9972-8714-4fed-af45-8407985afbe4",
+  "root": {
+    "tag": "div",
+    "type": "element",
+    "attrs": {},
+    "style": {},
+    "events": [],
+    "children": [
+      {
+        "id": "dlYkNB9Q5_GR_HXtj4L4q",
+        "tag": "div",
+        "type": "element",
+        "attrs": {},
+        "style": {
+          "height": "100%",
+          "display": "flex",
+          "minWidth": "",
+          "position": "relative",
+          "flexDirection": "column",
+          "backgroundColor": "#2f2f2f"
+        },
+        "events": [],
+        "children": [
+          {
+            "id": "LzRsFXUc1f3TaRYbqhx9w",
+            "tag": "header",
+            "type": "element",
+            "attrs": {},
+            "style": {
+              "height": "auto",
+              "display": "flex",
+              "minWidth": "none",
+              "position": "relative",
+              "paddingTop": "8px",
+              "breakpoints": {
+                "@large": {
+                  "height": "auto",
+                  "display": "flex",
+                  "minWidth": "none",
+                  "position": "relative",
+                  "paddingTop": "8px",
+                  "paddingLeft": "16px",
+                  "paddingRight": "16px",
+                  "paddingBottom": "8px",
+                  "justifyContent": "space-between"
+                }
+              },
+              "paddingLeft": "16px",
+              "paddingRight": "16px",
+              "paddingBottom": "8px",
+              "justifyContent": "space-between"
+            },
+            "events": [],
+            "children": [
+              {
+                "id": "jqkurnN5TJwYzS9EPcIEr",
+                "tag": "h1",
+                "type": "element",
+                "attrs": {},
+                "style": {
+                  "width": "auto",
+                  "margin": "0px",
+                  "padding": "0px",
+                  "position": "relative",
+                  "boxSizing": "border-box"
+                },
+                "events": [],
+                "children": [
+                  {
+                    "id": "8tOJkUv6apOsFJ6vbWIeQ",
+                    "type": "text",
+                    "value": {
+                      "type": "formula",
+                      "formula": "Toddle"
+                    }
+                  }
+                ],
+                "classList": []
+              },
+              {
+                "id": "32SS7M6N0B_5ojDfTD5Q8",
+                "tag": "div",
+                "type": "element",
+                "attrs": {},
+                "style": {},
+                "events": [],
+                "children": [
+                  {
+                    "id": "Z3_4ciOwL6JXgL41QcUdy",
+                    "tag": "button",
+                    "type": "element",
+                    "attrs": {},
+                    "style": {
+                      "height": "40px",
+                      "display": "inline-flex",
+                      "position": "relative",
+                      "boxSizing": "border-box",
+                      "alignItems": "center",
+                      "paddingTop": "0px",
+                      "paddingLeft": "0px",
+                      "borderRadius": 3,
+                      "paddingRight": "0px",
+                      "flexDirection": "row",
+                      "paddingBottom": "0px",
+                      "justifyContent": "center"
+                    },
+                    "events": [
+                      {
+                        "type": "NodeEvent",
+                        "actions": [
+                          {
+                            "key": "NewProjectDialog",
+                            "type": "Update Variable",
+                            "value": "TRUE",
+                            "variableName": "ShowUserMenu"
+                          }
+                        ],
+                        "trigger": "Click",
+                        "preventDefault": false,
+                        "stopPropagation": false
+                      }
+                    ],
+                    "children": [
+                      {
+                        "id": "F4glWyiAPpf4Mrm5_5LCm",
+                        "name": "UserAvatar",
+                        "type": "component",
+                        "attrs": {
+                          "UserName": {
+                            "name": "Data",
+                            "path": [
+                              "Queries",
+                              "User",
+                              "data",
+                              "users",
+                              "0",
+                              "name"
+                            ],
+                            "type": "path"
+                          },
+                          "Username": {
+                            "name": "Data",
+                            "path": [
+                              "Queries",
+                              "User",
+                              "data",
+                              "users",
+                              "0",
+                              "name"
+                            ],
+                            "type": "path"
+                          },
+                          "Organisation": {
+                            "name": "Data",
+                            "path": [
+                              "Functions",
+                              "SelectedOrg",
+                              "organization",
+                              "name"
+                            ],
+                            "type": "path"
+                          }
+                        },
+                        "events": [],
+                        "children": []
+                      }
+                    ],
+                    "classList": []
+                  },
+                  {
+                    "id": "QcvAX8RUxa2_BP6IdqGAi",
+                    "tag": "div",
+                    "type": "element",
+                    "attrs": {},
+                    "style": {
+                      "top": "0px",
+                      "left": "0px",
+                      "width": "100%",
+                      "height": "1005px",
+                      "zIndex": 4,
+                      "position": "fixed"
+                    },
+                    "events": [
+                      {
+                        "type": "NodeEvent",
+                        "actions": [
+                          {
+                            "key": "NewProjectDialog",
+                            "type": "Update Variable",
+                            "value": "",
+                            "variableName": "ShowUserMenu"
+                          }
+                        ],
+                        "trigger": "Click",
+                        "preventDefault": false,
+                        "stopPropagation": false
+                      }
+                    ],
+                    "children": [],
+                    "classList": [],
+                    "condition": {
+                      "name": "Data",
+                      "path": [
+                        "Variables",
+                        "ShowUserMenu"
+                      ],
+                      "type": "path"
+                    }
+                  },
+                  {
+                    "id": "r0wDPEGN8oRWUD2latkD6",
+                    "tag": "div",
+                    "type": "element",
+                    "attrs": {},
+                    "style": {
+                      "top": "110%",
+                      "right": "0px",
+                      "width": "100%",
+                      "zIndex": 5,
+                      "shadows": [
+                        {
+                          "x": 0,
+                          "y": 3,
+                          "blur": 5,
+                          "color": "#00000055",
+                          "inset": false,
+                          "spread": 0
+                        }
+                      ],
+                      "position": "absolute",
+                      "backgroundColor": "#454545",
+                      "borderTopLeftRadius": "4px",
+                      "borderTopRightRadius": "4px",
+                      "borderBottomLeftRadius": "4px",
+                      "borderBottomRightRadius": "4px"
+                    },
+                    "events": [],
+                    "children": [
+                      {
+                        "id": "koXFNDfoa2kPUijd1oZlw",
+                        "tag": "ul",
+                        "type": "element",
+                        "attrs": {},
+                        "style": {
+                          "display": "flex",
+                          "position": "relative",
+                          "boxSizing": "border-box",
+                          "alignItems": "stretch",
+                          "flexDirection": "column"
+                        },
+                        "events": [],
+                        "children": [
+                          {
+                            "id": "f_TqZTgjqciKIt_UB2irT",
+                            "tag": "li",
+                            "type": "element",
+                            "attrs": {},
+                            "style": {
+                              "display": "flex",
+                              "padding": "8px",
+                              "position": "relative",
+                              "variants": [],
+                              "boxSizing": "border-box",
+                              "alignItems": "center",
+                              "flexDirection": "row"
+                            },
+                            "events": [],
+                            "repeat": {
+                              "name": "FILTER",
+                              "type": "function",
+                              "arguments": [
+                                {
+                                  "name": "List",
+                                  "formula": {
+                                    "name": "Data",
+                                    "path": [
+                                      "Queries",
+                                      "User",
+                                      "data",
+                                      "users",
+                                      "0",
+                                      "organizations"
+                                    ],
+                                    "type": "path"
+                                  }
+                                },
+                                {
+                                  "name": "Fx",
+                                  "formula": {
+                                    "name": "NOT",
+                                    "type": "function",
+                                    "arguments": [
+                                      {
+                                        "name": "Input",
+                                        "formula": {
+                                          "name": "EQ",
+                                          "type": "function",
+                                          "arguments": [
+                                            {
+                                              "name": "First",
+                                              "formula": {
+                                                "name": "Data",
+                                                "path": [
+                                                  "Args",
+                                                  "item",
+                                                  "id"
+                                                ],
+                                                "type": "path"
+                                              }
+                                            },
+                                            {
+                                              "name": "Second",
+                                              "formula": {
+                                                "name": "Data",
+                                                "path": [
+                                                  "Functions",
+                                                  "SelectedOrg",
+                                                  "id"
+                                                ],
+                                                "type": "path"
+                                              }
+                                            }
+                                          ],
+                                          "description": {
+                                            "key": null,
+                                            "ref": null,
+                                            "props": {
+                                              "children": [
+                                                {
+                                                  "key": null,
+                                                  "ref": null,
+                                                  "type": "h1",
+                                                  "props": {
+                                                    "children": "EQ"
+                                                  },
+                                                  "_owner": null,
+                                                  "_store": {}
+                                                },
+                                                {
+                                                  "key": null,
+                                                  "ref": null,
+                                                  "type": "p",
+                                                  "props": {
+                                                    "children": "Returns TRUE if the two values are equal"
+                                                  },
+                                                  "_owner": null,
+                                                  "_store": {}
+                                                },
+                                                {
+                                                  "key": null,
+                                                  "ref": null,
+                                                  "type": "h2",
+                                                  "props": {
+                                                    "children": "Arguments"
+                                                  },
+                                                  "_owner": null,
+                                                  "_store": {}
+                                                },
+                                                {
+                                                  "key": null,
+                                                  "ref": null,
+                                                  "type": "ol",
+                                                  "props": {
+                                                    "children": [
+                                                      {
+                                                        "key": null,
+                                                        "ref": null,
+                                                        "type": "li",
+                                                        "props": {
+                                                          "children": [
+                                                            {
+                                                              "key": null,
+                                                              "ref": null,
+                                                              "type": "strong",
+                                                              "props": {
+                                                                "children": "First argument"
+                                                              },
+                                                              "_owner": null,
+                                                              "_store": {}
+                                                            },
+                                                            " The fist item to be compare"
+                                                          ]
+                                                        },
+                                                        "_owner": null,
+                                                        "_store": {}
+                                                      },
+                                                      {
+                                                        "key": null,
+                                                        "ref": null,
+                                                        "type": "li",
+                                                        "props": {
+                                                          "children": [
+                                                            {
+                                                              "key": null,
+                                                              "ref": null,
+                                                              "type": "strong",
+                                                              "props": {
+                                                                "children": "Second argument"
+                                                              },
+                                                              "_owner": null,
+                                                              "_store": {}
+                                                            },
+                                                            " The second argument to compare"
+                                                          ]
+                                                        },
+                                                        "_owner": null,
+                                                        "_store": {}
+                                                      }
+                                                    ]
+                                                  },
+                                                  "_owner": null,
+                                                  "_store": {}
+                                                },
+                                                {
+                                                  "key": null,
+                                                  "ref": null,
+                                                  "type": "h2",
+                                                  "props": {
+                                                    "children": "Examples"
+                                                  },
+                                                  "_owner": null,
+                                                  "_store": {}
+                                                },
+                                                {
+                                                  "key": null,
+                                                  "ref": null,
+                                                  "type": "blockquote",
+                                                  "props": {
+                                                    "children": "\n    EQ(\"hello \",\"hi\") \n    // returns FALSE\n  \n    EQ(\"hello \",\"hello\") \n    // returns TRUE\n  "
+                                                  },
+                                                  "_owner": null,
+                                                  "_store": {}
+                                                }
+                                              ]
+                                            },
+                                            "_owner": null,
+                                            "_store": {}
+                                          }
+                                        }
+                                      }
+                                    ],
+                                    "description": {
+                                      "key": null,
+                                      "ref": null,
+                                      "props": {
+                                        "children": [
+                                          {
+                                            "key": null,
+                                            "ref": null,
+                                            "type": "h1",
+                                            "props": {
+                                              "children": "NOT"
+                                            },
+                                            "_owner": null,
+                                            "_store": {}
+                                          },
+                                          {
+                                            "key": null,
+                                            "ref": null,
+                                            "type": "p",
+                                            "props": {
+                                              "children": "Returns FALSE if the value is truthy. Otherwise FALSE"
+                                            },
+                                            "_owner": null,
+                                            "_store": {}
+                                          },
+                                          {
+                                            "key": null,
+                                            "ref": null,
+                                            "type": "h2",
+                                            "props": {
+                                              "children": "Arguments"
+                                            },
+                                            "_owner": null,
+                                            "_store": {}
+                                          },
+                                          {
+                                            "key": null,
+                                            "ref": null,
+                                            "type": "ol",
+                                            "props": {
+                                              "children": {
+                                                "key": null,
+                                                "ref": null,
+                                                "type": "li",
+                                                "props": {
+                                                  "children": {
+                                                    "key": null,
+                                                    "ref": null,
+                                                    "type": "strong",
+                                                    "props": {
+                                                      "children": "Item"
+                                                    },
+                                                    "_owner": null,
+                                                    "_store": {}
+                                                  }
+                                                },
+                                                "_owner": null,
+                                                "_store": {}
+                                              }
+                                            },
+                                            "_owner": null,
+                                            "_store": {}
+                                          },
+                                          {
+                                            "key": null,
+                                            "ref": null,
+                                            "type": "h2",
+                                            "props": {
+                                              "children": "Examples"
+                                            },
+                                            "_owner": null,
+                                            "_store": {}
+                                          },
+                                          {
+                                            "key": null,
+                                            "ref": null,
+                                            "type": "blockquote",
+                                            "props": {
+                                              "children": "\n    NO(TRUE) \n  "
+                                            },
+                                            "_owner": null,
+                                            "_store": {}
+                                          },
+                                          "Will return:",
+                                          {
+                                            "key": null,
+                                            "ref": null,
+                                            "type": "blockquote",
+                                            "props": {
+                                              "children": "FALSE"
+                                            },
+                                            "_owner": null,
+                                            "_store": {}
+                                          },
+                                          {
+                                            "key": null,
+                                            "ref": null,
+                                            "type": "blockquote",
+                                            "props": {
+                                              "children": "\n    nOT(FALSE) \n  "
+                                            },
+                                            "_owner": null,
+                                            "_store": {}
+                                          },
+                                          "Will return:",
+                                          {
+                                            "key": null,
+                                            "ref": null,
+                                            "type": "blockquote",
+                                            "props": {
+                                              "children": "TRUE"
+                                            },
+                                            "_owner": null,
+                                            "_store": {}
+                                          }
+                                        ]
+                                      },
+                                      "_owner": null,
+                                      "_store": {}
+                                    }
+                                  }
+                                }
+                              ],
+                              "description": {
+                                "key": null,
+                                "ref": null,
+                                "props": {
+                                  "children": [
+                                    {
+                                      "key": null,
+                                      "ref": null,
+                                      "type": "h1",
+                                      "props": {
+                                        "children": "FILTER"
+                                      },
+                                      "_owner": null,
+                                      "_store": {}
+                                    },
+                                    {
+                                      "key": null,
+                                      "ref": null,
+                                      "type": "p",
+                                      "props": {
+                                        "children": "Create a new List by filtering the items in the input"
+                                      },
+                                      "_owner": null,
+                                      "_store": {}
+                                    },
+                                    {
+                                      "key": null,
+                                      "ref": null,
+                                      "type": "h2",
+                                      "props": {
+                                        "children": "Arguments"
+                                      },
+                                      "_owner": null,
+                                      "_store": {}
+                                    },
+                                    {
+                                      "key": null,
+                                      "ref": null,
+                                      "type": "ol",
+                                      "props": {
+                                        "children": [
+                                          {
+                                            "key": null,
+                                            "ref": null,
+                                            "type": "li",
+                                            "props": {
+                                              "children": [
+                                                {
+                                                  "key": null,
+                                                  "ref": null,
+                                                  "type": "strong",
+                                                  "props": {
+                                                    "children": "Input List"
+                                                  },
+                                                  "_owner": null,
+                                                  "_store": {}
+                                                },
+                                                " The list to be filterd"
+                                              ]
+                                            },
+                                            "_owner": null,
+                                            "_store": {}
+                                          },
+                                          {
+                                            "key": null,
+                                            "ref": null,
+                                            "type": "li",
+                                            "props": {
+                                              "children": [
+                                                {
+                                                  "key": null,
+                                                  "ref": null,
+                                                  "type": "strong",
+                                                  "props": {
+                                                    "children": "Predicate Formula"
+                                                  },
+                                                  "_owner": null,
+                                                  "_store": {}
+                                                },
+                                                " This formula will be a applied to each item in the list. If the formula returns truthy the item will be added to the new list."
+                                              ]
+                                            },
+                                            "_owner": null,
+                                            "_store": {}
+                                          }
+                                        ]
+                                      },
+                                      "_owner": null,
+                                      "_store": {}
+                                    },
+                                    {
+                                      "key": null,
+                                      "ref": null,
+                                      "type": "h2",
+                                      "props": {
+                                        "children": "Example"
+                                      },
+                                      "_owner": null,
+                                      "_store": {}
+                                    },
+                                    {
+                                      "key": null,
+                                      "ref": null,
+                                      "type": "blockquote",
+                                      "props": {
+                                        "children": "\n    FILTER(LIST(\"Andreas\", \"Freyja\"),EQ(Args.item, \"Freyja\")) \n  "
+                                      },
+                                      "_owner": null,
+                                      "_store": {}
+                                    },
+                                    "Will return: ",
+                                    {
+                                      "key": null,
+                                      "ref": null,
+                                      "type": "blockquote",
+                                      "props": {
+                                        "children": "LIST(\"Freyja\")"
+                                      },
+                                      "_owner": null,
+                                      "_store": {}
+                                    }
+                                  ]
+                                },
+                                "_owner": null,
+                                "_store": {}
+                              }
+                            },
+                            "children": [
+                              {
+                                "id": "QR_CeFeYijIMQY7o5IHd6",
+                                "tag": "button",
+                                "type": "element",
+                                "attrs": {},
+                                "style": {
+                                  "display": "inline-flex",
+                                  "position": "relative",
+                                  "boxSizing": "border-box",
+                                  "alignItems": "center",
+                                  "paddingTop": "0px",
+                                  "paddingLeft": "0px",
+                                  "borderRadius": 3,
+                                  "paddingRight": "0px",
+                                  "flexDirection": "row",
+                                  "paddingBottom": "0px",
+                                  "justifyContent": "center"
+                                },
+                                "events": [
+                                  {
+                                    "type": "NodeEvent",
+                                    "actions": [
+                                      {
+                                        "key": "NewProjectDialog",
+                                        "type": "Update Variable",
+                                        "value": {
+                                          "name": "Data",
+                                          "path": [
+                                            "ListItem",
+                                            "organization",
+                                            "id"
+                                          ],
+                                          "type": "path"
+                                        },
+                                        "variableName": "SelectedOrg"
+                                      }
+                                    ],
+                                    "trigger": "Click",
+                                    "preventDefault": false,
+                                    "stopPropagation": false
+                                  }
+                                ],
+                                "children": [
+                                  {
+                                    "id": "TSoVUN6OYskpy07nwBld_",
+                                    "type": "text",
+                                    "value": {
+                                      "type": "formula",
+                                      "formula": {
+                                        "name": "Data",
+                                        "path": [
+                                          "ListItem",
+                                          "organization",
+                                          "name"
+                                        ],
+                                        "type": "path"
+                                      }
+                                    }
+                                  }
+                                ],
+                                "classList": []
+                              }
+                            ],
+                            "classList": []
+                          },
+                          {
+                            "id": "IY2EoqwX154vhmuuZpRwd",
+                            "tag": "li",
+                            "type": "element",
+                            "attrs": {},
+                            "style": {
+                              "display": "flex",
+                              "padding": "8px",
+                              "position": "relative",
+                              "boxSizing": "border-box",
+                              "alignItems": "center",
+                              "flexDirection": "row"
+                            },
+                            "events": [],
+                            "children": [
+                              {
+                                "id": "YJmjyJ5TDuJ-qAnXXDvYK",
+                                "tag": "button",
+                                "type": "element",
+                                "attrs": {},
+                                "style": {
+                                  "display": "inline-flex",
+                                  "position": "relative",
+                                  "boxSizing": "border-box",
+                                  "alignItems": "center",
+                                  "paddingTop": "0px",
+                                  "paddingLeft": "0px",
+                                  "borderRadius": 3,
+                                  "paddingRight": "0px",
+                                  "flexDirection": "row",
+                                  "paddingBottom": "0px",
+                                  "justifyContent": "center"
+                                },
+                                "events": [
+                                  {
+                                    "type": "NodeEvent",
+                                    "actions": [
+                                      {
+                                        "type": "Logout"
+                                      }
+                                    ],
+                                    "trigger": "Click",
+                                    "preventDefault": false,
+                                    "stopPropagation": false
+                                  }
+                                ],
+                                "children": [
+                                  {
+                                    "id": "nzVQPN_la5UTfY4gDfGix",
+                                    "type": "text",
+                                    "value": {
+                                      "type": "formula",
+                                      "formula": "Sign out"
+                                    }
+                                  }
+                                ],
+                                "classList": []
+                              }
+                            ],
+                            "classList": []
+                          }
+                        ],
+                        "classList": []
+                      }
+                    ],
+                    "classList": [],
+                    "condition": {
+                      "name": "Data",
+                      "path": [
+                        "Variables",
+                        "ShowUserMenu"
+                      ],
+                      "type": "path"
+                    }
+                  }
+                ],
+                "classList": []
+              }
+            ],
+            "classList": []
+          },
+          {
+            "id": "3xE_h1-JDsuXPCR4tong-",
+            "tag": "main",
+            "type": "element",
+            "attrs": {},
+            "style": {
+              "gap": "32px",
+              "display": "flex",
+              "flexGrow": 1,
+              "position": "relative",
+              "minHeight": "0%",
+              "alignItems": "center",
+              "flexShrink": 1,
+              "flexDirection": "column",
+              "justifyContent": "flex-start"
+            },
+            "events": [],
+            "children": [
+              {
+                "id": "hPZ12gBGGdIc-1FGLnYmu",
+                "tag": "ul",
+                "type": "element",
+                "attrs": {},
+                "style": {
+                  "gap": "16px",
+                  "width": "100%",
+                  "display": "flex",
+                  "overflow": "auto",
+                  "position": "relative",
+                  "boxSizing": "border-box",
+                  "alignItems": "stretch",
+                  "paddingTop": "64px",
+                  "paddingLeft": "64px",
+                  "paddingRight": "64px",
+                  "flexDirection": "row",
+                  "paddingBottom": "64px",
+                  "justifyContent": "flex-start"
+                },
+                "events": [],
+                "children": [
+                  {
+                    "id": "eOd0ATPNTKyXNQp-hwd95",
+                    "tag": "li",
+                    "type": "element",
+                    "attrs": {},
+                    "style": {
+                      "top": "auto",
+                      "width": "auto",
+                      "display": "flex",
+                      "padding": "8px",
+                      "position": "relative",
+                      "boxSizing": "border-box",
+                      "alignItems": "center",
+                      "paddingTop": "0px",
+                      "paddingLeft": "0px",
+                      "paddingRight": "0px",
+                      "flexDirection": "column",
+                      "paddingBottom": "0px",
+                      "justifyContent": "center",
+                      "backgroundColor": "rgba(0,0,0,0.15)"
+                    },
+                    "events": [],
+                    "parent": "ROOT",
+                    "repeat": {
+                      "name": "Data",
+                      "path": [
+                        "Queries",
+                        "Projects",
+                        "data",
+                        "projects"
+                      ],
+                      "type": "path"
+                    },
+                    "children": [
+                      {
+                        "id": "dP7IllArJzI0BkbSBw6vT",
+                        "tag": "a",
+                        "href": {
+                          "url": {
+                            "name": "CONCAT",
+                            "type": "function",
+                            "varArgs": true,
+                            "arguments": [
+                              {
+                                "formula": {
+                                  "name": "String",
+                                  "type": "string",
+                                  "value": "/editor/"
+                                }
+                              },
+                              {
+                                "formula": {
+                                  "name": "Data",
+                                  "path": [
+                                    "ListItem",
+                                    "Item",
+                                    "slug"
+                                  ],
+                                  "type": "path"
+                                }
+                              },
+                              {
+                                "formula": {
+                                  "name": "String",
+                                  "type": "string",
+                                  "value": ""
+                                }
+                              }
+                            ],
+                            "description": {
+                              "key": null,
+                              "ref": null,
+                              "props": {
+                                "children": [
+                                  {
+                                    "key": null,
+                                    "ref": null,
+                                    "type": "h1",
+                                    "props": {
+                                      "children": "CONCAT"
+                                    },
+                                    "_owner": null,
+                                    "_store": {}
+                                  },
+                                  {
+                                    "key": null,
+                                    "ref": null,
+                                    "type": "p",
+                                    "props": {
+                                      "children": "Concatenate two values returning a string"
+                                    },
+                                    "_owner": null,
+                                    "_store": {}
+                                  },
+                                  {
+                                    "key": null,
+                                    "ref": null,
+                                    "type": "h2",
+                                    "props": {
+                                      "children": "Arguments"
+                                    },
+                                    "_owner": null,
+                                    "_store": {}
+                                  },
+                                  {
+                                    "key": null,
+                                    "ref": null,
+                                    "type": "ol",
+                                    "props": {
+                                      "children": [
+                                        {
+                                          "key": null,
+                                          "ref": null,
+                                          "type": "li",
+                                          "props": {
+                                            "children": [
+                                              " ",
+                                              {
+                                                "key": null,
+                                                "ref": null,
+                                                "type": "strong",
+                                                "props": {
+                                                  "children": "Prefix"
+                                                },
+                                                "_owner": null,
+                                                "_store": {}
+                                              },
+                                              " The fist part of the string"
+                                            ]
+                                          },
+                                          "_owner": null,
+                                          "_store": {}
+                                        },
+                                        {
+                                          "key": null,
+                                          "ref": null,
+                                          "type": "li",
+                                          "props": {
+                                            "children": [
+                                              " ",
+                                              {
+                                                "key": null,
+                                                "ref": null,
+                                                "type": "strong",
+                                                "props": {
+                                                  "children": "postfix"
+                                                },
+                                                "_owner": null,
+                                                "_store": {}
+                                              },
+                                              " The last part of the string"
+                                            ]
+                                          },
+                                          "_owner": null,
+                                          "_store": {}
+                                        }
+                                      ]
+                                    },
+                                    "_owner": null,
+                                    "_store": {}
+                                  },
+                                  {
+                                    "key": null,
+                                    "ref": null,
+                                    "type": "h2",
+                                    "props": {
+                                      "children": "Examples"
+                                    },
+                                    "_owner": null,
+                                    "_store": {}
+                                  },
+                                  {
+                                    "key": null,
+                                    "ref": null,
+                                    "type": "blockquote",
+                                    "props": {
+                                      "children": "\n    CONCAT(\"Hello \",\"world\") \n    // returns \"Hello world\n  "
+                                    },
+                                    "_owner": null,
+                                    "_store": {}
+                                  }
+                                ]
+                              },
+                              "_owner": null,
+                              "_store": {}
+                            }
+                          }
+                        },
+                        "type": "element",
+                        "attrs": {},
+                        "style": {
+                          "gap": "8px",
+                          "margin": "0px",
+                          "display": "flex",
+                          "padding": "0px",
+                          "position": "relative",
+                          "boxSizing": "border-box",
+                          "alignItems": "center",
+                          "flexDirection": "column"
+                        },
+                        "events": [],
+                        "children": [
+                          {
+                            "id": "URctUqBfP00JUdi9PAccm",
+                            "tag": "iframe",
+                            "type": "element",
+                            "attrs": {
+                              "src": {
+                                "type": "formula",
+                                "formula": {
+                                  "name": "CONCAT",
+                                  "type": "function",
+                                  "varArgs": true,
+                                  "arguments": [
+                                    {
+                                      "formula": {
+                                        "name": "String",
+                                        "type": "string",
+                                        "value": "https://"
+                                      }
+                                    },
+                                    {
+                                      "formula": {
+                                        "name": "Data",
+                                        "path": [
+                                          "ListItem",
+                                          "Item",
+                                          "slug"
+                                        ],
+                                        "type": "path"
+                                      }
+                                    },
+                                    {
+                                      "formula": {
+                                        "name": "String",
+                                        "type": "string",
+                                        "value": ".toddle.dev"
+                                      }
+                                    }
+                                  ],
+                                  "description": {
+                                    "key": null,
+                                    "ref": null,
+                                    "props": {
+                                      "children": [
+                                        {
+                                          "key": null,
+                                          "ref": null,
+                                          "type": "h1",
+                                          "props": {
+                                            "children": "CONCAT"
+                                          },
+                                          "_owner": null,
+                                          "_store": {}
+                                        },
+                                        {
+                                          "key": null,
+                                          "ref": null,
+                                          "type": "p",
+                                          "props": {
+                                            "children": "Concatenate two values returning a string"
+                                          },
+                                          "_owner": null,
+                                          "_store": {}
+                                        },
+                                        {
+                                          "key": null,
+                                          "ref": null,
+                                          "type": "h2",
+                                          "props": {
+                                            "children": "Arguments"
+                                          },
+                                          "_owner": null,
+                                          "_store": {}
+                                        },
+                                        {
+                                          "key": null,
+                                          "ref": null,
+                                          "type": "ol",
+                                          "props": {
+                                            "children": [
+                                              {
+                                                "key": null,
+                                                "ref": null,
+                                                "type": "li",
+                                                "props": {
+                                                  "children": [
+                                                    " ",
+                                                    {
+                                                      "key": null,
+                                                      "ref": null,
+                                                      "type": "strong",
+                                                      "props": {
+                                                        "children": "Prefix"
+                                                      },
+                                                      "_owner": null,
+                                                      "_store": {}
+                                                    },
+                                                    " The fist part of the string"
+                                                  ]
+                                                },
+                                                "_owner": null,
+                                                "_store": {}
+                                              },
+                                              {
+                                                "key": null,
+                                                "ref": null,
+                                                "type": "li",
+                                                "props": {
+                                                  "children": [
+                                                    " ",
+                                                    {
+                                                      "key": null,
+                                                      "ref": null,
+                                                      "type": "strong",
+                                                      "props": {
+                                                        "children": "postfix"
+                                                      },
+                                                      "_owner": null,
+                                                      "_store": {}
+                                                    },
+                                                    " The last part of the string"
+                                                  ]
+                                                },
+                                                "_owner": null,
+                                                "_store": {}
+                                              }
+                                            ]
+                                          },
+                                          "_owner": null,
+                                          "_store": {}
+                                        },
+                                        {
+                                          "key": null,
+                                          "ref": null,
+                                          "type": "h2",
+                                          "props": {
+                                            "children": "Examples"
+                                          },
+                                          "_owner": null,
+                                          "_store": {}
+                                        },
+                                        {
+                                          "key": null,
+                                          "ref": null,
+                                          "type": "blockquote",
+                                          "props": {
+                                            "children": "\n    CONCAT(\"Hello \",\"world\") \n    // returns \"Hello world\n  "
+                                          },
+                                          "_owner": null,
+                                          "_store": {}
+                                        }
+                                      ]
+                                    },
+                                    "_owner": null,
+                                    "_store": {}
+                                  }
+                                }
+                              }
+                            },
+                            "style": {
+                              "shadows": [
+                                {
+                                  "x": 0,
+                                  "y": 3,
+                                  "blur": 5,
+                                  "color": "#00000055",
+                                  "inset": false,
+                                  "spread": 0
+                                }
+                              ],
+                              "overflow": "hidden",
+                              "position": "relative",
+                              "borderColor": "#000000",
+                              "borderStyle": "solid",
+                              "borderWidth": "0px"
+                            },
+                            "events": [],
+                            "children": [],
+                            "classList": []
+                          },
+                          {
+                            "id": "j9UdJZXI5_cJJQjOZohlb",
+                            "tag": "span",
+                            "type": "element",
+                            "attrs": {},
+                            "style": {
+                              "width": "100%",
+                              "bottom": "0px",
+                              "margin": "0px",
+                              "display": "flex",
+                              "padding": "0px",
+                              "position": "absolute",
+                              "boxSizing": "border-box",
+                              "alignItems": "center",
+                              "paddingTop": "4px",
+                              "breakpoints": {
+                                "@large": {
+                                  "backgroundColor": "rgba(0,0,0,0.55)"
+                                }
+                              },
+                              "paddingLeft": "4px",
+                              "paddingRight": "4px",
+                              "paddingBottom": "4px",
+                              "justifyContent": "center",
+                              "backgroundColor": "rgba(0,0,0,0.17)"
+                            },
+                            "events": [],
+                            "children": [
+                              {
+                                "id": "7UQ0E-yi69OW93qTjHbLA",
+                                "type": "text",
+                                "value": {
+                                  "type": "formula",
+                                  "formula": {
+                                    "name": "Data",
+                                    "path": [
+                                      "ListItem",
+                                      "Item",
+                                      "name"
+                                    ],
+                                    "type": "path"
+                                  }
+                                },
+                                "parent": "ROOT"
+                              }
+                            ],
+                            "classList": []
+                          }
+                        ],
+                        "classList": []
+                      }
+                    ],
+                    "classList": []
+                  }
+                ],
+                "classList": []
+              },
+              {
+                "id": "xAT4v_okKh7ZikW2bEzpR",
+                "tag": "button",
+                "type": "element",
+                "attrs": {},
+                "style": {
+                  "height": "40px",
+                  "display": "inline-flex",
+                  "position": "relative",
+                  "boxSizing": "border-box",
+                  "alignItems": "center",
+                  "borderColor": "#747474",
+                  "borderStyle": "solid",
+                  "borderWidth": "1px",
+                  "paddingLeft": "20px",
+                  "borderRadius": 3,
+                  "paddingRight": "20px",
+                  "flexDirection": "row",
+                  "justifyContent": "center"
+                },
+                "events": [
+                  {
+                    "type": "NodeEvent",
+                    "actions": [
+                      {
+                        "key": "NewProjectDialog",
+                        "type": "Update Variable",
+                        "value": "TRUE",
+                        "variableId": "NewProjectDialog",
+                        "variableName": "NewProjectDialog"
+                      }
+                    ],
+                    "trigger": "Click",
+                    "preventDefault": false,
+                    "stopPropagation": false
+                  }
+                ],
+                "children": [
+                  {
+                    "id": "fBZq99AYyLBokvyxVsTXG",
+                    "type": "text",
+                    "value": {
+                      "type": "formula",
+                      "formula": "Create New Project"
+                    }
+                  }
+                ],
+                "classList": [],
+                "condition": {
+                  "name": "Data",
+                  "path": [
+                    "Queries",
+                    "Projects",
+                    "data"
+                  ],
+                  "type": "path"
+                }
+              }
+            ],
+            "classList": []
+          },
+          {
+            "id": "5lXvPKxkHdJncX9yeH2Wg",
+            "name": "CreateProjectForm",
+            "type": "component",
+            "attrs": {
+              "Owner": {
+                "name": "Data",
+                "path": [
+                  "Queries",
+                  "User",
+                  "data",
+                  "users",
+                  "0",
+                  "id"
+                ],
+                "type": "path"
+              },
+              "Organisation": {
+                "name": "Data",
+                "path": [
+                  "Functions",
+                  "SelectedOrg",
+                  "organization",
+                  "id"
+                ],
+                "type": "path"
+              },
+              "organisation": {
+                "name": "Data",
+                "path": [
+                  "Queries",
+                  "User",
+                  "data",
+                  "users",
+                  "0",
+                  "organizations",
+                  "0",
+                  "organization",
+                  "id"
+                ],
+                "type": "path"
+              }
+            },
+            "events": [
+              {
+                "type": "ComponentEvent",
+                "actions": [
+                  {
+                    "key": "NewProjectDialog",
+                    "type": "Update Variable",
+                    "value": "",
+                    "variableId": "NewProjectDialog",
+                    "variableName": "NewProjectDialog"
+                  }
+                ],
+                "trigger": "Hide"
+              }
+            ],
+            "children": [],
+            "condition": {
+              "name": "Data",
+              "path": [
+                "Variables",
+                "NewProjectDialog"
+              ],
+              "type": "path"
+            }
+          }
+        ],
+        "classList": []
+      },
+      {
+        "id": "KoL0qMZWivAyjtj6ZcCY9",
+        "tag": "button",
+        "type": "element",
+        "attrs": {},
+        "style": {
+          "top": "auto",
+          "left": "auto",
+          "right": "16px",
+          "bottom": "16px",
+          "height": "40px",
+          "display": "inline-flex",
+          "position": "fixed",
+          "boxSizing": "border-box",
+          "alignItems": "center",
+          "paddingLeft": "20px",
+          "borderRadius": 3,
+          "paddingRight": "20px",
+          "flexDirection": "row",
+          "justifyContent": "center"
+        },
+        "events": [
+          {
+            "type": "NodeEvent",
+            "actions": [
+              {
+                "type": "Logout"
+              }
+            ],
+            "trigger": "Click",
+            "preventDefault": false,
+            "stopPropagation": false
+          }
+        ],
+        "children": [
+          {
+            "id": "t_ly5NQEVh4jSJq8zGfri",
+            "type": "text",
+            "value": {
+              "type": "formula",
+              "formula": "Logout"
+            }
+          }
+        ],
+        "classList": [],
+        "condition": {
+          "name": "Data",
+          "path": [
+            "Queries",
+            "User",
+            "data",
+            "users",
+            "0"
+          ],
+          "type": "path"
+        }
+      }
+    ],
+    "classList": []
+  },
+  "events": [],
+  "variables": [
+    {
+      "id": "ih9YRa5TVsn4wRk6AAhH9",
+      "name": "NewProjectDialog",
+      "initialValue": ""
+    },
+    {
+      "id": "474ffeff-cf6d-42ee-bad3-26a7bcd8b7ee",
+      "name": "SelectedOrg",
+      "initialValue": ""
+    },
+    {
+      "id": "448cc25c-0bb9-4c07-bc68-c475a9278b41",
+      "name": "ShowUserMenu",
+      "initialValue": ""
+    }
+  ],
+  "functions": [
+    {
+      "id": "5d251289-8fe3-410a-9919-702e6c0f3d55",
+      "name": "SelectedOrg",
+      "value": {
+        "name": "IF",
+        "type": "function",
+        "arguments": [
+          {
+            "name": "If",
+            "formula": {
+              "name": "Data",
+              "path": [
+                "Variables",
+                "SelectedOrg"
+              ],
+              "type": "path"
+            }
+          },
+          {
+            "name": "Then",
+            "formula": {
+              "name": "FIND",
+              "type": "function",
+              "arguments": [
+                {
+                  "name": "List",
+                  "formula": {
+                    "name": "Data",
+                    "path": [
+                      "Queries",
+                      "User",
+                      "data",
+                      "users",
+                      "0",
+                      "organizations"
+                    ],
+                    "type": "path"
+                  }
+                },
+                {
+                  "name": "Fx",
+                  "formula": {
+                    "name": "EQ",
+                    "type": "function",
+                    "arguments": [
+                      {
+                        "name": "First",
+                        "formula": {
+                          "name": "Data",
+                          "path": [
+                            "Args",
+                            "item",
+                            "organization",
+                            "id"
+                          ],
+                          "type": "path"
+                        }
+                      },
+                      {
+                        "name": "Second",
+                        "formula": {
+                          "name": "Data",
+                          "path": [
+                            "Variables",
+                            "SelectedOrg"
+                          ],
+                          "type": "path"
+                        }
+                      }
+                    ],
+                    "description": {
+                      "key": null,
+                      "ref": null,
+                      "props": {
+                        "children": [
+                          {
+                            "key": null,
+                            "ref": null,
+                            "type": "h1",
+                            "props": {
+                              "children": "EQ"
+                            },
+                            "_owner": null,
+                            "_store": {}
+                          },
+                          {
+                            "key": null,
+                            "ref": null,
+                            "type": "p",
+                            "props": {
+                              "children": "Returns TRUE if the two values are equal"
+                            },
+                            "_owner": null,
+                            "_store": {}
+                          },
+                          {
+                            "key": null,
+                            "ref": null,
+                            "type": "h2",
+                            "props": {
+                              "children": "Arguments"
+                            },
+                            "_owner": null,
+                            "_store": {}
+                          },
+                          {
+                            "key": null,
+                            "ref": null,
+                            "type": "ol",
+                            "props": {
+                              "children": [
+                                {
+                                  "key": null,
+                                  "ref": null,
+                                  "type": "li",
+                                  "props": {
+                                    "children": [
+                                      {
+                                        "key": null,
+                                        "ref": null,
+                                        "type": "strong",
+                                        "props": {
+                                          "children": "First argument"
+                                        },
+                                        "_owner": null,
+                                        "_store": {}
+                                      },
+                                      " The fist item to be compare"
+                                    ]
+                                  },
+                                  "_owner": null,
+                                  "_store": {}
+                                },
+                                {
+                                  "key": null,
+                                  "ref": null,
+                                  "type": "li",
+                                  "props": {
+                                    "children": [
+                                      {
+                                        "key": null,
+                                        "ref": null,
+                                        "type": "strong",
+                                        "props": {
+                                          "children": "Second argument"
+                                        },
+                                        "_owner": null,
+                                        "_store": {}
+                                      },
+                                      " The second argument to compare"
+                                    ]
+                                  },
+                                  "_owner": null,
+                                  "_store": {}
+                                }
+                              ]
+                            },
+                            "_owner": null,
+                            "_store": {}
+                          },
+                          {
+                            "key": null,
+                            "ref": null,
+                            "type": "h2",
+                            "props": {
+                              "children": "Examples"
+                            },
+                            "_owner": null,
+                            "_store": {}
+                          },
+                          {
+                            "key": null,
+                            "ref": null,
+                            "type": "blockquote",
+                            "props": {
+                              "children": "\n    EQ(\"hello \",\"hi\") \n    // returns FALSE\n  \n    EQ(\"hello \",\"hello\") \n    // returns TRUE\n  "
+                            },
+                            "_owner": null,
+                            "_store": {}
+                          }
+                        ]
+                      },
+                      "_owner": null,
+                      "_store": {}
+                    }
+                  }
+                }
+              ],
+              "description": {
+                "key": null,
+                "ref": null,
+                "props": {
+                  "children": [
+                    {
+                      "key": null,
+                      "ref": null,
+                      "type": "h1",
+                      "props": {
+                        "children": "FIND"
+                      },
+                      "_owner": null,
+                      "_store": {}
+                    },
+                    {
+                      "key": null,
+                      "ref": null,
+                      "type": "p",
+                      "props": {
+                        "children": "Get the first element where the function returns true"
+                      },
+                      "_owner": null,
+                      "_store": {}
+                    },
+                    {
+                      "key": null,
+                      "ref": null,
+                      "type": "h2",
+                      "props": {
+                        "children": "Arguments"
+                      },
+                      "_owner": null,
+                      "_store": {}
+                    },
+                    {
+                      "key": null,
+                      "ref": null,
+                      "type": "ol",
+                      "props": {
+                        "children": [
+                          {
+                            "key": null,
+                            "ref": null,
+                            "type": "li",
+                            "props": {
+                              "children": [
+                                {
+                                  "key": null,
+                                  "ref": null,
+                                  "type": "strong",
+                                  "props": {
+                                    "children": "Input List"
+                                  },
+                                  "_owner": null,
+                                  "_store": {}
+                                },
+                                " The list to be filterd"
+                              ]
+                            },
+                            "_owner": null,
+                            "_store": {}
+                          },
+                          {
+                            "key": null,
+                            "ref": null,
+                            "type": "li",
+                            "props": {
+                              "children": [
+                                {
+                                  "key": null,
+                                  "ref": null,
+                                  "type": "strong",
+                                  "props": {
+                                    "children": "Predicate Formula"
+                                  },
+                                  "_owner": null,
+                                  "_store": {}
+                                },
+                                " This formula will be a applied to each item in the list. If the formula returns truthy FIND with return that item"
+                              ]
+                            },
+                            "_owner": null,
+                            "_store": {}
+                          }
+                        ]
+                      },
+                      "_owner": null,
+                      "_store": {}
+                    }
+                  ]
+                },
+                "_owner": null,
+                "_store": {}
+              }
+            }
+          },
+          {
+            "name": "Else",
+            "formula": {
+              "name": "Data",
+              "path": [
+                "Queries",
+                "User",
+                "data",
+                "users",
+                "0",
+                "organizations",
+                "0"
+              ],
+              "type": "path"
+            }
+          }
+        ],
+        "description": {
+          "key": null,
+          "ref": null,
+          "props": {
+            "children": [
+              {
+                "key": null,
+                "ref": null,
+                "type": "h1",
+                "props": {
+                  "children": "IF"
+                },
+                "_owner": null,
+                "_store": {}
+              },
+              {
+                "key": null,
+                "ref": null,
+                "type": "p",
+                "props": {
+                  "children": " Returns a value based on the provided condition"
+                },
+                "_owner": null,
+                "_store": {}
+              },
+              {
+                "key": null,
+                "ref": null,
+                "type": "h2",
+                "props": {
+                  "children": "Arguments"
+                },
+                "_owner": null,
+                "_store": {}
+              },
+              {
+                "key": null,
+                "ref": null,
+                "type": "ol",
+                "props": {
+                  "children": [
+                    {
+                      "key": null,
+                      "ref": null,
+                      "type": "li",
+                      "props": {
+                        "children": [
+                          " ",
+                          {
+                            "key": null,
+                            "ref": null,
+                            "type": "strong",
+                            "props": {
+                              "children": "Condition."
+                            },
+                            "_owner": null,
+                            "_store": {}
+                          },
+                          " If the value from this formula is FALSE or NULL then the condition is FALSE"
+                        ]
+                      },
+                      "_owner": null,
+                      "_store": {}
+                    },
+                    {
+                      "key": null,
+                      "ref": null,
+                      "type": "li",
+                      "props": {
+                        "children": [
+                          " ",
+                          {
+                            "key": null,
+                            "ref": null,
+                            "type": "strong",
+                            "props": {
+                              "children": "TRUE Value"
+                            },
+                            "_owner": null,
+                            "_store": {}
+                          },
+                          " The value to be returned if the condition is TRUE"
+                        ]
+                      },
+                      "_owner": null,
+                      "_store": {}
+                    },
+                    {
+                      "key": null,
+                      "ref": null,
+                      "type": "li",
+                      "props": {
+                        "children": [
+                          " ",
+                          {
+                            "key": null,
+                            "ref": null,
+                            "type": "strong",
+                            "props": {
+                              "children": "FALSE Value"
+                            },
+                            "_owner": null,
+                            "_store": {}
+                          },
+                          " The value to be returned if the condition is FALSE"
+                        ]
+                      },
+                      "_owner": null,
+                      "_store": {}
+                    }
+                  ]
+                },
+                "_owner": null,
+                "_store": {}
+              },
+              {
+                "key": null,
+                "ref": null,
+                "type": "h2",
+                "props": {
+                  "children": "Example 1"
+                },
+                "_owner": null,
+                "_store": {}
+              },
+              {
+                "key": null,
+                "ref": null,
+                "type": "blockquote",
+                "props": {
+                  "children": "\n          IF(TRUE, \"The condition was TRUE\", \"The condition was FALSE\") \n          //returns \"The condition was TRUE\" \n\n          IF(FALSE, \"The condition was TRUE\",\"The condition was FALSE\") \n          // returns \"The condition was FALSE\"\n          \n        "
+                },
+                "_owner": null,
+                "_store": {}
+              },
+              "Will return:",
+              {
+                "key": null,
+                "ref": null,
+                "type": "blockquote",
+                "props": {
+                  "children": "\n          \"The condition was TRUE\" \n        "
+                },
+                "_owner": null,
+                "_store": {}
+              },
+              {
+                "key": null,
+                "ref": null,
+                "type": "blockquote",
+                "props": {
+                  "children": "\n          IF(FALSE, \"The condition was TRUE\",\"The condition was FALSE\") \n        "
+                },
+                "_owner": null,
+                "_store": {}
+              },
+              "Will return:",
+              {
+                "key": null,
+                "ref": null,
+                "type": "blockquote",
+                "props": {
+                  "children": "\n          \"The condition was TRUE\" \n        "
+                },
+                "_owner": null,
+                "_store": {}
+              }
+            ]
+          },
+          "_owner": null,
+          "_store": {}
+        }
+      }
+    }
+  ],
+  "queries": [],
+  "onLoad": []
+}

@@ -1,31 +1,26 @@
 import { nanoid } from "nanoid/non-secure";
 import { NodeModel } from "../NodeModel";
 
-export const parseHtml = (htmlString: string): Record<string, NodeModel>[] => {
+export const parseHtml = (htmlString: string): NodeModel[] => {
   var parser = new DOMParser();
   var htmlDoc = parser.parseFromString(htmlString, "text/html");
   if (htmlDoc.body.children.length > 0) {
-    return Array.from(htmlDoc.body.children).map(elementToNodes);
+    return Array.from(htmlDoc.body.children).map(elementToNode);
   }
 
   if (htmlDoc.body.textContent) {
     return [
       {
-        ROOT: {
-          id: "ROOT",
-          type: "text",
-          value: { type: "value", value: htmlDoc.body.textContent },
-        },
+        type: "text",
+        value: { type: "value", value: htmlDoc.body.textContent },
       },
     ];
   }
   return [];
 };
 
-const elementToNodes = (element: Element): Record<string, NodeModel> => {
-  const nodes: Record<string, NodeModel> = {};
-
-  const visitElem = (element: Element, id: string) => {
+const elementToNode = (element: Element): NodeModel => {
+  const visitElem = (element: Element, id: string): NodeModel => {
     let children =
       element.children.length !== 0
         ? Array.from(element.children)
@@ -34,8 +29,7 @@ const elementToNodes = (element: Element): Record<string, NodeModel> => {
         : [];
 
     Array.from(element.children);
-    nodes[id] = {
-      id,
+    return {
       type: "element",
       tag: element.tagName,
       classList: element.className
@@ -51,20 +45,16 @@ const elementToNodes = (element: Element): Record<string, NodeModel> => {
       style: {},
       events: [],
       children: children.map((child) => {
-        const id = nanoid();
         if (typeof child === "string") {
-          nodes[id] = {
-            id,
+          return {
             type: "text",
             value: { type: "value", value: child },
           };
         } else {
-          visitElem(child, id);
+          return visitElem(child, id);
         }
-        return id;
       }),
     };
   };
-  visitElem(element, "ROOT");
-  return nodes;
+  return visitElem(element, "0");
 };

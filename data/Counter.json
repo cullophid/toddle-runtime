@@ -1,0 +1,77 @@
+{
+  "id": "192b1099-5297-442b-8a7e-75d86ec86f8f",
+  "name": "Counter",
+  "props": [],
+  "_project": "d41e9972-8714-4fed-af45-8407985afbe4",
+  "root": {
+    "tag": "div",
+    "type": "element",
+    "attrs": {},
+    "style": {},
+    "events": [],
+    "children": [
+      {
+        "id": "HLDrPDXzJMBRcIDkzWwEn",
+        "tag": "div",
+        "type": "element",
+        "attrs": {},
+        "style": {},
+        "events": [],
+        "children": [
+          {
+            "id": "mUe4dqVucN5gPFUQlNEXh",
+            "tag": "button",
+            "type": "element",
+            "attrs": {},
+            "style": {},
+            "events": [],
+            "children": [],
+            "classList": []
+          },
+          {
+            "id": "IWwzaWKoCg6-2lhMfiK_m",
+            "tag": "p",
+            "type": "element",
+            "attrs": {},
+            "style": {},
+            "events": [],
+            "children": [
+              {
+                "id": "D14qlXXkVEQCA2fMyepgj",
+                "type": "text",
+                "value": {
+                  "type": "formula",
+                  "formula": "Text"
+                }
+              }
+            ],
+            "classList": []
+          },
+          {
+            "id": "iG-RAnSWW5OfWn-lNiWPY",
+            "tag": "button",
+            "type": "element",
+            "attrs": {},
+            "style": {},
+            "events": [],
+            "children": [],
+            "classList": []
+          }
+        ],
+        "classList": []
+      }
+    ],
+    "classList": []
+  },
+  "events": [],
+  "variables": [
+    {
+      "id": "68271b18-5caf-42b4-b302-c69cc09cf32d",
+      "name": "count",
+      "initialValue": "0"
+    }
+  ],
+  "functions": [],
+  "queries": [],
+  "onLoad": null
+}

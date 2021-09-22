@@ -1,12 +1,14 @@
 import { ComponentModel } from "./ComponentModel";
 import { groupBy, kebabCase } from "lodash";
 import {
-  ElementNodeModel,
+  forEachNode,
   getFonts,
   NodeModel,
+  NodeStyleModel,
   StyleDeclarationBlock,
   variantSelector,
 } from "./NodeModel";
+import { getClassName } from "./hash";
 
 const SIZE_PROPERTIES = new Set([
   "width",
@@ -54,22 +56,23 @@ const styleToCss = (style: StyleDeclarationBlock) => {
     .join("\n");
 };
 
-const getNodeStyles = (node: ElementNodeModel) => {
-  const { variants, breakpoints, ...rest } = node.style;
+const getNodeStyles = (style: NodeStyleModel, classHash: string) => {
+  const { variants, breakpoints, ...rest } = style;
   const styleElem = document.createElement("style");
+
   styleElem.type = "text/css";
-  styleElem.setAttribute("data-node-id", node.id);
   styleElem.appendChild(
     document.createTextNode(`
-    [data-id="${node.id}"] {
+    .${classHash} {
         ${styleToCss(rest)}
     }
+ 
     ${
       variants
         ? variants
             .map(
               (variant) => `
-    [data-id="${node.id}"]${variantSelector(variant)} {
+      .${classHash}${variantSelector(variant)} {
         ${styleToCss(variant.style)}
     }
     `
@@ -87,15 +90,23 @@ export const insertStyles = (
   components: ComponentModel[]
 ) => {
   const fragment = document.createDocumentFragment();
-  components.forEach((component) =>
-    Object.values(component.nodes).forEach((node) => {
-      if (node.type !== "element") {
-        return;
-      }
-
-      fragment.appendChild(getNodeStyles(node));
-    })
+  const hashes = new Set<string>();
+  components.forEach(
+    (component) =>
+      component.root &&
+      forEachNode(component.root, (node, path) => {
+        if (node.type !== "element") {
+          return;
+        }
+        const classHash = getClassName(node.style);
+        if (hashes.has(classHash)) {
+          return;
+        }
+        hashes.add(classHash);
+        fragment.appendChild(getNodeStyles(node.style, classHash));
+      })
   );
+
   parent.appendChild(fragment);
 };
 
@@ -107,7 +118,7 @@ export const insertFonts = (
   styleElem.appendChild(
     document.createTextNode(
       components
-        .flatMap((comp) => getFontUrls(comp.nodes))
+        .flatMap((comp) => getFontUrls(comp.root))
         .map((url) => `@import url(${url});`)
         .join("\n")
     )
@@ -115,8 +126,8 @@ export const insertFonts = (
   parent.appendChild(styleElem);
 };
 
-export const getFontUrls = (nodes: Record<string, NodeModel>): string[] => {
-  const fonts = getFonts(nodes);
+export const getFontUrls = (root: NodeModel): string[] => {
+  const fonts = getFonts(root);
   return Object.entries(groupBy(fonts, (font) => font.fontFamily)).map(
     ([fontFamily, variants]) => {
       const fontName = fontFamily

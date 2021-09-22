@@ -1,7 +1,6 @@
 import { Formula } from "./formula/formula";
 import { ComponentEventModel, NodeEventModel } from "./EventModel";
 import { groupBy, last, mapValues } from "./util";
-import { nanoid } from "nanoid/non-secure";
 import { CSSProperties } from "react";
 
 export type DataValue =
@@ -113,17 +112,12 @@ export type NodeClass = {
   formula?: Formula;
 };
 
-export type NodeModel =
-  | FragmentNodeModel
-  | ElementNodeModel
-  | TextNodeModel
-  | ComponentNodeModel;
+export type NodeModel = ElementNodeModel | TextNodeModel | ComponentNodeModel;
 
 export const elementNodeType: "element" = "element";
 export const componentNodeType: "component" = "component";
 export const textNodeType: "text" = "text";
 export type ElementNodeModel = {
-  id: string;
   type: "element";
   condition?: Formula;
   repeat?: Formula;
@@ -133,35 +127,22 @@ export type ElementNodeModel = {
   attrs: Record<string, DataValue | undefined>;
   style: NodeStyleModel;
   styleVariables?: StyleVariable[];
-  children: string[];
+  children: NodeModel[];
   events: NodeEventModel[];
 };
 
-export type FragmentNodeModel = {
-  id: string;
-  type: "fragment";
-  condition?: Formula;
-  repeat?: Formula;
-  attrs?: undefined;
-  style?: undefined;
-  children: string[];
-  events?: undefined;
-};
-
 export type ComponentNodeModel = {
-  id: string;
   type: "component";
   name: string;
   condition?: Formula;
   repeat?: Formula;
   style?: undefined;
   attrs: Record<string, DataValue>;
-  children: string[];
+  children: NodeModel[];
   events: ComponentEventModel[];
 };
 
 export type TextNodeModel = {
-  id: string;
   type: "text";
   condition?: Formula;
   repeat?: Formula;
@@ -183,9 +164,27 @@ type FontStyle = {
   fontWeight?: number | string;
 };
 
-export const getFonts = (nodes: Record<string, NodeModel>): FontStyle[] => {
+export const forEachNode = (
+  node: NodeModel,
+  f: (node: NodeModel, path: number[]) => void,
+  path?: number[]
+) => {
+  const p = path ?? [0];
+  if (!node) {
+    return;
+  }
+  f(node, p);
+  switch (node.type) {
+    case "component":
+    case "element":
+      node.children.forEach((child, i) => forEachNode(child, f, [...p, i]));
+      break;
+  }
+};
+
+export const getFonts = (root: NodeModel): FontStyle[] => {
   const fonts = new Map<string, FontStyle>();
-  Object.values(nodes).forEach((node) => {
+  forEachNode(root, (node) => {
     if (node.type === "element") {
       const { fontStyle, fontFamily, fontWeight } = node.style ?? {};
       if (fontFamily) {
@@ -200,8 +199,8 @@ export const getFonts = (nodes: Record<string, NodeModel>): FontStyle[] => {
   return Array.from(fonts.values());
 };
 
-export const getFontUrls = (nodes: Record<string, NodeModel>): string[] => {
-  const fonts = getFonts(nodes);
+export const getFontUrls = (root: NodeModel): string[] => {
+  const fonts = getFonts(root);
   return Object.entries(groupBy(fonts, (font) => font.fontFamily)).map(
     ([fontFamily, variants]) => {
       const fontName = fontFamily
@@ -220,9 +219,9 @@ export const getFontUrls = (nodes: Record<string, NodeModel>): string[] => {
   );
 };
 
-export const getColors = (nodes: Record<string, NodeModel>): Set<string> => {
+export const getColors = (root: NodeModel): Set<string> => {
   const colors = new Set<string>();
-  Object.values(nodes).forEach((node) => {
+  forEachNode(root, (node) => {
     if (node.type !== "element") {
       return;
     }
@@ -236,210 +235,100 @@ export const getColors = (nodes: Record<string, NodeModel>): Set<string> => {
   return colors;
 };
 
-export const moveNode = (
-  nodes: Record<string, NodeModel>,
-  nodeId: string,
-  parentId: string,
-  index?: number
-): Record<string, NodeModel> => {
-  return mapValues(nodes, (node) => {
-    if (node.type === "text") {
-      return node;
-    }
-
-    return {
-      ...node,
-      children:
-        node.id === parentId
-          ? insert(node.children, nodeId, index).filter(
-              (child, i) => child !== nodeId || i === index
-            )
-          : node.children?.filter((child) => child !== nodeId),
-    };
-  });
-};
-
-export const deleteNode = (
-  nodes: Record<string, NodeModel>,
-  nodeId: string
-): Record<string, NodeModel> => {
-  const nodesToDelete = new Set<string>();
-  const findNodes = (nodeId: string) => {
-    nodesToDelete.add(nodeId);
-    const node = nodes[nodeId];
-    if (node.type !== "text") {
-      node?.children?.forEach(findNodes);
-    }
-  };
-  findNodes(nodeId);
-  return Object.entries(nodes).reduce<Record<string, NodeModel>>(
-    (nodes, [id, node]) => {
-      if (nodesToDelete.has(id) === false) {
-        nodes[id] =
-          node.type === "element" || node.type === "component"
-            ? {
-                ...node,
-                children: node.children.filter(
-                  (child) => nodesToDelete.has(child) === false
-                ),
-              }
-            : node;
-      }
-      return nodes;
-    },
-    {}
-  );
-};
-
-export const getSubTree = (
-  nodes: Record<string, NodeModel>,
-  nodeId: string
+export const updateNode = (
+  root: NodeModel,
+  id: string,
+  f: (update: NodeModel) => NodeModel
 ) => {
-  const subTree: Record<string, NodeModel> = {};
-  const run = (id: string) => {
-    const node = nodes[id];
-    if (id === nodeId) {
-      subTree["ROOT"] = { ...node, id: "ROOT" };
-    } else {
-      subTree[id] = node;
+  const path = id.split(".").map(Number);
+  const run = (node: NodeModel, path: number[]): NodeModel => {
+    const [childIndex, ...rest] = path;
+    if (childIndex === undefined) {
+      return f(node);
     }
-    if (node.type !== "text") {
-      node.children?.forEach(run);
+    switch (node.type) {
+      case "component":
+      case "element": {
+        return {
+          ...node,
+          children: node.children.map((child, i) =>
+            i === childIndex ? run(child, rest) : child
+          ),
+        };
+      }
+      default: {
+        return node;
+      }
     }
   };
-  run(nodeId);
-  return cloneNodeTree(subTree);
+  return run(root, path.slice(1));
 };
 
-export const cloneNode = (nodes: Record<string, NodeModel>, id: string) => {
-  const clone: Record<string, NodeModel> = {};
-  const run = (currentId: string, newId?: string) => {
-    const node = nodes[currentId];
-    if (!node) {
-      return;
-    }
-    const id = newId ?? nanoid();
-    clone[id] = {
-      ...node,
-      id,
-      children:
-        node.type === "text"
-          ? undefined
-          : node.children
-              .map((childId) => run(childId))
-              .filter((id): id is string => typeof id === "string"),
-    } as NodeModel;
-    return id;
-  };
-  run(id, "ROOT");
-  return clone;
-};
-
-export const cloneNodeTree = (
-  nodes: Record<string, NodeModel>
-): Record<string, NodeModel> => {
-  const idMap = Object.fromEntries(
-    Object.keys(nodes).map((key) => [key, key === "ROOT" ? "ROOT" : nanoid()])
-  );
-  return Object.fromEntries(
-    Object.entries(nodes).map(([key, node]) => [
-      idMap[key],
-      node.type === "text"
-        ? {
-            ...node,
-            id: idMap[key],
-          }
-        : {
-            ...node,
-            id: idMap[key],
-            children: node.children.map((childId) => idMap[childId]),
-          },
-    ])
-  );
-};
-
-export const copyNode = (
-  nodes: Record<string, NodeModel>,
-  nodeId: string,
-  parentId: string,
-  index: number
-): Record<string, NodeModel> => {
-  const clones: Record<string, NodeModel> = {};
-  const parent = nodes[parentId];
-  if (parent.type === "text") {
-    return nodes;
-  }
-  const newNodeId = nanoid();
-
-  const copy = (nodeId: string, newId: string) => {
-    const node = nodes[nodeId];
-    if (node.type === "text") {
-      return (clones[newId] = { ...node, id: newId });
-    }
-    const children = node.children.map(() => nanoid());
-    clones[newId] = { ...node, id: newId, children };
-
-    node.children?.forEach((child, i) => copy(child, children[i]));
-  };
-  copy(nodeId, newNodeId);
-  return {
-    ...nodes,
-    [parentId]: {
-      ...parent,
-      children: insert(parent.children, newNodeId, index),
-    },
-    ...clones,
-  };
-};
-
-const mapEntries = <A, B>(
-  object: Record<string, A>,
-  f: (tuple: [string, A]) => [string, B]
-): Record<string, B> => Object.fromEntries(Object.entries(object).map(f));
-
-export const insertNodeTree = (
-  nodes: Record<string, NodeModel>,
-  subTree: Record<string, NodeModel>,
-  parentId: string,
-  index?: number
-): Record<string, NodeModel> => {
-  const parent = nodes[parentId];
-  const childId = nanoid();
-  const childIndex =
-    index ?? (parent.type !== "text" ? parent.children?.length : 0) ?? 0;
-  if (parent?.type === "text") {
-    return nodes;
-  }
-
-  return {
-    ...nodes,
-    [parentId]: {
-      ...parent,
-      children: insert(parent.children, childId, childIndex),
-    },
-    ...mapEntries(subTree, ([key, node]) =>
-      node.id === "ROOT" ? [childId, { ...node, id: childId }] : [key, node]
-    ),
-  };
-};
-
-export const getPath = (nodes: Record<string, NodeModel>, nodeId: string) => {
-  const run = (path: string[]): string[] | undefined => {
-    const id = last(path);
-    if (id === nodeId) {
-      return path;
-    }
-    const node = id ? nodes[id] : undefined;
-    if (node?.type !== "text" && node?.children !== undefined) {
-      for (let child of node.children) {
-        const childPath = run([...path, child]);
-        if (childPath) {
-          return childPath;
+export const removeNode = (root: NodeModel, id: string) => {
+  const path = id.split(".").map(Number);
+  return updateNode(
+    root,
+    path.slice(0, path.length - 1).join("."),
+    (node: NodeModel) => {
+      switch (node.type) {
+        case "component":
+        case "element": {
+          const children = [...node.children];
+          children.splice(path[path.length - 1], 1);
+          return { ...node, children };
+        }
+        default: {
+          return node;
         }
       }
     }
-  };
-  return run(["ROOT"]);
+  );
+};
+
+export const insertNode = (root: NodeModel, id: string, newNode: NodeModel) => {
+  const path = id.split(".").map(Number);
+  return updateNode(
+    root,
+    path.slice(0, path.length - 1).join("."),
+    (node: NodeModel) => {
+      switch (node.type) {
+        case "component":
+        case "element": {
+          const children = [...node.children];
+          children.splice(path[path.length - 1], 0, newNode);
+          return { ...node, children };
+        }
+        default: {
+          return node;
+        }
+      }
+    }
+  );
+};
+
+export const getNode = (root: NodeModel, id: string) => {
+  const path = id.split(".").map(Number);
+  return path.slice(1).reduce((node: NodeModel | undefined, childIndex) => {
+    switch (node?.type) {
+      case "element":
+      case "component":
+        return node.children[childIndex];
+      default:
+        return undefined;
+    }
+  }, root);
+};
+
+export const moveNode = (
+  root: NodeModel,
+  oldId: string,
+  newId: string
+): NodeModel => {
+  const node = getNode(root, oldId);
+  if (!node) {
+    return root;
+  }
+  return insertNode(removeNode(root, oldId), newId, node);
 };
 
 export type DropType = "container" | "link" | "list" | "text" | "input";
@@ -517,11 +406,4 @@ export const resolveStyleBlock = (style: NodeStyleModel): CSSProperties => {
     backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
     filter,
   };
-};
-const insert = function <T>(list: T[], item: T, index?: number) {
-  return [
-    ...list.slice(0, index ?? list.length - 1),
-    item,
-    ...list.slice(index ?? list.length - 1),
-  ];
 };

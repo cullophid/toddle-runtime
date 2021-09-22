@@ -3,6 +3,7 @@ import { ComponentData, ComponentModel } from "../ComponentModel";
 import { signal, Signal } from "../signal";
 import { insertFonts, insertStyles } from "../style";
 import { insertTheme } from "../theme";
+import { ComponentNodeModel, getNode } from "../NodeModel";
 
 export class Canvas extends HTMLElement {
   _component?: ComponentModel;
@@ -58,7 +59,7 @@ export class Canvas extends HTMLElement {
         { x: e.clientX, y: e.clientY },
         e.metaKey
       );
-      if (elementId !== this.highlightedNodeId) {
+      if (elementId && elementId !== this.highlightedNodeId) {
         this.dispatchEvent(
           new CustomEvent("highlight", {
             detail: elementId,
@@ -86,7 +87,7 @@ export class Canvas extends HTMLElement {
     mousePos: { x: number; y: number },
     includeTextNodes?: boolean
   ) {
-    if (this.dataSignal.value === null) {
+    if (this.dataSignal.value === null || !this.component) {
       return;
     }
     const zoom = 1;
@@ -97,24 +98,25 @@ export class Canvas extends HTMLElement {
     );
     const elem = elements?.find((elem, i) => {
       const id = elem.getAttribute("data-id");
-      if (!id) {
-        return null;
+      if (!id || !this.component) {
+        return false;
       }
-      const node = this._component?.nodes?.[id];
+
+      const node = getNode(this.component.root, id);
       if (!node) {
-        return null;
+        return false;
       }
       if (node.type === "text") {
         if (
           includeTextNodes ||
           elements[i + 1]?.getAttribute("data-id") === this.selectedNodeId
         ) {
-          return elem;
+          return true;
         } else {
-          return null;
+          return false;
         }
       }
-      return elem;
+      return true;
     });
     return elem?.getAttribute("data-id");
   }
@@ -129,13 +131,13 @@ export class Canvas extends HTMLElement {
     if (getIframeDepth() > 3) {
       return;
     }
-    if (!this._component) {
+    if (!this.component) {
       return;
     }
     if (!this._components) {
       return;
     }
-    const root = this._component?.nodes["ROOT"];
+    const root = this.component.root;
     if (!this.iframe.contentDocument || !this.iframe.contentWindow || !root) {
       return;
     }
@@ -154,10 +156,11 @@ export class Canvas extends HTMLElement {
     this.destroy = createNode({
       node: root,
       dataSignal: this.dataSignal,
+      id: "0",
       parent: this.iframe.contentDocument?.body,
       ctx: {
         isRootComponent: true,
-        component: this._component,
+        component: this.component,
         dataSignal: this.dataSignal,
         onEvent: console.log,
         mutations: {},
@@ -167,11 +170,16 @@ export class Canvas extends HTMLElement {
   onHighlightChange(highlightedNodeId: string | undefined) {
     this._highlightedNodeId = highlightedNodeId;
 
-    if (!highlightedNodeId || highlightedNodeId === this.selectedNodeId) {
-      this.highlightOverlay.style.display = "none";
+    if (!this.component) {
       return;
     }
-    const node = this._component?.nodes[highlightedNodeId];
+
+    if (!highlightedNodeId || highlightedNodeId === this.selectedNodeId) {
+      this.highlightOverlay.style.display = "none";
+
+      return;
+    }
+    const node = getNode(this.component.root, highlightedNodeId);
     const elem = this.iframe?.contentDocument?.querySelector(
       `[data-id="${highlightedNodeId}"]`
     );
@@ -188,6 +196,9 @@ export class Canvas extends HTMLElement {
   }
   onSelectionchange(nodeId: string | undefined) {
     this._selectedNodeId = nodeId;
+    if (!this.component) {
+      return;
+    }
     if (!nodeId) {
       this.selectionOverlay.style.display = "none";
       return;
@@ -198,7 +209,7 @@ export class Canvas extends HTMLElement {
     const elem = this.iframe?.contentDocument?.querySelector(
       `[data-id="${nodeId}"]`
     );
-    const node = this._component?.nodes[nodeId];
+    const node = getNode(this.component.root, nodeId);
     if (!elem || !node) {
       this.selectionOverlay.style.display = "none";
       return;
@@ -213,9 +224,12 @@ export class Canvas extends HTMLElement {
       node.type === "text" ? "dashed" : "solid";
   }
   renderOverlay() {}
-  set component(component: ComponentModel) {
+  set component(component: ComponentModel | undefined) {
     this._component = component;
     this.render();
+  }
+  get component() {
+    return this._component;
   }
   get selectedNodeId() {
     return this._selectedNodeId;

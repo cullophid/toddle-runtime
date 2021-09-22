@@ -1,0 +1,61 @@
+{
+  "id": "d2301a2e-b3df-4d43-926b-4f88973ac3e3",
+  "name": "d2301a2e-b3df-4d43-926b-4f88973ac3e3",
+  "props": [],
+  "_project": "d41e9972-8714-4fed-af45-8407985afbe4",
+  "root": {
+    "tag": "div",
+    "type": "element",
+    "attrs": {},
+    "style": {},
+    "events": [],
+    "children": [
+      {
+        "id": "-TAoVfUY2QiQQePi0okDM",
+        "tag": "div",
+        "type": "element",
+        "attrs": {},
+        "style": {
+          "padding": "2"
+        },
+        "events": [],
+        "children": [
+          {
+            "id": "aXWsbyZyohnJ3zpHakq7Q",
+            "tag": "div",
+            "type": "element",
+            "attrs": {},
+            "style": {
+              "color": "red",
+              "width": "10",
+              "height": "10",
+              "display": "flex",
+              "background": "blue",
+              "align-items": "center",
+              "justify-content": "center"
+            },
+            "events": [],
+            "children": [
+              {
+                "id": "2xELdxleCrZvrR2sY6MFf",
+                "type": "text",
+                "value": {
+                  "type": "formula",
+                  "formula": "Text"
+                }
+              }
+            ],
+            "classList": []
+          }
+        ],
+        "classList": []
+      }
+    ],
+    "classList": []
+  },
+  "events": [],
+  "variables": [],
+  "functions": [],
+  "queries": [],
+  "onLoad": []
+}

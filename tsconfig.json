@@ -16,5 +16,11 @@
     "baseUrl": "."
   },
   "exclude": ["node_modules", "stories"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "scripts/saveComponent.mjs",
+    "scripts/loadComponent.ts"
+  ]
 }

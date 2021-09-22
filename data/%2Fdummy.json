@@ -1,0 +1,79 @@
+{
+  "id": "9d5b4aa0-672c-44d5-a6e6-ad4d3b5bde5d",
+  "name": "/dummy",
+  "props": [],
+  "_project": "d41e9972-8714-4fed-af45-8407985afbe4",
+  "root": {
+    "tag": "div",
+    "type": "element",
+    "attrs": {},
+    "style": {},
+    "events": [],
+    "children": [
+      {
+        "id": "YCr8wXf_PZSDyqrW7j-vy",
+        "tag": "button",
+        "type": "element",
+        "attrs": {},
+        "style": {
+          "height": "40px",
+          "display": "inline-flex",
+          "position": "relative",
+          "boxSizing": "border-box",
+          "alignItems": "center",
+          "paddingLeft": "20px",
+          "borderRadius": 3,
+          "paddingRight": "20px",
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "backgroundColor": "indigo"
+        },
+        "events": [
+          {
+            "type": "NodeEvent",
+            "actions": [
+              {
+                "data": "Hey",
+                "name": "test",
+                "type": "Custom"
+              }
+            ],
+            "trigger": "click",
+            "preventDefault": false,
+            "stopPropagation": false
+          }
+        ],
+        "children": [
+          {
+            "id": "YjmAz7tB-Sos_sd5rd_xW",
+            "type": "text",
+            "value": {
+              "type": "formula",
+              "formula": {
+                "name": "Data",
+                "path": [
+                  "Variables",
+                  "count"
+                ],
+                "type": "path"
+              }
+            }
+          }
+        ],
+        "classList": []
+      }
+    ],
+    "classList": []
+  },
+  "events": [],
+  "variables": [
+    {
+      "id": "c6ef6c78-3e32-4038-a888-ff8dcdfbf770",
+      "name": "count",
+      "initialValue": "0"
+    }
+  ],
+  "functions": [],
+  "queries": [],
+  "onLoad": []
+}

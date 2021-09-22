@@ -1,0 +1,1018 @@
+{
+  "id": "b7c2e956-79ad-4063-a177-7c4e97358f5e",
+  "name": "TreeNode",
+  "props": [
+    {
+      "name": "id",
+      "initialValue": "0"
+    },
+    {
+      "name": "node",
+      "initialValue": {
+        "type": "fragment",
+        "children": [
+          {
+            "tag": "li",
+            "type": "element",
+            "attrs": {},
+            "style": {
+              "padding": "8px",
+              "position": "relative",
+              "boxSizing": "border-box",
+              "alignItems": "center",
+              "paddingTop": "0",
+              "paddingLeft": "0",
+              "paddingRight": "0",
+              "flexDirection": "row",
+              "listStyleType": "none",
+              "paddingBottom": "0"
+            },
+            "events": [],
+            "repeat": {
+              "name": "Data",
+              "path": [
+                "Props",
+                "node",
+                "children"
+              ],
+              "type": "path"
+            },
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "name": "selectedNodeId",
+      "initialValue": "0"
+    },
+    {
+      "name": "highlightedNodeId",
+      "initialValue": ""
+    },
+    {
+      "name": "indent",
+      "initialValue": "0"
+    }
+  ],
+  "_project": "d41e9972-8714-4fed-af45-8407985afbe4",
+  "root": {
+    "tag": "div",
+    "type": "element",
+    "attrs": {},
+    "style": {},
+    "events": [],
+    "children": [
+      {
+        "id": "DDmSvv7E9LTClT1QmLEPV",
+        "tag": "div",
+        "type": "element",
+        "attrs": {},
+        "style": {},
+        "events": [],
+        "children": [
+          {
+            "id": "oNONFUu-D0GIgwjN__sHp",
+            "tag": "div",
+            "type": "element",
+            "attrs": {
+              "draggable": {
+                "type": "value",
+                "value": "true"
+              }
+            },
+            "style": {
+              "gap": "2",
+              "color": "var(--grey-100)",
+              "height": "6",
+              "display": "flex",
+              "position": "relative",
+              "variants": [
+                {
+                  "style": {
+                    "backgroundColor": "var(--grey-500)"
+                  },
+                  "className": "highlighted"
+                },
+                {
+                  "style": {
+                    "color": "var(--grey-100)",
+                    "backgroundColor": "var(--primary-300)"
+                  },
+                  "className": "selected"
+                }
+              ],
+              "alignItems": "center",
+              "paddingLeft": "var(--indent)",
+              "paddingRight": "4",
+              "listStyleType": "none"
+            },
+            "events": [
+              {
+                "type": "NodeEvent",
+                "actions": [
+                  {
+                    "data": {
+                      "name": "Data",
+                      "path": [
+                        "Props",
+                        "id"
+                      ],
+                      "type": "path"
+                    },
+                    "type": "Trigger Event",
+                    "event": "selectNode"
+                  }
+                ],
+                "trigger": "click",
+                "preventDefault": false,
+                "stopPropagation": false
+              },
+              {
+                "type": "NodeEvent",
+                "actions": [
+                  {
+                    "data": {
+                      "name": "Data",
+                      "path": [
+                        "Props",
+                        "id"
+                      ],
+                      "type": "path"
+                    },
+                    "type": "Trigger Event",
+                    "event": "highlightNode"
+                  }
+                ],
+                "trigger": "mouseenter",
+                "preventDefault": false,
+                "stopPropagation": false
+              },
+              {
+                "type": "NodeEvent",
+                "actions": [
+                  {
+                    "data": null,
+                    "type": "Trigger Event",
+                    "event": "highlightNode"
+                  }
+                ],
+                "trigger": "mouseleave",
+                "preventDefault": false,
+                "stopPropagation": false
+              }
+            ],
+            "children": [
+              {
+                "id": "6ldEP_mVJ8zSL0_Bnrg0m",
+                "tag": "button",
+                "type": "element",
+                "attrs": {},
+                "style": {
+                  "width": "4",
+                  "height": "4",
+                  "display": "inline-flex",
+                  "position": "relative",
+                  "boxSizing": "border-box",
+                  "alignItems": "center",
+                  "borderRadius": 3,
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                  "borderTopLeftRadius": "0",
+                  "borderTopRightRadius": "0",
+                  "borderBottomLeftRadius": "0",
+                  "borderBottomRightRadius": "0"
+                },
+                "events": [
+                  {
+                    "type": "NodeEvent",
+                    "actions": [
+                      {
+                        "type": "Update Variable",
+                        "value": {
+                          "name": "NOT",
+                          "type": "function",
+                          "arguments": [
+                            {
+                              "name": "Input",
+                              "formula": {
+                                "name": "Data",
+                                "path": [
+                                  "Variables",
+                                  "expanded"
+                                ],
+                                "type": "path"
+                              }
+                            }
+                          ]
+                        },
+                        "variableName": "expanded"
+                      }
+                    ],
+                    "trigger": "click",
+                    "preventDefault": false,
+                    "stopPropagation": true
+                  }
+                ],
+                "children": [
+                  {
+                    "id": "wzJeII2nkPfngk_x2Rw2G",
+                    "name": "IconChevronRight",
+                    "type": "component",
+                    "attrs": {
+                      "size": {
+                        "type": "value",
+                        "value": "18"
+                      },
+                      "color": {
+                        "type": "value",
+                        "value": "#ffffff"
+                      }
+                    },
+                    "events": [],
+                    "children": [],
+                    "condition": {
+                      "name": "NOT",
+                      "type": "function",
+                      "arguments": [
+                        {
+                          "name": "Input",
+                          "formula": {
+                            "name": "Data",
+                            "path": [
+                              "Variables",
+                              "expanded"
+                            ],
+                            "type": "path"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "90dDafqOx3n0OpzH9jc4q",
+                    "name": "IconChevronDown",
+                    "type": "component",
+                    "attrs": {
+                      "size": {
+                        "type": "value",
+                        "value": "18"
+                      },
+                      "color": {
+                        "type": "value",
+                        "value": "#ffffff"
+                      }
+                    },
+                    "events": [],
+                    "children": [],
+                    "condition": {
+                      "name": "Data",
+                      "path": [
+                        "Variables",
+                        "expanded"
+                      ],
+                      "type": "path"
+                    }
+                  }
+                ],
+                "classList": [],
+                "condition": {
+                  "name": "Data",
+                  "path": [],
+                  "type": "path"
+                }
+              },
+              {
+                "id": "jc_r8GcQxx1g-ymzEl0cT",
+                "name": "IconElement",
+                "type": "component",
+                "attrs": {
+                  "size": {
+                    "type": "value",
+                    "value": "18"
+                  },
+                  "color": {
+                    "type": "value",
+                    "value": "#ffffff"
+                  }
+                },
+                "events": [],
+                "children": [],
+                "condition": {
+                  "name": "EQ",
+                  "type": "function",
+                  "arguments": [
+                    {
+                      "name": "First",
+                      "formula": {
+                        "name": "Data",
+                        "path": [
+                          "Props",
+                          "node",
+                          "type"
+                        ],
+                        "type": "path"
+                      }
+                    },
+                    {
+                      "name": "Second",
+                      "formula": {
+                        "name": "String",
+                        "type": "string",
+                        "value": "element"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "bzkWO5fPoipvAw3C0kGul",
+                "name": "IconComponent",
+                "type": "component",
+                "attrs": {
+                  "size": {
+                    "type": "value",
+                    "value": "18"
+                  },
+                  "color": {
+                    "type": "value",
+                    "value": "#ffffff"
+                  }
+                },
+                "events": [],
+                "children": [],
+                "condition": {
+                  "name": "EQ",
+                  "type": "function",
+                  "arguments": [
+                    {
+                      "name": "First",
+                      "formula": {
+                        "name": "Data",
+                        "path": [
+                          "Props",
+                          "node",
+                          "type"
+                        ],
+                        "type": "path"
+                      }
+                    },
+                    {
+                      "name": "Second",
+                      "formula": {
+                        "name": "String",
+                        "type": "string",
+                        "value": "component"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "eCCpS7x-wKsO-qZZQ_FD-",
+                "name": "IconText",
+                "type": "component",
+                "attrs": {
+                  "size": {
+                    "type": "value",
+                    "value": "18"
+                  },
+                  "color": {
+                    "type": "value",
+                    "value": "#ffffff"
+                  }
+                },
+                "events": [],
+                "children": [],
+                "condition": {
+                  "name": "EQ",
+                  "type": "function",
+                  "arguments": [
+                    {
+                      "name": "First",
+                      "formula": {
+                        "name": "Data",
+                        "path": [
+                          "Props",
+                          "node",
+                          "type"
+                        ],
+                        "type": "path"
+                      }
+                    },
+                    {
+                      "name": "Second",
+                      "formula": {
+                        "name": "String",
+                        "type": "string",
+                        "value": "text"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "oaj5zCzt5xtE1kA_srNf6",
+                "tag": "span",
+                "type": "element",
+                "attrs": {},
+                "style": {
+                  "flex": "1",
+                  "margin": "0px",
+                  "display": "inline",
+                  "padding": "0px",
+                  "fontSize": "14px",
+                  "position": "relative",
+                  "boxSizing": "border-box"
+                },
+                "events": [],
+                "children": [
+                  {
+                    "id": "y8V1HaRo8kbFlyNYs0N4Y",
+                    "type": "text",
+                    "value": {
+                      "type": "formula",
+                      "formula": {
+                        "name": "IF",
+                        "type": "function",
+                        "arguments": [
+                          {
+                            "name": "If",
+                            "formula": {
+                              "name": "EQ",
+                              "type": "function",
+                              "arguments": [
+                                {
+                                  "name": "First",
+                                  "formula": {
+                                    "name": "GET",
+                                    "type": "function",
+                                    "arguments": [
+                                      {
+                                        "name": "Object",
+                                        "formula": {
+                                          "name": "Data",
+                                          "path": [
+                                            "Props",
+                                            "node"
+                                          ],
+                                          "type": "path"
+                                        }
+                                      },
+                                      {
+                                        "name": "Item",
+                                        "formula": {
+                                          "name": "String",
+                                          "type": "string",
+                                          "value": "type"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "name": "Second",
+                                  "formula": {
+                                    "name": "String",
+                                    "type": "string",
+                                    "value": "element"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "name": "Then",
+                            "formula": {
+                              "name": "CONCAT",
+                              "type": "function",
+                              "varArgs": true,
+                              "arguments": [
+                                {
+                                  "formula": {
+                                    "name": "String",
+                                    "type": "string",
+                                    "value": "<"
+                                  }
+                                },
+                                {
+                                  "formula": {
+                                    "name": "Data",
+                                    "path": [
+                                      "Props",
+                                      "node",
+                                      "tag"
+                                    ],
+                                    "type": "path"
+                                  }
+                                },
+                                {
+                                  "formula": {
+                                    "name": "String",
+                                    "type": "string",
+                                    "value": ">"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "name": "Else",
+                            "formula": {
+                              "name": "IF",
+                              "type": "function",
+                              "arguments": [
+                                {
+                                  "name": "If",
+                                  "formula": {
+                                    "name": "EQ",
+                                    "type": "function",
+                                    "arguments": [
+                                      {
+                                        "name": "First",
+                                        "formula": {
+                                          "name": "Data",
+                                          "path": [
+                                            "Props",
+                                            "node",
+                                            "type"
+                                          ],
+                                          "type": "path"
+                                        }
+                                      },
+                                      {
+                                        "name": "Second",
+                                        "formula": {
+                                          "name": "String",
+                                          "type": "string",
+                                          "value": "fragment"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "name": "Then",
+                                  "formula": {
+                                    "name": "String",
+                                    "type": "string",
+                                    "value": "<>"
+                                  }
+                                },
+                                {
+                                  "name": "Else",
+                                  "formula": {
+                                    "name": "IF",
+                                    "type": "function",
+                                    "arguments": [
+                                      {
+                                        "name": "If",
+                                        "formula": {
+                                          "name": "EQ",
+                                          "type": "function",
+                                          "arguments": [
+                                            {
+                                              "name": "First",
+                                              "formula": {
+                                                "name": "Data",
+                                                "path": [
+                                                  "Props",
+                                                  "node",
+                                                  "type"
+                                                ],
+                                                "type": "path"
+                                              }
+                                            },
+                                            {
+                                              "name": "Second",
+                                              "formula": {
+                                                "name": "String",
+                                                "type": "string",
+                                                "value": "component"
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "name": "Then",
+                                        "formula": {
+                                          "name": "Data",
+                                          "path": [
+                                            "Props",
+                                            "node",
+                                            "name"
+                                          ],
+                                          "type": "path"
+                                        }
+                                      },
+                                      {
+                                        "name": "Else",
+                                        "formula": {
+                                          "name": "String",
+                                          "type": "string",
+                                          "value": "Text"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "classList": []
+              }
+            ],
+            "classList": [
+              {
+                "name": "selected",
+                "formula": {
+                  "name": "EQ",
+                  "type": "function",
+                  "arguments": [
+                    {
+                      "name": "First",
+                      "formula": {
+                        "name": "Data",
+                        "path": [
+                          "Props",
+                          "id"
+                        ],
+                        "type": "path"
+                      }
+                    },
+                    {
+                      "name": "Second",
+                      "formula": {
+                        "name": "Data",
+                        "path": [
+                          "Props",
+                          "selectedNodeId"
+                        ],
+                        "type": "path"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "highlighted",
+                "formula": {
+                  "name": "EQ",
+                  "type": "function",
+                  "arguments": [
+                    {
+                      "name": "First",
+                      "formula": {
+                        "name": "Data",
+                        "path": [
+                          "Props",
+                          "id"
+                        ],
+                        "type": "path"
+                      }
+                    },
+                    {
+                      "name": "Second",
+                      "formula": {
+                        "name": "Data",
+                        "path": [
+                          "Props",
+                          "highlightedNodeId"
+                        ],
+                        "type": "path"
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            "styleVariables": [
+              {
+                "name": "indent",
+                "value": {
+                  "name": "CONCAT",
+                  "type": "function",
+                  "varArgs": true,
+                  "arguments": [
+                    {
+                      "formula": {
+                        "name": "Data",
+                        "path": [
+                          "Props",
+                          "indent"
+                        ],
+                        "type": "path"
+                      }
+                    },
+                    {
+                      "formula": {
+                        "name": "String",
+                        "type": "string",
+                        "value": "rem"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "id": "kmGQVOaRgWiBYea8Lh-z6",
+            "tag": "ul",
+            "type": "element",
+            "attrs": {},
+            "style": {
+              "display": "flex",
+              "position": "relative",
+              "boxSizing": "border-box",
+              "alignItems": "stretch",
+              "flexDirection": "column",
+              "borderLeftWidth": "0"
+            },
+            "events": [],
+            "children": [
+              {
+                "id": "jgu0udG_xX95uKE9V2h1_",
+                "tag": "li",
+                "type": "element",
+                "attrs": {},
+                "style": {
+                  "padding": "8px",
+                  "position": "relative",
+                  "boxSizing": "border-box",
+                  "alignItems": "center",
+                  "paddingTop": "0",
+                  "paddingLeft": "0",
+                  "paddingRight": "0",
+                  "flexDirection": "row",
+                  "listStyleType": "none",
+                  "paddingBottom": "0"
+                },
+                "events": [],
+                "repeat": {
+                  "name": "Data",
+                  "path": [
+                    "Props",
+                    "node",
+                    "children"
+                  ],
+                  "type": "path"
+                },
+                "children": [
+                  {
+                    "id": "ubFHyoZXj_3Wq8X9O2ooB",
+                    "name": "TreeNode",
+                    "type": "component",
+                    "attrs": {
+                      "id": {
+                        "type": "formula",
+                        "formula": {
+                          "name": "CONCAT",
+                          "type": "function",
+                          "varArgs": true,
+                          "arguments": [
+                            {
+                              "formula": {
+                                "name": "Data",
+                                "path": [
+                                  "Props",
+                                  "id"
+                                ],
+                                "type": "path"
+                              }
+                            },
+                            {
+                              "formula": {
+                                "name": "String",
+                                "type": "string",
+                                "value": "."
+                              }
+                            },
+                            {
+                              "formula": {
+                                "name": "Data",
+                                "path": [
+                                  "ListItem",
+                                  "Index"
+                                ],
+                                "type": "path"
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "node": {
+                        "type": "formula",
+                        "formula": {
+                          "name": "Data",
+                          "path": [
+                            "ListItem",
+                            "Item"
+                          ],
+                          "type": "path"
+                        }
+                      },
+                      "indent": {
+                        "type": "formula",
+                        "formula": {
+                          "name": "ADD",
+                          "type": "function",
+                          "arguments": [
+                            {
+                              "name": "First",
+                              "formula": {
+                                "name": "Data",
+                                "path": [
+                                  "Props",
+                                  "indent"
+                                ],
+                                "type": "path"
+                              }
+                            },
+                            {
+                              "name": "Second",
+                              "formula": {
+                                "name": "Number",
+                                "type": "number",
+                                "value": 1
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "selectedNodeId": {
+                        "type": "formula",
+                        "formula": {
+                          "name": "Data",
+                          "path": [
+                            "Props",
+                            "selectedNodeId"
+                          ],
+                          "type": "path"
+                        }
+                      },
+                      "highlightedNodeId": {
+                        "type": "formula",
+                        "formula": {
+                          "name": "Data",
+                          "path": [
+                            "Props",
+                            "highlightedNodeId"
+                          ],
+                          "type": "path"
+                        }
+                      }
+                    },
+                    "events": [
+                      {
+                        "type": "ComponentEvent",
+                        "actions": [
+                          {
+                            "data": {
+                              "name": "Data",
+                              "path": [
+                                "Event"
+                              ],
+                              "type": "path"
+                            },
+                            "type": "Trigger Event",
+                            "event": "selectNode"
+                          }
+                        ],
+                        "trigger": "selectNode"
+                      },
+                      {
+                        "type": "ComponentEvent",
+                        "actions": [
+                          {
+                            "data": {
+                              "name": "Data",
+                              "path": [
+                                "Event"
+                              ],
+                              "type": "path"
+                            },
+                            "type": "Trigger Event",
+                            "event": "highlightNode"
+                          }
+                        ],
+                        "trigger": "highlightNode"
+                      }
+                    ],
+                    "children": []
+                  }
+                ],
+                "classList": []
+              }
+            ],
+            "classList": [],
+            "condition": {
+              "name": "Data",
+              "path": [
+                "Variables",
+                "expanded"
+              ],
+              "type": "path"
+            }
+          }
+        ],
+        "classList": []
+      }
+    ],
+    "classList": []
+  },
+  "events": [],
+  "variables": [
+    {
+      "id": "d66c6884-baae-4dd9-ba75-650f0f5cf7c3",
+      "name": "expanded",
+      "initialValue": {
+        "name": "BOOLEAN",
+        "type": "function",
+        "arguments": [
+          {
+            "name": "Input",
+            "formula": {
+              "name": "Boolean",
+              "type": "boolean",
+              "value": true
+            }
+          }
+        ],
+        "description": {
+          "key": null,
+          "ref": null,
+          "props": {
+            "children": [
+              {
+                "key": null,
+                "ref": null,
+                "type": "h1",
+                "props": {
+                  "children": "BOOLEAN"
+                },
+                "_owner": null
+              },
+              {
+                "key": null,
+                "ref": null,
+                "type": "p",
+                "props": {
+                  "children": "Covert a value to a boolean"
+                },
+                "_owner": null
+              },
+              {
+                "key": null,
+                "ref": null,
+                "type": "h2",
+                "props": {
+                  "children": "Arguments"
+                },
+                "_owner": null
+              },
+              {
+                "key": null,
+                "ref": null,
+                "type": "ol",
+                "props": {
+                  "children": {
+                    "key": null,
+                    "ref": null,
+                    "type": "li",
+                    "props": {
+                      "children": [
+                        {
+                          "key": null,
+                          "ref": null,
+                          "type": "strong",
+                          "props": {
+                            "children": "Input"
+                          },
+                          "_owner": null
+                        },
+                        "Input data to be converted to boolean"
+                      ]
+                    },
+                    "_owner": null
+                  }
+                },
+                "_owner": null
+              }
+            ]
+          },
+          "_owner": null
+        }
+      }
+    }
+  ],
+  "functions": [],
+  "queries": [],
+  "onLoad": []
+}

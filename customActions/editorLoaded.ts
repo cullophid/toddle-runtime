@@ -2,8 +2,8 @@ import { applyFormula } from "../formula/formula";
 import { ComponentData, ComponentModel } from "../ComponentModel";
 import { ComponentContext, createMutation, createQuery } from "../runtime";
 import { locationSignal } from "../router";
-import { cloneNode, deleteNode, insertNodeTree } from "../NodeModel";
 import { parseHtml } from "./parseHtml";
+import { getNode, insertNode, removeNode } from "../NodeModel";
 
 export const editorLoaded = (data: unknown, ctx: ComponentContext) => {
   const component = ctx.dataSignal.get().Variables?.component as ComponentModel;
@@ -25,7 +25,6 @@ export const editorLoaded = (data: unknown, ctx: ComponentContext) => {
       applyFormula(variable.initialValue, { Props, Functions }),
     ])
   );
-  console.log("VARIABLES", { Props, Functions, Variables });
 
   ctx.dataSignal.set({
     ...ctx.dataSignal.get(),
@@ -65,7 +64,6 @@ export const editorLoaded = (data: unknown, ctx: ComponentContext) => {
 
   componentDataSignal.subscribe((componentData) => {
     const data = ctx.dataSignal.get();
-    console.log({ componentData });
 
     ctx.dataSignal.set({
       ...data,
@@ -89,15 +87,15 @@ export const editorLoaded = (data: unknown, ctx: ComponentContext) => {
         component,
       },
     });
-    ctx.mutations.updateComponent?.({
-      update_Component_by_pk___set__name: component.name,
-      update_Component_by_pk___set__nodes: component.nodes,
-      update_Component_by_pk___set__props: component.props,
-      update_Component_by_pk___set__events: component.events,
-      update_Component_by_pk__pk_columns__id: component.id,
-      update_Component_by_pk___set__functions: component.functions,
-      update_Component_by_pk___set__variables: component.variables,
-    });
+    // ctx.mutations.updateComponent?.({
+    //   update_Component_by_pk___set__name: component.name,
+    //   update_Component_by_pk___set__nodes: component.root,
+    //   update_Component_by_pk___set__props: component.props,
+    //   update_Component_by_pk___set__events: component.events,
+    //   update_Component_by_pk__pk_columns__id: component.id,
+    //   update_Component_by_pk___set__functions: component.functions,
+    //   update_Component_by_pk___set__variables: component.variables,
+    // });
   };
 
   document.addEventListener("keydown", (event) => {
@@ -114,7 +112,7 @@ export const editorLoaded = (data: unknown, ctx: ComponentContext) => {
         }
         const updatedComponent = {
           ...component,
-          nodes: deleteNode(component.nodes, selectedNodeId),
+          root: removeNode(component.root, selectedNodeId),
         };
         updateComponent(updatedComponent);
         break;
@@ -130,7 +128,6 @@ export const editorLoaded = (data: unknown, ctx: ComponentContext) => {
         break;
       }
       case "a": {
-        console.log("ADD", selectedNodeId);
         break;
       }
       case "1": {
@@ -179,32 +176,50 @@ export const editorLoaded = (data: unknown, ctx: ComponentContext) => {
     if (typeof selectedNodeId !== "string" || !component) {
       return;
     }
+    const selectedNode = getNode(component.root, selectedNodeId);
+    if (
+      !selectedNode ||
+      ["component", "element"].includes(selectedNode.type) === false
+    ) {
+      return;
+    }
     try {
-      const nodeTree = JSON.parse(paste);
+      const node = JSON.parse(paste);
+      switch (selectedNode?.type) {
+        case "component":
+        case "element": {
+          const id = selectedNodeId + "." + selectedNode.children.length;
+          const root = insertNode(component.root, id, node);
 
-      if (
-        Object.values(nodeTree).every((node: any) =>
-          ["component", "element", "fragment", "text"].includes(node?.type)
-        )
-      ) {
-        const nodes = insertNodeTree(component.nodes, nodeTree, selectedNodeId);
-        updateComponent({
-          ...component,
-          nodes,
-        });
+          updateComponent({
+            ...component,
+            root,
+          });
+        }
       }
     } catch (e) {
-      const newNodes = parseHtml(paste);
-      if (newNodes.length === 0) {
+      const nodes = parseHtml(paste);
+      if (nodes.length === 0) {
         return;
       }
-      const nodes = newNodes.reduce((acc, nodeTree) => {
-        return insertNodeTree(acc, nodeTree, selectedNodeId);
-      }, component.nodes);
-      updateComponent({
-        ...component,
-        nodes,
-      });
+      switch (selectedNode?.type) {
+        case "component":
+        case "element":
+        case "fragment": {
+          const root = nodes.reduce((root, node, i) =>
+            insertNode(
+              root,
+              selectedNodeId + "." + (selectedNode.children.length + i),
+              node
+            )
+          );
+
+          updateComponent({
+            ...component,
+            root,
+          });
+        }
+      }
     }
   };
 
@@ -218,12 +233,11 @@ export const editorLoaded = (data: unknown, ctx: ComponentContext) => {
     if (typeof selectedNodeId !== "string" || !component) {
       return;
     }
-    const subTree = cloneNode(component.nodes, selectedNodeId);
-    const text = navigator.clipboard.writeText(JSON.stringify(subTree));
+    const node = getNode(component.root, selectedNodeId);
+    navigator.clipboard.writeText(JSON.stringify(node));
   };
   const cutHandler = (event: ClipboardEvent) => {
     event.preventDefault();
-    console.log("CUT");
     const selectedNodeId = ctx.dataSignal.get().Variables.selectedNodeId;
     const component = ctx.dataSignal.get().Variables.component as
       | ComponentModel
@@ -232,11 +246,13 @@ export const editorLoaded = (data: unknown, ctx: ComponentContext) => {
     if (typeof selectedNodeId !== "string" || !component) {
       return;
     }
-    const subTree = cloneNode(component.nodes, selectedNodeId);
-    const text = navigator.clipboard.writeText(JSON.stringify(subTree));
+    const subTree = getNode(component.root, selectedNodeId);
+    navigator.clipboard.writeText(JSON.stringify(subTree));
 
-    const nodes = deleteNode(component.nodes, selectedNodeId);
-    updateComponent({ ...component, nodes });
+    updateComponent({
+      ...component,
+      root: removeNode(component.root, selectedNodeId),
+    });
   };
 
   document.addEventListener("paste", pasteHandler);
