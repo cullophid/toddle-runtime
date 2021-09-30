@@ -6,7 +6,7 @@ export const template: FunctionOperation = {
   arguments: [
     {
       name: "Function",
-      formula: { type: "string", name: "String", value: "" },
+      formula: { type: "string", value: "" },
     },
     { name: "Input", formula: { type: "null", name: "Null" } },
   ],
@@ -17,7 +17,7 @@ export const resolver = (f: FunctionOperation, input: any) => {
   const [functionName, ...args] = f.arguments.map((arg) =>
     applyFormula(arg.formula, input)
   );
-  const func = (window as any).TODDLE_FUNCTIONS?.[functionName];
+  const func = window.toddle.formulas?.[functionName];
   if (typeof func === "function") {
     return func(...args);
   }

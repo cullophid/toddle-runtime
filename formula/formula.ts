@@ -1,11 +1,8 @@
-import { ReactNode } from "react";
 import { functions } from "./functions";
 
 export type PathOperation = {
   type: "path";
-  name: string;
   path: string[];
-  description?: ReactNode;
 };
 
 export type FunctionArgument = {
@@ -18,51 +15,44 @@ export type FunctionOperation = {
   name: string;
   arguments: FunctionArgument[];
   varArgs?: boolean;
-  description?: ReactNode;
+};
+export type RecordEntry = {
+  name: string;
+  value: Formula;
 };
 
-export type ApplyFunctionOperation = {
-  type: "apply_function";
-  functionId: string;
-  name: string;
-  description?: ReactNode;
+export type RecordOperation = {
+  type: "record";
+  entries: FunctionArgument[];
 };
 
 export type NumberOperation = {
   type: "number";
-  name: "Number";
   value: number;
-  description?: ReactNode;
 };
 
 export type StringOperation = {
   type: "string";
-  name: "String";
   value: string;
-  description?: ReactNode;
 };
 
 export type BooleanOperation = {
   type: "boolean";
-  name: "Boolean";
   value: boolean;
-  description?: ReactNode;
 };
 
 export type NullOperation = {
   type: "null";
-  name: string;
-  description?: ReactNode;
 };
 
 export type Formula =
   | FunctionOperation
+  | RecordOperation
   | PathOperation
   | NumberOperation
   | StringOperation
   | BooleanOperation
-  | NullOperation
-  | ApplyFunctionOperation;
+  | NullOperation;
 
 export const isFormula = (f: any): f is Formula => {
   return f && typeof f === "object" && f.type;
@@ -98,6 +88,13 @@ export const applyFormula = (
     }
     case "function":
       return functions[formula.name]?.resolver(formula, input);
+    case "record":
+      return Object.fromEntries(
+        formula.entries.map((entry) => [
+          entry.name,
+          applyFormula(entry.formula, input),
+        ])
+      );
     case "null":
       return null;
   }

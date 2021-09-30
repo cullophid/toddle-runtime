@@ -18,6 +18,7 @@ import { signal, Signal } from "./signal";
 import { locationSignal, stringifyQuery } from "./router";
 import { debounce, throttle } from "lodash";
 import { getClassName } from "./hash";
+import { components } from "editor";
 
 export const createQuery = (
   query: ComponentQuery,
@@ -246,6 +247,13 @@ export const renderComponent = ({
       component.functions?.map((f) => [f.name, f.value]) ?? []
     ),
   });
+  if (component.name === "/editor") {
+    (window as any).page = dataSignal;
+  }
+  if (component.name === "Editor") {
+    (window as any).comp = dataSignal;
+  }
+
   attributesSignal.subscribe((Attributes) =>
     dataSignal.set({
       ...dataSignal.get(),
@@ -706,6 +714,11 @@ export const handleAction = (
       break;
     }
     case "Trigger Event": {
+      console.log(
+        ctx.component.name,
+        action.event,
+        applyFormula(action.data, data)
+      );
       ctx.onEvent(action.event, applyFormula(action.data, data));
       break;
     }

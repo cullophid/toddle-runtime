@@ -19,7 +19,7 @@ export const Operation = (props: {
   operation: Formula;
   path: string;
   onChange: (expression?: Formula) => void;
-  component: ComponentModel;
+
   data: NodeData;
 }) => {
   const { operation } = props;
@@ -99,29 +99,8 @@ const PathOp = (props: {
   data: NodeData;
   path: string;
   operation: PathOperation;
-  component: ComponentModel;
   onChange: (operation: Formula) => void;
 }) => {
-  // const getName = (key: string, i: number) => {
-  //   if (i !== 1) {
-  //     return key;
-  //   }
-  //   const [parent] = props.operation.path;
-
-  //   switch (parent) {
-  //     case "Variables":
-  //       return (
-  //         props.component.variables?.find((v) => v.id === key)?.name ?? key
-  //       );
-  //     case "Queries":
-  //       return props.component.queries?.find((v) => v.id === key)?.name ?? key;
-  //     case "Variables":
-  //       return props.component.props?.find((v) => v.id === key)?.name ?? key;
-  //     default: {
-  //       return key;
-  //     }
-  //   }
-  // };
   const result = applyFormula(props.operation, props.data);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
 
@@ -348,7 +327,6 @@ const FunctionOp = (props: {
   data: NodeData;
   path: string;
   operation: FunctionOperation;
-  component: ComponentModel;
   onChange: (operation?: Formula) => void;
 }) => {
   const updateArg = (i: number, arg: FunctionArgument) => {
@@ -375,7 +353,6 @@ const FunctionOp = (props: {
             <Operation
               key={i}
               operation={arg.formula}
-              component={props.component}
               path={`${props.path}.${i}`}
               data={
                 props.operation.type === "function" &&
@@ -454,7 +431,7 @@ const FunctionOp = (props: {
                     name: "ID",
                     arguments: [
                       {
-                        formula: { type: "path", name: "Data", path: [] },
+                        formula: { type: "path", path: [] },
                       },
                     ],
                   },
@@ -514,7 +491,6 @@ export const ResultNode = (props: {
   data: NodeData;
   path: string;
   operation: Formula;
-  component: ComponentModel;
   onChange: (operation?: Formula) => void;
 }) => {
   return (
@@ -523,9 +499,6 @@ export const ResultNode = (props: {
         <Operation {...props} />
       </OperationChildren>
       <StyledOperation data-node-path={props.path}>
-        {/* <OperationHeader className="bg-grey-500 text-grey-300 px-4 py-2">
-          Result
-        </OperationHeader> */}
         <p className="px-4 py-2 text-right">
           {valueToString(applyFormula(props.operation, props.data))}
         </p>

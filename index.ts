@@ -1,16 +1,11 @@
+import { ComponentContext, renderComponent } from "./runtime";
+import { ComponentModel, NodeData, Project } from "./ComponentModel";
 import {
-  ComponentContext,
-  createMutation,
-  createQuery,
-  renderComponent,
-} from "./runtime";
-import {
-  ComponentData,
-  ComponentModel,
-  NodeData,
-  Project,
-} from "./ComponentModel";
-import { NodeModel } from "./NodeModel";
+  ComponentNodeModel,
+  componentNodeType,
+  getNode,
+  NodeModel,
+} from "./NodeModel";
 
 import { locationSignal } from "./router";
 import { insertTheme } from "./theme";
@@ -22,7 +17,7 @@ import { ElementCatalog } from "./components/element-catalog/element-catalog";
 import { ElementAttributes } from "./components/element-attributes";
 import { ElementEvents } from "./components/element-events";
 import { FormulaEditor } from "./components/formula-editor";
-import { editorLoaded } from "./customActions/editorLoaded";
+import "./plugins";
 
 declare global {
   interface Window {
@@ -54,51 +49,48 @@ const fetchPage = (slug: string, path: string) => {
     },
     body: JSON.stringify({
       query: `
-        query FetchPage($slug:String!, $path:String!) {
-        pages(where:{
-          project: {
-            slug: {_eq: $slug }
-          },
-          path: {_eq:$path}
-        }) {
+     query FetchPage($slug: String!, $path: String!) {
+      pages(where: {project: {slug: {_eq: $slug}}, path: {_eq: $path}}) {
+        id
+        path
+        _project
+        requireAuth
+        component {
           id
-          path
-          _project
-          requireAuth
-          component {
+          name
+        }
+        project {
+          id
+          name
+          slug
+          apis {
             id
             name
+            auth
+            headers
+            url
           }
-          project {
+          components(where: {_or: [{_featureFlag: {_is_null: true}}, {featureFlag: {active: {_eq: true}}}]}) {
             id
             name
-            slug
-            apis {
+            _project
+            variables
+            props
+            functions
+            events
+            root
+            _featureFlag
+            page {
               id
-              name
-              auth
-              headers
-              url
+              path
+              requireAuth
             }
-             components {
-              id
-              name
-              _project
-              variables
-              props
-              functions
-              events
-              root
-              page {
-                id
-                path
-                requireAuth
-              }
-              queries
-            }
+            queries
           }
         }
       }
+    }
+
   `,
       variables: {
         slug,
@@ -117,9 +109,35 @@ const fetchPage = (slug: string, path: string) => {
         throw new Error(errors);
       }
       const [page] = data.pages;
+      const components: ComponentModel[] = Object.values(
+        page.project.components.reduce(
+          (
+            componentMap: Record<
+              string,
+              ComponentModel & {
+                featureFlag: { name: string; created_at: string };
+              }
+            >,
+            component: ComponentModel & {
+              featureFlag: { name: string; created_at: string };
+            }
+          ) => {
+            const current = componentMap[component.id];
+
+            if (
+              (!current || component._featureFlag) ??
+              "" > (current?._featureFlag ?? "")
+            ) {
+              componentMap[component.id] = component;
+            }
+            return componentMap;
+          },
+          {}
+        )
+      );
       return {
         page,
-        components: page.project.components as ComponentModel[],
+        components,
       };
     });
 };
@@ -174,47 +192,3 @@ const main = () => {
 };
 
 main();
-
-window.toddle.formulas.getInitialComponentData = (
-  component: ComponentModel
-) => {
-  const Props = Object.fromEntries(
-    component.props.map((prop) => [prop.name, prop.initialValue])
-  );
-  const Functions = Object.fromEntries(
-    component.functions?.map((f) => [f.name, f.value]) ?? []
-  );
-  const Variables = Object.fromEntries(
-    component.variables.map((variable) => [
-      variable.name,
-      applyFormula(variable.initialValue, { Props, Functions }),
-    ])
-  );
-  return {
-    Props,
-    Variables,
-    Functions,
-  };
-};
-
-window.toddle.formulas.getNodeData = (
-  nodeId: string,
-  nodes: Record<string, NodeModel>,
-  data: NodeData
-): NodeData => {
-  const path = nodeId.split(".").map(Number);
-  return path.reduce(
-    (acc, nodeId) => {
-      const node = nodes[nodeId];
-      const repeat = applyFormula(node.repeat, acc);
-      const [listItem] = Array.isArray(repeat) ? repeat : [];
-
-      if (listItem) {
-        acc.ListItem = { Item: listItem, Index: 0 };
-      }
-      return acc;
-    },
-    { ...data }
-  );
-};
-window.toddle.actions.editorLoaded = editorLoaded;

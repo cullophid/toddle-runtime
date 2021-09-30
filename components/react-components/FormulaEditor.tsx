@@ -9,7 +9,7 @@ import React, {
 import { Formula } from "../../formula/formula";
 
 import { ResultNode } from "./Operation";
-import { ComponentModel, NodeData } from "../../ComponentModel";
+import { NodeData } from "../../ComponentModel";
 import { useZoomPlane } from "./useZoomPlane";
 import { useKey } from "./useKey";
 import useResizeObserver from "./useResizeObserver";
@@ -56,7 +56,7 @@ const moveExpression = (
           ...formula.arguments.slice(0, current),
           {
             ...formula.arguments[current],
-            formula: { type: "null", name: "Null" },
+            formula: { type: "null" },
           },
           ...formula.arguments.slice(current + 1),
         ],
@@ -111,7 +111,6 @@ const moveExpression = (
 
 type FormulaEditButtonProps = {
   formula?: Formula;
-  component: ComponentModel;
   input: any;
   onChange: (formula?: Formula) => void;
   disabled?: boolean;
@@ -140,7 +139,10 @@ export const FormulaEditButton = (props: FormulaEditButtonProps) => {
       className={props.className}
       style={props.style}
     >
-      <Dialog.Root open={isOpen} onOpenChange={(isOpen) => setIsOpen(isOpen)}>
+      <Dialog.Root
+        open={props.input && isOpen}
+        onOpenChange={(isOpen) => setIsOpen(isOpen)}
+      >
         <Dialog.Trigger
           onClick={(e) => e.stopPropagation()}
           className="border border-transparent rounded focus:border-primary-300 text-grey-200 text-xs"
@@ -162,7 +164,6 @@ export const FormulaEditButton = (props: FormulaEditButtonProps) => {
             <Dialog.Close>Close</Dialog.Close>
           </header>
           <FormulaEditor
-            component={props.component}
             formula={props.formula}
             onChange={props.onChange}
             data={props.input}
@@ -175,7 +176,6 @@ export const FormulaEditButton = (props: FormulaEditButtonProps) => {
 
 type Props = {
   formula: Formula | undefined;
-  component: ComponentModel;
   onChange: (formula: Formula | undefined) => void;
   onHide: () => void;
   data: NodeData;
@@ -220,8 +220,7 @@ export const FormulaEditor = (props: Omit<Props, "onHide">) => {
         <Lines check={props.formula} />
 
         <ResultNode
-          component={props.component}
-          operation={props.formula ?? { type: "path", name: "Data", path: [] }}
+          operation={props.formula ?? { type: "path", path: [] }}
           path="0"
           onChange={props.onChange}
           data={props.data}

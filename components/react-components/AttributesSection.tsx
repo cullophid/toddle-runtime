@@ -111,7 +111,6 @@ export const AttributeSection = (props: Props) => {
                     }
                   />
                   <FormulaEditButton
-                    component={props.component}
                     formula={isFormula(value) ? value : undefined}
                     input={nodeData}
                     onChange={(formula) => {
@@ -192,7 +191,6 @@ export const ClassList = (props: Props) => {
                 }}
               />
               <FormulaEditButton
-                component={props.component}
                 input={nodeData}
                 formula={nodeClass.formula}
                 onChange={(formula) => {

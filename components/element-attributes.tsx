@@ -29,7 +29,6 @@ const AttributePanel = (props: AttributePanelProps) => {
         <InputGroup className="!justify-between">
           <InputLabel>Show</InputLabel>
           <FormulaEditButton
-            component={props.component}
             key="visibility"
             input={
               node.repeat
@@ -53,7 +52,6 @@ const AttributePanel = (props: AttributePanelProps) => {
         <InputGroup className="!justify-between">
           <InputLabel>Repeat</InputLabel>
           <FormulaEditButton
-            component={props.component}
             input={nodeData}
             key="repeat"
             title="Edit repeat condition"

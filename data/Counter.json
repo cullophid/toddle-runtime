@@ -3,6 +3,7 @@
   "name": "Counter",
   "props": [],
   "_project": "d41e9972-8714-4fed-af45-8407985afbe4",
+  "_featureFlag": null,
   "root": {
     "tag": "div",
     "type": "element",

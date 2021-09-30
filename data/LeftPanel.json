@@ -36,7 +36,9 @@
           "paddingBottom": "0"
         },
         "events": [],
-        "children": ["c3BV2j-fEsaoAeh0ie-dg"],
+        "children": [
+          "c3BV2j-fEsaoAeh0ie-dg"
+        ],
         "classList": []
       },
       "J6wB2ESudsNOTtLhSqbk8": {
@@ -52,7 +54,11 @@
             "type": "formula",
             "formula": {
               "name": "Data",
-              "path": ["Props", "component", "nodes"],
+              "path": [
+                "Props",
+                "component",
+                "nodes"
+              ],
               "type": "path"
             }
           },
@@ -64,7 +70,10 @@
             "type": "formula",
             "formula": {
               "name": "Data",
-              "path": ["Props", "selectedNodeId"],
+              "path": [
+                "Props",
+                "selectedNodeId"
+              ],
               "type": "path"
             }
           },
@@ -72,7 +81,10 @@
             "type": "formula",
             "formula": {
               "name": "Data",
-              "path": ["Props", "highlightedNodeId"],
+              "path": [
+                "Props",
+                "highlightedNodeId"
+              ],
               "type": "path"
             }
           }
@@ -84,7 +96,9 @@
               {
                 "data": {
                   "name": "Data",
-                  "path": ["Event"],
+                  "path": [
+                    "Event"
+                  ],
                   "type": "path"
                 },
                 "type": "Trigger Event",
@@ -99,7 +113,9 @@
               {
                 "data": {
                   "name": "Data",
-                  "path": ["Event"],
+                  "path": [
+                    "Event"
+                  ],
                   "type": "path"
                 },
                 "type": "Trigger Event",
@@ -126,7 +142,10 @@
           "justifyContent": "space-between"
         },
         "events": [],
-        "children": ["G9MZ3QSIG3W8-6-zazX3-", "isVI4dsPUBTwR_gYvJuda"],
+        "children": [
+          "G9MZ3QSIG3W8-6-zazX3-",
+          "isVI4dsPUBTwR_gYvJuda"
+        ],
         "classList": []
       },
       "ZrcplKNk-9ox-vBnjk_EW": {
@@ -156,7 +175,10 @@
             "stopPropagation": true
           }
         ],
-        "children": ["UYAcp7V3stzsW6PTuh3Of", "J6wB2ESudsNOTtLhSqbk8"],
+        "children": [
+          "UYAcp7V3stzsW6PTuh3Of",
+          "J6wB2ESudsNOTtLhSqbk8"
+        ],
         "classList": []
       },
       "c3BV2j-fEsaoAeh0ie-dg": {
@@ -199,7 +221,10 @@
                 "value": "true",
                 "condition": {
                   "name": "Data",
-                  "path": ["Props", "selectedNodeId"],
+                  "path": [
+                    "Props",
+                    "selectedNodeId"
+                  ],
                   "type": "path"
                 },
                 "variableName": "showElementCatalog"
@@ -210,7 +235,9 @@
             "stopPropagation": true
           }
         ],
-        "children": ["sxfA7bYOaGvkgb3SOZxWa"],
+        "children": [
+          "sxfA7bYOaGvkgb3SOZxWa"
+        ],
         "classList": []
       },
       "sxfA7bYOaGvkgb3SOZxWa": {
@@ -230,7 +257,10 @@
             "type": "formula",
             "formula": {
               "name": "Data",
-              "path": ["Props", "component"],
+              "path": [
+                "Props",
+                "component"
+              ],
               "type": "path"
             }
           },
@@ -245,7 +275,10 @@
             "type": "formula",
             "formula": {
               "name": "Data",
-              "path": ["Props", "selectedNodeId"],
+              "path": [
+                "Props",
+                "selectedNodeId"
+              ],
               "type": "path"
             }
           }
@@ -263,7 +296,10 @@
               {
                 "data": {
                   "name": "Data",
-                  "path": ["Event", "detail"],
+                  "path": [
+                    "Event",
+                    "detail"
+                  ],
                   "type": "path"
                 },
                 "type": "Trigger Event",
@@ -272,7 +308,9 @@
               {
                 "data": {
                   "name": "Event",
-                  "path": ["Event"],
+                  "path": [
+                    "Event"
+                  ],
                   "type": "path"
                 },
                 "type": "Debug"
@@ -300,7 +338,10 @@
         "classList": [],
         "condition": {
           "name": "Data",
-          "path": ["Variables", "showElementCatalog"],
+          "path": [
+            "Variables",
+            "showElementCatalog"
+          ],
           "type": "path"
         }
       }
@@ -315,7 +356,9 @@
             "ROOT": {
               "id": "ROOT",
               "type": "fragment",
-              "children": ["ggMGPB1z-Vi-WZMFCBuvi"]
+              "children": [
+                "ggMGPB1z-Vi-WZMFCBuvi"
+              ]
             },
             "CgQ4CWSKnskS8kQrPALoS": {
               "id": "CgQ4CWSKnskS8kQrPALoS",
@@ -331,7 +374,10 @@
                 "flexDirection": "column"
               },
               "events": [],
-              "children": ["GY-U_vcv0KKFfGmFh0_0y", "dYD4c_xK04GzItKKhMaMm"]
+              "children": [
+                "GY-U_vcv0KKFfGmFh0_0y",
+                "dYD4c_xK04GzItKKhMaMm"
+              ]
             },
             "GY-U_vcv0KKFfGmFh0_0y": {
               "id": "GY-U_vcv0KKFfGmFh0_0y",
@@ -344,7 +390,10 @@
                 "position": "relative"
               },
               "events": [],
-              "children": ["oWXNKhz856pMQEouzEG27", "SS2aLrNQoGgDy3msPTHN4"]
+              "children": [
+                "oWXNKhz856pMQEouzEG27",
+                "SS2aLrNQoGgDy3msPTHN4"
+              ]
             },
             "KyAmTWUZdWBDn2BElt4Mc": {
               "id": "KyAmTWUZdWBDn2BElt4Mc",
@@ -354,7 +403,11 @@
                 "label": "Min H",
                 "value": {
                   "name": "Data",
-                  "path": ["Props", "style", "minHeight"],
+                  "path": [
+                    "Props",
+                    "style",
+                    "minHeight"
+                  ],
                   "type": "path"
                 }
               },
@@ -371,7 +424,10 @@
                             "name": "Object",
                             "formula": {
                               "name": "Data",
-                              "path": ["Props", "style"],
+                              "path": [
+                                "Props",
+                                "style"
+                              ],
                               "type": "path"
                             }
                           },
@@ -387,7 +443,9 @@
                             "name": "Value",
                             "formula": {
                               "name": "Data",
-                              "path": ["Event"],
+                              "path": [
+                                "Event"
+                              ],
                               "type": "path"
                             }
                           }
@@ -419,7 +477,11 @@
                 "label": "H",
                 "value": {
                   "name": "Data",
-                  "path": ["Props", "style", "height"],
+                  "path": [
+                    "Props",
+                    "style",
+                    "height"
+                  ],
                   "type": "path"
                 }
               },
@@ -436,7 +498,10 @@
                             "name": "Object",
                             "formula": {
                               "name": "Data",
-                              "path": ["Props", "style"],
+                              "path": [
+                                "Props",
+                                "style"
+                              ],
                               "type": "path"
                             }
                           },
@@ -452,7 +517,9 @@
                             "name": "Value",
                             "formula": {
                               "name": "Data",
-                              "path": ["Event"],
+                              "path": [
+                                "Event"
+                              ],
                               "type": "path"
                             }
                           }
@@ -482,7 +549,9 @@
                 "boxSizing": "border-box"
               },
               "events": [],
-              "children": ["QsRvnTvSbHsak1cac9cMP"]
+              "children": [
+                "QsRvnTvSbHsak1cac9cMP"
+              ]
             },
             "dYD4c_xK04GzItKKhMaMm": {
               "id": "dYD4c_xK04GzItKKhMaMm",
@@ -495,7 +564,10 @@
                 "position": "relative"
               },
               "events": [],
-              "children": ["vtd7HX2eGHsY65vbw-gco", "KyAmTWUZdWBDn2BElt4Mc"]
+              "children": [
+                "vtd7HX2eGHsY65vbw-gco",
+                "KyAmTWUZdWBDn2BElt4Mc"
+              ]
             },
             "gAkFqG40xzoDC7cIQ51Ne": {
               "id": "gAkFqG40xzoDC7cIQ51Ne",
@@ -504,7 +576,9 @@
               "attrs": {},
               "style": {},
               "events": [],
-              "children": ["_uv69hJbH1V6r-7eKnSAA"]
+              "children": [
+                "_uv69hJbH1V6r-7eKnSAA"
+              ]
             },
             "ggMGPB1z-Vi-WZMFCBuvi": {
               "id": "ggMGPB1z-Vi-WZMFCBuvi",
@@ -518,7 +592,10 @@
                 "flexDirection": "column"
               },
               "events": [],
-              "children": ["gAkFqG40xzoDC7cIQ51Ne", "CgQ4CWSKnskS8kQrPALoS"]
+              "children": [
+                "gAkFqG40xzoDC7cIQ51Ne",
+                "CgQ4CWSKnskS8kQrPALoS"
+              ]
             },
             "oWXNKhz856pMQEouzEG27": {
               "id": "oWXNKhz856pMQEouzEG27",
@@ -528,7 +605,11 @@
                 "label": "W",
                 "value": {
                   "name": "Data",
-                  "path": ["Props", "style", "width"],
+                  "path": [
+                    "Props",
+                    "style",
+                    "width"
+                  ],
                   "type": "path"
                 }
               },
@@ -545,7 +626,10 @@
                             "name": "Object",
                             "formula": {
                               "name": "Data",
-                              "path": ["Props", "style"],
+                              "path": [
+                                "Props",
+                                "style"
+                              ],
                               "type": "path"
                             }
                           },
@@ -561,7 +645,9 @@
                             "name": "Value",
                             "formula": {
                               "name": "Data",
-                              "path": ["Event"],
+                              "path": [
+                                "Event"
+                              ],
                               "type": "path"
                             }
                           }
@@ -584,7 +670,11 @@
                 "label": "Min W",
                 "value": {
                   "name": "Data",
-                  "path": ["Props", "style", "minWidth"],
+                  "path": [
+                    "Props",
+                    "style",
+                    "minWidth"
+                  ],
                   "type": "path"
                 }
               },
@@ -601,7 +691,10 @@
                             "name": "Object",
                             "formula": {
                               "name": "Data",
-                              "path": ["Props", "style"],
+                              "path": [
+                                "Props",
+                                "style"
+                              ],
                               "type": "path"
                             }
                           },
@@ -617,7 +710,9 @@
                             "name": "Value",
                             "formula": {
                               "name": "Data",
-                              "path": ["Event"],
+                              "path": [
+                                "Event"
+                              ],
                               "type": "path"
                             }
                           }
@@ -664,7 +759,9 @@
               "ROOT": {
                 "id": "ROOT",
                 "type": "fragment",
-                "children": ["ggMGPB1z-Vi-WZMFCBuvi"]
+                "children": [
+                  "ggMGPB1z-Vi-WZMFCBuvi"
+                ]
               },
               "CgQ4CWSKnskS8kQrPALoS": {
                 "id": "CgQ4CWSKnskS8kQrPALoS",
@@ -680,7 +777,10 @@
                   "flexDirection": "column"
                 },
                 "events": [],
-                "children": ["GY-U_vcv0KKFfGmFh0_0y", "dYD4c_xK04GzItKKhMaMm"]
+                "children": [
+                  "GY-U_vcv0KKFfGmFh0_0y",
+                  "dYD4c_xK04GzItKKhMaMm"
+                ]
               },
               "GY-U_vcv0KKFfGmFh0_0y": {
                 "id": "GY-U_vcv0KKFfGmFh0_0y",
@@ -693,7 +793,10 @@
                   "position": "relative"
                 },
                 "events": [],
-                "children": ["oWXNKhz856pMQEouzEG27", "SS2aLrNQoGgDy3msPTHN4"]
+                "children": [
+                  "oWXNKhz856pMQEouzEG27",
+                  "SS2aLrNQoGgDy3msPTHN4"
+                ]
               },
               "KyAmTWUZdWBDn2BElt4Mc": {
                 "id": "KyAmTWUZdWBDn2BElt4Mc",
@@ -703,7 +806,11 @@
                   "label": "Min H",
                   "value": {
                     "name": "Data",
-                    "path": ["Props", "style", "minHeight"],
+                    "path": [
+                      "Props",
+                      "style",
+                      "minHeight"
+                    ],
                     "type": "path"
                   }
                 },
@@ -720,7 +827,10 @@
                               "name": "Object",
                               "formula": {
                                 "name": "Data",
-                                "path": ["Props", "style"],
+                                "path": [
+                                  "Props",
+                                  "style"
+                                ],
                                 "type": "path"
                               }
                             },
@@ -736,7 +846,9 @@
                               "name": "Value",
                               "formula": {
                                 "name": "Data",
-                                "path": ["Event"],
+                                "path": [
+                                  "Event"
+                                ],
                                 "type": "path"
                               }
                             }
@@ -768,7 +880,11 @@
                   "label": "H",
                   "value": {
                     "name": "Data",
-                    "path": ["Props", "style", "height"],
+                    "path": [
+                      "Props",
+                      "style",
+                      "height"
+                    ],
                     "type": "path"
                   }
                 },
@@ -785,7 +901,10 @@
                               "name": "Object",
                               "formula": {
                                 "name": "Data",
-                                "path": ["Props", "style"],
+                                "path": [
+                                  "Props",
+                                  "style"
+                                ],
                                 "type": "path"
                               }
                             },
@@ -801,7 +920,9 @@
                               "name": "Value",
                               "formula": {
                                 "name": "Data",
-                                "path": ["Event"],
+                                "path": [
+                                  "Event"
+                                ],
                                 "type": "path"
                               }
                             }
@@ -831,7 +952,9 @@
                   "boxSizing": "border-box"
                 },
                 "events": [],
-                "children": ["QsRvnTvSbHsak1cac9cMP"]
+                "children": [
+                  "QsRvnTvSbHsak1cac9cMP"
+                ]
               },
               "dYD4c_xK04GzItKKhMaMm": {
                 "id": "dYD4c_xK04GzItKKhMaMm",
@@ -844,7 +967,10 @@
                   "position": "relative"
                 },
                 "events": [],
-                "children": ["vtd7HX2eGHsY65vbw-gco", "KyAmTWUZdWBDn2BElt4Mc"]
+                "children": [
+                  "vtd7HX2eGHsY65vbw-gco",
+                  "KyAmTWUZdWBDn2BElt4Mc"
+                ]
               },
               "gAkFqG40xzoDC7cIQ51Ne": {
                 "id": "gAkFqG40xzoDC7cIQ51Ne",
@@ -853,7 +979,9 @@
                 "attrs": {},
                 "style": {},
                 "events": [],
-                "children": ["_uv69hJbH1V6r-7eKnSAA"]
+                "children": [
+                  "_uv69hJbH1V6r-7eKnSAA"
+                ]
               },
               "ggMGPB1z-Vi-WZMFCBuvi": {
                 "id": "ggMGPB1z-Vi-WZMFCBuvi",
@@ -867,7 +995,10 @@
                   "flexDirection": "column"
                 },
                 "events": [],
-                "children": ["gAkFqG40xzoDC7cIQ51Ne", "CgQ4CWSKnskS8kQrPALoS"]
+                "children": [
+                  "gAkFqG40xzoDC7cIQ51Ne",
+                  "CgQ4CWSKnskS8kQrPALoS"
+                ]
               },
               "oWXNKhz856pMQEouzEG27": {
                 "id": "oWXNKhz856pMQEouzEG27",
@@ -877,7 +1008,11 @@
                   "label": "W",
                   "value": {
                     "name": "Data",
-                    "path": ["Props", "style", "width"],
+                    "path": [
+                      "Props",
+                      "style",
+                      "width"
+                    ],
                     "type": "path"
                   }
                 },
@@ -894,7 +1029,10 @@
                               "name": "Object",
                               "formula": {
                                 "name": "Data",
-                                "path": ["Props", "style"],
+                                "path": [
+                                  "Props",
+                                  "style"
+                                ],
                                 "type": "path"
                               }
                             },
@@ -910,7 +1048,9 @@
                               "name": "Value",
                               "formula": {
                                 "name": "Data",
-                                "path": ["Event"],
+                                "path": [
+                                  "Event"
+                                ],
                                 "type": "path"
                               }
                             }
@@ -933,7 +1073,11 @@
                   "label": "Min W",
                   "value": {
                     "name": "Data",
-                    "path": ["Props", "style", "minWidth"],
+                    "path": [
+                      "Props",
+                      "style",
+                      "minWidth"
+                    ],
                     "type": "path"
                   }
                 },
@@ -950,7 +1094,10 @@
                               "name": "Object",
                               "formula": {
                                 "name": "Data",
-                                "path": ["Props", "style"],
+                                "path": [
+                                  "Props",
+                                  "style"
+                                ],
                                 "type": "path"
                               }
                             },
@@ -966,7 +1113,9 @@
                               "name": "Value",
                               "formula": {
                                 "name": "Data",
-                                "path": ["Event"],
+                                "path": [
+                                  "Event"
+                                ],
                                 "type": "path"
                               }
                             }
@@ -1028,6 +1177,7 @@
     ]
   },
   "_project": "d41e9972-8714-4fed-af45-8407985afbe4",
+  "_featureFlag": null,
   "root": {
     "id": "ZrcplKNk-9ox-vBnjk_EW",
     "tag": "div",
@@ -1138,7 +1288,10 @@
                     "value": "true",
                     "condition": {
                       "name": "Data",
-                      "path": ["Props", "selectedNodeId"],
+                      "path": [
+                        "Props",
+                        "selectedNodeId"
+                      ],
                       "type": "path"
                     },
                     "variableName": "showElementCatalog"
@@ -1176,7 +1329,11 @@
             "type": "formula",
             "formula": {
               "name": "Data",
-              "path": ["Props", "component", "root"],
+              "path": [
+                "Props",
+                "component",
+                "root"
+              ],
               "type": "path"
             }
           },
@@ -1188,7 +1345,10 @@
             "type": "formula",
             "formula": {
               "name": "Data",
-              "path": ["Props", "selectedNodeId"],
+              "path": [
+                "Props",
+                "selectedNodeId"
+              ],
               "type": "path"
             }
           },
@@ -1196,7 +1356,10 @@
             "type": "formula",
             "formula": {
               "name": "Data",
-              "path": ["Props", "highlightedNodeId"],
+              "path": [
+                "Props",
+                "highlightedNodeId"
+              ],
               "type": "path"
             }
           }
@@ -1208,7 +1371,9 @@
               {
                 "data": {
                   "name": "Data",
-                  "path": ["Event"],
+                  "path": [
+                    "Event"
+                  ],
                   "type": "path"
                 },
                 "type": "Trigger Event",
@@ -1223,7 +1388,9 @@
               {
                 "data": {
                   "name": "Data",
-                  "path": ["Event"],
+                  "path": [
+                    "Event"
+                  ],
                   "type": "path"
                 },
                 "type": "Trigger Event",
@@ -1244,7 +1411,10 @@
             "type": "formula",
             "formula": {
               "name": "Data",
-              "path": ["Props", "component"],
+              "path": [
+                "Props",
+                "component"
+              ],
               "type": "path"
             }
           },
@@ -1252,7 +1422,10 @@
             "type": "formula",
             "formula": {
               "name": "Data",
-              "path": ["Props", "components"],
+              "path": [
+                "Props",
+                "components"
+              ],
               "type": "path"
             }
           },
@@ -1260,7 +1433,10 @@
             "type": "formula",
             "formula": {
               "name": "Data",
-              "path": ["Props", "selectedNodeId"],
+              "path": [
+                "Props",
+                "selectedNodeId"
+              ],
               "type": "path"
             }
           }
@@ -1278,7 +1454,10 @@
               {
                 "data": {
                   "name": "Data",
-                  "path": ["Event", "detail"],
+                  "path": [
+                    "Event",
+                    "detail"
+                  ],
                   "type": "path"
                 },
                 "type": "Trigger Event",
@@ -1287,7 +1466,9 @@
               {
                 "data": {
                   "name": "Event",
-                  "path": ["Event"],
+                  "path": [
+                    "Event"
+                  ],
                   "type": "path"
                 },
                 "type": "Debug"
@@ -1315,7 +1496,10 @@
         "classList": [],
         "condition": {
           "name": "Data",
-          "path": ["Variables", "showElementCatalog"],
+          "path": [
+            "Variables",
+            "showElementCatalog"
+          ],
           "type": "path"
         }
       }

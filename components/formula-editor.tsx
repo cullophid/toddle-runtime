@@ -1,4 +1,4 @@
-import { ComponentModel, NodeData } from "ComponentModel";
+import { NodeData } from "ComponentModel";
 import { Formula } from "../formula/formula";
 import React from "react";
 import ReactDom from "react-dom";
@@ -7,9 +7,9 @@ import { FormulaEditButton } from "./react-components/FormulaEditor";
 export class FormulaEditor extends HTMLElement {
   _formula?: Formula;
   _nodeData?: NodeData;
-  _component?: ComponentModel;
   constructor() {
     super();
+    this.attachShadow({ mode: "open" });
     this.render();
   }
   get formula() {
@@ -27,28 +27,17 @@ export class FormulaEditor extends HTMLElement {
     this._nodeData = nodeData;
     this.render();
   }
-  get component() {
-    return this._component;
-  }
-  set component(component) {
-    this._component = component;
-    this.render();
-  }
 
   render() {
-    console.log("FORMULA", this.formula);
-    if (this.component && this.data) {
-      ReactDom.render(
-        <FormulaEditButton
-          input={this.data}
-          formula={this.formula}
-          component={this.component}
-          onChange={(formula) => {
-            this.dispatchEvent(new CustomEvent("update", { detail: formula }));
-          }}
-        />,
-        this
-      );
-    }
+    ReactDom.render(
+      <FormulaEditButton
+        input={this.data}
+        formula={this.formula}
+        onChange={(formula) => {
+          this.dispatchEvent(new CustomEvent("update", { detail: formula }));
+        }}
+      />,
+      this.shadowRoot
+    );
   }
 }

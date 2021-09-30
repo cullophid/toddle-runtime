@@ -24,6 +24,7 @@
     }
   ],
   "_project": "d41e9972-8714-4fed-af45-8407985afbe4",
+  "_featureFlag": null,
   "root": {
     "id": "81zROeBdopMG-kR0Hp6ru",
     "tag": "div",
@@ -171,7 +172,10 @@
                           "name": "First",
                           "formula": {
                             "name": "Data",
-                            "path": ["Props", "view"],
+                            "path": [
+                              "Props",
+                              "view"
+                            ],
                             "type": "path"
                           }
                         },
@@ -276,7 +280,10 @@
                           "name": "First",
                           "formula": {
                             "name": "Data",
-                            "path": ["Props", "view"],
+                            "path": [
+                              "Props",
+                              "view"
+                            ],
                             "type": "path"
                           }
                         },
@@ -381,7 +388,10 @@
                           "name": "First",
                           "formula": {
                             "name": "Data",
-                            "path": ["Props", "view"],
+                            "path": [
+                              "Props",
+                              "view"
+                            ],
                             "type": "path"
                           }
                         },
@@ -410,7 +420,11 @@
                 "type": "formula",
                 "formula": {
                   "name": "Data",
-                  "path": ["Variables", "component", "name"],
+                  "path": [
+                    "Variables",
+                    "component",
+                    "name"
+                  ],
                   "type": "path"
                 }
               },
@@ -418,7 +432,14 @@
                 "type": "formula",
                 "formula": {
                   "name": "Data",
-                  "path": ["Queries", "project", "data", "projects", "0", "id"],
+                  "path": [
+                    "Queries",
+                    "project",
+                    "data",
+                    "projects",
+                    "0",
+                    "id"
+                  ],
                   "type": "path"
                 }
               }
@@ -431,7 +452,9 @@
                     "type": "Update Query",
                     "value": {
                       "name": "Data",
-                      "path": ["Event"],
+                      "path": [
+                        "Event"
+                      ],
                       "type": "path"
                     },
                     "paramName": "component"
@@ -446,7 +469,10 @@
                           "name": "List",
                           "formula": {
                             "name": "Data",
-                            "path": ["Functions", "components"],
+                            "path": [
+                              "Functions",
+                              "components"
+                            ],
                             "type": "path"
                           }
                         },
@@ -460,7 +486,11 @@
                                 "name": "First",
                                 "formula": {
                                   "name": "Data",
-                                  "path": ["Args", "item", "id"],
+                                  "path": [
+                                    "Args",
+                                    "item",
+                                    "id"
+                                  ],
                                   "type": "path"
                                 }
                               },
@@ -468,7 +498,9 @@
                                 "name": "Second",
                                 "formula": {
                                   "name": "Data",
-                                  "path": ["Event"],
+                                  "path": [
+                                    "Event"
+                                  ],
                                   "type": "path"
                                 }
                               }
@@ -751,7 +783,10 @@
                                 "name": "If",
                                 "formula": {
                                   "name": "Data",
-                                  "path": ["Props", "component"],
+                                  "path": [
+                                    "Props",
+                                    "component"
+                                  ],
                                   "type": "path"
                                 }
                               },
@@ -765,7 +800,11 @@
                                       "name": "First",
                                       "formula": {
                                         "name": "Data",
-                                        "path": ["Args", "item", "id"],
+                                        "path": [
+                                          "Args",
+                                          "item",
+                                          "id"
+                                        ],
                                         "type": "path"
                                       }
                                     },
@@ -773,7 +812,10 @@
                                       "name": "Second",
                                       "formula": {
                                         "name": "Data",
-                                        "path": ["Props", "component"],
+                                        "path": [
+                                          "Props",
+                                          "component"
+                                        ],
                                         "type": "path"
                                       }
                                     }
@@ -790,7 +832,11 @@
                                       "name": "First",
                                       "formula": {
                                         "name": "Data",
-                                        "path": ["Args", "item", "name"],
+                                        "path": [
+                                          "Args",
+                                          "item",
+                                          "name"
+                                        ],
                                         "type": "path"
                                       }
                                     },
@@ -858,7 +904,11 @@
                   "type": "formula",
                   "formula": {
                     "name": "Data",
-                    "path": ["Variables", "component", "name"],
+                    "path": [
+                      "Variables",
+                      "component",
+                      "name"
+                    ],
                     "type": "path"
                   }
                 }
@@ -890,7 +940,11 @@
                 },
                 "condition": {
                   "name": "Data",
-                  "path": ["Mutations", "updateComponent", "isLoading"],
+                  "path": [
+                    "Mutations",
+                    "updateComponent",
+                    "isLoading"
+                  ],
                   "type": "path"
                 }
               },
@@ -909,7 +963,11 @@
                       "name": "Input",
                       "formula": {
                         "name": "Data",
-                        "path": ["Mutations", "updateComponent", "isLoading"],
+                        "path": [
+                          "Mutations",
+                          "updateComponent",
+                          "isLoading"
+                        ],
                         "type": "path"
                       }
                     }
@@ -961,7 +1019,10 @@
                 "type": "formula",
                 "formula": {
                   "name": "Data",
-                  "path": ["Variables", "component"],
+                  "path": [
+                    "Variables",
+                    "component"
+                  ],
                   "type": "path"
                 }
               },
@@ -969,7 +1030,10 @@
                 "type": "formula",
                 "formula": {
                   "name": "Data",
-                  "path": ["Functions", "components"],
+                  "path": [
+                    "Functions",
+                    "components"
+                  ],
                   "type": "path"
                 }
               },
@@ -977,7 +1041,10 @@
                 "type": "formula",
                 "formula": {
                   "name": "Data",
-                  "path": ["Variables", "selectedNodeId"],
+                  "path": [
+                    "Variables",
+                    "selectedNodeId"
+                  ],
                   "type": "path"
                 }
               },
@@ -985,7 +1052,10 @@
                 "type": "formula",
                 "formula": {
                   "name": "Data",
-                  "path": ["Variables", "highlightedNode"],
+                  "path": [
+                    "Variables",
+                    "highlightedNode"
+                  ],
                   "type": "path"
                 }
               }
@@ -998,7 +1068,9 @@
                     "type": "Update Variable",
                     "value": {
                       "name": "Data",
-                      "path": ["Event"],
+                      "path": [
+                        "Event"
+                      ],
                       "type": "path"
                     },
                     "variableName": "selectedNodeId"
@@ -1013,7 +1085,9 @@
                     "type": "Update Variable",
                     "value": {
                       "name": "Data",
-                      "path": ["Event"],
+                      "path": [
+                        "Event"
+                      ],
                       "type": "path"
                     },
                     "variableName": "highlightedNode"
@@ -1028,7 +1102,9 @@
                     "type": "Update Variable",
                     "value": {
                       "name": "Data",
-                      "path": ["Event"],
+                      "path": [
+                        "Event"
+                      ],
                       "type": "path"
                     },
                     "variableName": "component"
@@ -1044,37 +1120,65 @@
                     "variables": {
                       "update_Component_by_pk___set__name": {
                         "name": "Data",
-                        "path": ["Variables", "component", "name"],
+                        "path": [
+                          "Variables",
+                          "component",
+                          "name"
+                        ],
                         "type": "path"
                       },
                       "update_Component_by_pk___set__nodes": {
                         "name": "Data",
-                        "path": ["Variables", "component", "nodes"],
+                        "path": [
+                          "Variables",
+                          "component",
+                          "nodes"
+                        ],
                         "type": "path"
                       },
                       "update_Component_by_pk___set__props": {
                         "name": "Data",
-                        "path": ["Variables", "component", "props"],
+                        "path": [
+                          "Variables",
+                          "component",
+                          "props"
+                        ],
                         "type": "path"
                       },
                       "update_Component_by_pk___set__events": {
                         "name": "Data",
-                        "path": ["Variables", "component", "events"],
+                        "path": [
+                          "Variables",
+                          "component",
+                          "events"
+                        ],
                         "type": "path"
                       },
                       "update_Component_by_pk__pk_columns__id": {
                         "name": "Data",
-                        "path": ["Variables", "component", "id"],
+                        "path": [
+                          "Variables",
+                          "component",
+                          "id"
+                        ],
                         "type": "path"
                       },
                       "update_Component_by_pk___set__functions": {
                         "name": "Data",
-                        "path": ["Variables", "component", "functions"],
+                        "path": [
+                          "Variables",
+                          "component",
+                          "functions"
+                        ],
                         "type": "path"
                       },
                       "update_Component_by_pk___set__variables": {
                         "name": "Data",
-                        "path": ["Variables", "component", "variables"],
+                        "path": [
+                          "Variables",
+                          "component",
+                          "variables"
+                        ],
                         "type": "path"
                       }
                     },
@@ -1088,7 +1192,9 @@
                   {
                     "data": {
                       "name": "Event",
-                      "path": ["Event"],
+                      "path": [
+                        "Event"
+                      ],
                       "type": "path"
                     },
                     "type": "Debug",
@@ -1125,7 +1231,10 @@
                     "type": "formula",
                     "formula": {
                       "name": "Data",
-                      "path": ["Variables", "componentData"],
+                      "path": [
+                        "Variables",
+                        "componentData"
+                      ],
                       "type": "path"
                     }
                   },
@@ -1133,7 +1242,10 @@
                     "type": "formula",
                     "formula": {
                       "name": "Data",
-                      "path": ["Variables", "component"],
+                      "path": [
+                        "Variables",
+                        "component"
+                      ],
                       "type": "path"
                     }
                   },
@@ -1141,7 +1253,10 @@
                     "type": "formula",
                     "formula": {
                       "name": "Data",
-                      "path": ["Functions", "components"],
+                      "path": [
+                        "Functions",
+                        "components"
+                      ],
                       "type": "path"
                     }
                   },
@@ -1149,7 +1264,10 @@
                     "type": "formula",
                     "formula": {
                       "name": "Data",
-                      "path": ["Variables", "selectedNodeId"],
+                      "path": [
+                        "Variables",
+                        "selectedNodeId"
+                      ],
                       "type": "path"
                     }
                   },
@@ -1157,7 +1275,10 @@
                     "type": "formula",
                     "formula": {
                       "name": "Data",
-                      "path": ["Variables", "highlightedNode"],
+                      "path": [
+                        "Variables",
+                        "highlightedNode"
+                      ],
                       "type": "path"
                     }
                   }
@@ -1176,7 +1297,10 @@
                         "type": "Update Variable",
                         "value": {
                           "name": "Data",
-                          "path": ["Event", "detail"],
+                          "path": [
+                            "Event",
+                            "detail"
+                          ],
                           "type": "path"
                         },
                         "variableName": "highlightedNode"
@@ -1193,7 +1317,10 @@
                         "type": "Update Variable",
                         "value": {
                           "name": "Data",
-                          "path": ["Event", "detail"],
+                          "path": [
+                            "Event",
+                            "detail"
+                          ],
                           "type": "path"
                         },
                         "variableName": "selectedNodeId"
@@ -1219,9 +1346,266 @@
             "tag": "div",
             "type": "element",
             "attrs": {},
-            "style": {},
+            "style": {
+              "width": "64"
+            },
             "events": [],
-            "children": [],
+            "children": [
+              {
+                "id": "kjDa2W4XbmIGh283PddgH",
+                "name": "ElementPanel",
+                "type": "component",
+                "attrs": {
+                  "node": {
+                    "type": "formula",
+                    "formula": {
+                      "name": "CUSTOM_FUNCTION",
+                      "type": "function",
+                      "arguments": [
+                        {
+                          "name": "name",
+                          "formula": {
+                            "name": "String",
+                            "type": "string",
+                            "value": "getNode"
+                          }
+                        },
+                        {
+                          "name": "root",
+                          "formula": {
+                            "name": "Path",
+                            "path": [
+                              "Variables",
+                              "component",
+                              "root"
+                            ],
+                            "type": "path"
+                          }
+                        },
+                        {
+                          "name": "id",
+                          "formula": {
+                            "name": "Path",
+                            "path": [
+                              "Variables",
+                              "selectedNodeId"
+                            ],
+                            "type": "path"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "nodeData": {
+                    "type": "formula",
+                    "formula": {
+                      "name": "CUSTOM_FUNCTION",
+                      "type": "function",
+                      "arguments": [
+                        {
+                          "name": "name",
+                          "formula": {
+                            "name": "String",
+                            "type": "string",
+                            "value": "getNodeData"
+                          }
+                        },
+                        {
+                          "name": "root",
+                          "formula": {
+                            "name": "Path",
+                            "path": [
+                              "Variables",
+                              "component",
+                              "root"
+                            ],
+                            "type": "path"
+                          }
+                        },
+                        {
+                          "name": "id",
+                          "formula": {
+                            "name": "Path",
+                            "path": [
+                              "Variables",
+                              "selectedNodeId"
+                            ],
+                            "type": "path"
+                          }
+                        },
+                        {
+                          "name": "data",
+                          "formula": {
+                            "name": "Path",
+                            "path": [
+                              "Variables",
+                              "componentData"
+                            ],
+                            "type": "path"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "component": {
+                    "type": "formula",
+                    "formula": {
+                      "name": "Data",
+                      "path": [
+                        "Variables",
+                        "component"
+                      ],
+                      "type": "path"
+                    }
+                  }
+                },
+                "events": [
+                  {
+                    "type": "ComponentEvent",
+                    "actions": [
+                      {
+                        "type": "Update Variable",
+                        "value": {
+                          "name": "Data",
+                          "path": [
+                            "Event"
+                          ],
+                          "type": "path"
+                        },
+                        "variableName": "selectedNodeId"
+                      }
+                    ],
+                    "trigger": "nodeSelected"
+                  },
+                  {
+                    "type": "ComponentEvent",
+                    "actions": [
+                      {
+                        "type": "Update Variable",
+                        "value": {
+                          "name": "Data",
+                          "path": [
+                            "Event"
+                          ],
+                          "type": "path"
+                        },
+                        "variableName": "highlightedNode"
+                      }
+                    ],
+                    "trigger": "nodeHighlighted"
+                  },
+                  {
+                    "type": "ComponentEvent",
+                    "actions": [
+                      {
+                        "type": "Update Variable",
+                        "value": {
+                          "name": "Data",
+                          "path": [
+                            "Event"
+                          ],
+                          "type": "path"
+                        },
+                        "variableName": "component"
+                      },
+                      {
+                        "type": "Trigger Mutation",
+                        "onFailed": {
+                          "type": "QueryEvent",
+                          "actions": [],
+                          "trigger": "Failed"
+                        },
+                        "condition": null,
+                        "variables": {
+                          "update_Component_by_pk___set__name": {
+                            "name": "Data",
+                            "path": [
+                              "Variables",
+                              "component",
+                              "name"
+                            ],
+                            "type": "path"
+                          },
+                          "update_Component_by_pk___set__nodes": {
+                            "name": "Data",
+                            "path": [
+                              "Variables",
+                              "component",
+                              "nodes"
+                            ],
+                            "type": "path"
+                          },
+                          "update_Component_by_pk___set__props": {
+                            "name": "Data",
+                            "path": [
+                              "Variables",
+                              "component",
+                              "props"
+                            ],
+                            "type": "path"
+                          },
+                          "update_Component_by_pk___set__events": {
+                            "name": "Data",
+                            "path": [
+                              "Variables",
+                              "component",
+                              "events"
+                            ],
+                            "type": "path"
+                          },
+                          "update_Component_by_pk__pk_columns__id": {
+                            "name": "Data",
+                            "path": [
+                              "Variables",
+                              "component",
+                              "id"
+                            ],
+                            "type": "path"
+                          },
+                          "update_Component_by_pk___set__functions": {
+                            "name": "Data",
+                            "path": [
+                              "Variables",
+                              "component",
+                              "functions"
+                            ],
+                            "type": "path"
+                          },
+                          "update_Component_by_pk___set__variables": {
+                            "name": "Data",
+                            "path": [
+                              "Variables",
+                              "component",
+                              "variables"
+                            ],
+                            "type": "path"
+                          }
+                        },
+                        "onCompleted": {
+                          "type": "QueryEvent",
+                          "actions": [],
+                          "trigger": "Completed"
+                        },
+                        "mutationName": "updateComponent"
+                      },
+                      {
+                        "data": {
+                          "name": "Event",
+                          "path": [
+                            "Event"
+                          ],
+                          "type": "path"
+                        },
+                        "type": "Debug",
+                        "label": "LeftPanel"
+                      }
+                    ],
+                    "trigger": "updateComponent"
+                  }
+                ],
+                "children": []
+              }
+            ],
             "classList": []
           }
         ],
@@ -1234,7 +1618,10 @@
               "name": "First",
               "formula": {
                 "name": "Data",
-                "path": ["Props", "view"],
+                "path": [
+                  "Props",
+                  "view"
+                ],
                 "type": "path"
               }
             },
@@ -1258,7 +1645,13 @@
             "type": "formula",
             "formula": {
               "name": "Data",
-              "path": ["Queries", "project", "data", "projects", "0"],
+              "path": [
+                "Queries",
+                "project",
+                "data",
+                "projects",
+                "0"
+              ],
               "type": "path"
             }
           },
@@ -1266,7 +1659,10 @@
             "type": "formula",
             "formula": {
               "name": "Data",
-              "path": ["Variables", "component"],
+              "path": [
+                "Variables",
+                "component"
+              ],
               "type": "path"
             }
           },
@@ -1274,7 +1670,10 @@
             "type": "formula",
             "formula": {
               "name": "Data",
-              "path": ["Variables", "componentData"],
+              "path": [
+                "Variables",
+                "componentData"
+              ],
               "type": "path"
             }
           }
@@ -1286,7 +1685,9 @@
               {
                 "data": {
                   "name": "Event",
-                  "path": ["Event"],
+                  "path": [
+                    "Event"
+                  ],
                   "type": "path"
                 },
                 "type": "Debug",
@@ -1305,7 +1706,10 @@
               "name": "First",
               "formula": {
                 "name": "Data",
-                "path": ["Props", "view"],
+                "path": [
+                  "Props",
+                  "view"
+                ],
                 "type": "path"
               }
             },
@@ -1371,7 +1775,11 @@
             "name": "Root",
             "formula": {
               "name": "Data",
-              "path": ["Variables", "component", "root"],
+              "path": [
+                "Variables",
+                "component",
+                "root"
+              ],
               "type": "path"
             }
           },
@@ -1379,7 +1787,10 @@
             "name": "nodeId",
             "formula": {
               "name": "Data",
-              "path": ["Variables", "selectedNodeId"],
+              "path": [
+                "Variables",
+                "selectedNodeId"
+              ],
               "type": "path"
             }
           }
@@ -1391,7 +1802,12 @@
       "name": "components",
       "value": {
         "name": "Data",
-        "path": ["Queries", "components", "data", "components"],
+        "path": [
+          "Queries",
+          "components",
+          "data",
+          "components"
+        ],
         "type": "path"
       }
     }
@@ -1442,7 +1858,12 @@
             "type": "Update Variable",
             "value": {
               "name": "Data",
-              "path": ["Queries", "component", "data", "component"],
+              "path": [
+                "Queries",
+                "component",
+                "data",
+                "component"
+              ],
               "type": "path"
             },
             "variableName": "component"
@@ -1749,7 +2170,10 @@
           "name": "projects:where:slug:_eq",
           "value": {
             "name": "Data",
-            "path": ["Props", "slug"],
+            "path": [
+              "Props",
+              "slug"
+            ],
             "type": "path"
           },
           "varDef": {
@@ -2043,7 +2467,14 @@
       "throttle": null,
       "condition": {
         "name": "Data",
-        "path": ["Queries", "project", "data", "projects", "0", "id"],
+        "path": [
+          "Queries",
+          "project",
+          "data",
+          "projects",
+          "0",
+          "id"
+        ],
         "type": "path"
       },
       "variables": {
@@ -2051,7 +2482,14 @@
           "name": "components:where:_project:_eq",
           "value": {
             "name": "Data",
-            "path": ["Queries", "project", "data", "projects", "0", "id"],
+            "path": [
+              "Queries",
+              "project",
+              "data",
+              "projects",
+              "0",
+              "id"
+            ],
             "type": "path"
           },
           "varDef": {
@@ -2086,7 +2524,12 @@
                   "name": "List",
                   "formula": {
                     "name": "Data",
-                    "path": ["Queries", "components", "data", "components"],
+                    "path": [
+                      "Queries",
+                      "components",
+                      "data",
+                      "components"
+                    ],
                     "type": "path"
                   }
                 },
@@ -2100,7 +2543,10 @@
                         "name": "If",
                         "formula": {
                           "name": "Data",
-                          "path": ["Props", "component"],
+                          "path": [
+                            "Props",
+                            "component"
+                          ],
                           "type": "path"
                         }
                       },
@@ -2114,7 +2560,11 @@
                               "name": "First",
                               "formula": {
                                 "name": "Data",
-                                "path": ["Args", "item", "id"],
+                                "path": [
+                                  "Args",
+                                  "item",
+                                  "id"
+                                ],
                                 "type": "path"
                               }
                             },
@@ -2122,7 +2572,10 @@
                               "name": "Second",
                               "formula": {
                                 "name": "Data",
-                                "path": ["Props", "component"],
+                                "path": [
+                                  "Props",
+                                  "component"
+                                ],
                                 "type": "path"
                               }
                             }
@@ -2139,7 +2592,11 @@
                               "name": "First",
                               "formula": {
                                 "name": "Data",
-                                "path": ["Args", "item", "name"],
+                                "path": [
+                                  "Args",
+                                  "item",
+                                  "name"
+                                ],
                                 "type": "path"
                               }
                             },

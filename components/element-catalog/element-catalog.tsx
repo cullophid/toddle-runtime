@@ -1,8 +1,8 @@
 import React, { CSSProperties, useMemo, useRef, useState } from "react";
 import ReactDom from "react-dom";
 import {
-  cloneNodeTree,
-  insertNodeTree,
+  getNode,
+  insertNode,
   NodeModel,
   resolveStyleBlock,
 } from "../../NodeModel";
@@ -30,29 +30,28 @@ const Catalog = React.memo((props: Props) => {
         component: c,
       },
     ],
-    nodes: {
-      ROOT: {
-        id: "ROOT",
-        type: "component",
-        name: c.name,
-        attrs: {},
-        children: [],
-        events: [],
-      },
+    node: {
+      type: "component",
+      name: c.name,
+      attrs: {},
+      children: [],
+      events: [],
     },
   }));
 
-  const onSelect = (newNodes: Record<string, NodeModel>) => {
-    const nodeTree = cloneNodeTree(newNodes);
-    const nodes = insertNodeTree(
-      props.component.nodes,
-      nodeTree,
-      props.selectedNodeId
-    );
+  const onSelect = (newNode: NodeModel) => {
+    const parent = getNode(props.component.root, props.selectedNodeId);
+    if (parent?.type !== "element") {
+      return;
+    }
     props.onDismiss();
     props.onChange({
       ...props.component,
-      nodes,
+      root: insertNode(
+        props.component.root,
+        props.selectedNodeId + "." + parent.children.length,
+        newNode
+      ),
     });
   };
 
@@ -117,7 +116,7 @@ type ElementGroupProps = {
   search: string;
   onDismiss: () => void;
   elements: SwatchElement[];
-  onSelection: (nodes: Record<string, NodeModel>) => void;
+  onSelection: (node: NodeModel) => void;
 };
 const ElementGroup = (props: ElementGroupProps) => {
   if (props.elements.length === 0) {
@@ -143,14 +142,14 @@ const ElementGroup = (props: ElementGroupProps) => {
 };
 
 type ElementItemProps = {
-  nodes: Record<string, NodeModel>;
+  node: NodeModel;
   components?: { id: string; component: ComponentModel }[];
   hideLabel?: boolean;
   name: string;
   label?: string;
   hidePanel: () => void;
   selectedNodeId?: string;
-  onSelection: (element: Record<string, NodeModel>) => void;
+  onSelection: (element: NodeModel) => void;
 };
 
 const ElementItem = (props: ElementItemProps) => {
@@ -159,11 +158,11 @@ const ElementItem = (props: ElementItemProps) => {
       title={props.name}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
-          props.onSelection(props.nodes);
+          props.onSelection(props.node);
         }
       }}
       tabIndex={0}
-      onClick={() => props.onSelection(props.nodes)}
+      onClick={() => props.onSelection(props.node)}
       className="list-none group bg-transparent text-left border-none focus:outline-none focus:bg-grey-600 hover:bg-grey-600 text-grey-200 w-full py-2 px-4"
     >
       {props.label ?? null}
@@ -172,12 +171,10 @@ const ElementItem = (props: ElementItemProps) => {
 };
 
 type NodeProps = {
-  nodes: Record<string, NodeModel>;
-  nodeId: string;
+  node: NodeModel;
 };
 
-const PreviewNode = ({ nodes, nodeId }: NodeProps) => {
-  const node = nodes[nodeId];
+const PreviewNode = ({ node }: NodeProps) => {
   if (!node) {
     return null;
   }
@@ -191,23 +188,15 @@ const PreviewNode = ({ nodes, nodeId }: NodeProps) => {
       return (
         <div style={style}>
           {node.children.map((child, i) => (
-            <PreviewNode key={i} nodeId={child} nodes={nodes} />
+            <PreviewNode key={i} node={child} />
           ))}
         </div>
-      );
-    case "fragment":
-      return (
-        <>
-          {node.children.map((child, i) => (
-            <PreviewNode key={i} nodeId={child} nodes={nodes} />
-          ))}
-        </>
       );
     case "element":
       return (
         <div style={style}>
           {node.children.map((child, i) => (
-            <PreviewNode key={i} nodeId={child} nodes={nodes} />
+            <PreviewNode key={i} node={child} />
           ))}
         </div>
       );
@@ -221,7 +210,7 @@ export type SwatchElement = {
   section: string;
   label: string;
   components?: { id: string; component: ComponentModel }[];
-  nodes: Record<string, NodeModel>;
+  node: NodeModel;
 };
 
 export const divElement: SwatchElement = {
@@ -229,17 +218,14 @@ export const divElement: SwatchElement = {
   label: "Div",
   section: "Basic",
 
-  nodes: {
-    ROOT: {
-      id: "ROOT",
-      type: "element",
-      tag: "div",
-      events: [],
-      classList: [],
-      attrs: {},
-      style: {},
-      children: [],
-    },
+  node: {
+    type: "element",
+    tag: "div",
+    events: [],
+    classList: [],
+    attrs: {},
+    style: {},
+    children: [],
   },
 };
 
@@ -247,15 +233,12 @@ export const textNode: SwatchElement = {
   name: "Text",
   label: "text",
   section: "Basic",
-  nodes: {
-    ROOT: {
-      id: "ROOT",
-      style: {
-        fontSize: "14px",
-      },
-      type: "text",
-      value: { type: "value", value: "Text" },
+  node: {
+    style: {
+      fontSize: "14px",
     },
+    type: "text",
+    value: { type: "value", value: "Text" },
   },
 };
 
@@ -315,6 +298,7 @@ export class ElementCatalog extends HTMLElement {
   }
 
   render() {
+    console.log(this.component, this.selectedNodeId, this.components);
     if (this.component && this.selectedNodeId && this.components) {
       ReactDom.render(
         <Catalog

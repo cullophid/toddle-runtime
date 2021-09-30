@@ -39,9 +39,6 @@ const updateComponents = async (components) => {
 };
 
 const validateComponent = (component) => {
-  if (typeof component.id !== "string") {
-    throw new Error("Id is not a string");
-  }
   if (typeof component.name !== "string") {
     throw new Error(`${component.id} has no name`);
   }

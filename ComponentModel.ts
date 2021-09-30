@@ -26,7 +26,6 @@ export type ComponentProp = {
   initialValue: unknown;
 };
 export type ComponentVariable = {
-  id: string;
   name: string;
   initialValue: string | number | boolean | Formula;
 };
@@ -59,6 +58,7 @@ export type ComponentModel = {
   id: string;
   name: string;
   _project: string;
+  _featureFlag: string | null;
   root: NodeModel;
   variables: ComponentVariable[];
   functions: ComponentFunction[];

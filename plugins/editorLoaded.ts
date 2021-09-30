@@ -5,7 +5,7 @@ import { locationSignal } from "../router";
 import { parseHtml } from "./parseHtml";
 import { getNode, insertNode, removeNode } from "../NodeModel";
 
-export const editorLoaded = (data: unknown, ctx: ComponentContext) => {
+window.toddle.actions.editorLoaded = (data: unknown, ctx: ComponentContext) => {
   const component = ctx.dataSignal.get().Variables?.component as ComponentModel;
   if (!component) {
     console.error("Editor Loaded Action: Could not find component");
@@ -204,8 +204,7 @@ export const editorLoaded = (data: unknown, ctx: ComponentContext) => {
       }
       switch (selectedNode?.type) {
         case "component":
-        case "element":
-        case "fragment": {
+        case "element": {
           const root = nodes.reduce((root, node, i) =>
             insertNode(
               root,

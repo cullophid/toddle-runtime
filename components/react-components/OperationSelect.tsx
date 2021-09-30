@@ -12,6 +12,31 @@ export type OperationSelectProps = {
   onChange: (operation: Formula) => void;
 };
 
+const getOperationName = (op: Formula): string => {
+  switch (op.type) {
+    case "boolean":
+    case "number":
+    case "string":
+    case "null":
+    case "record":
+      return op.type;
+    case "function":
+      return op.name;
+    case "path":
+      return "data";
+  }
+};
+const operations: Formula[] = [
+  {
+    type: "null",
+  },
+  {
+    type: "path",
+    path: [],
+  },
+  ...functionOperations,
+];
+
 export const OperationSelect = (props: OperationSelectProps) => {
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -22,44 +47,39 @@ export const OperationSelect = (props: OperationSelectProps) => {
     props.operation?.type === "function" && props.operation.name === "ID"
   );
 
-  const operations: Formula[] = [
-    {
-      type: "null",
-      name: "None",
-    },
-    {
-      type: "path",
-      name: "Data",
-      path: [],
-    },
-    ...functionOperations,
-  ];
-
   useEffect(() => {
-    if (props.operation?.name === "ID") {
+    if (props.operation?.type === "function" && props.operation.name === "ID") {
       setIsOpen(true);
     }
-  }, [props.operation?.name]);
+  }, [props.operation]);
+
   useEffect(() => {
-    if (isOpen === false && props.operation?.name === "ID") {
+    if (
+      isOpen === false &&
+      props.operation?.type === "function" &&
+      props.operation.name === "ID"
+    ) {
       props.onChange({
         type: "null",
-        name: "null",
       });
     }
   }, [isOpen]);
 
-  const filteredOperations = useMemo(
-    () =>
-      operations.filter((op) =>
-        op.name.toLocaleLowerCase().includes(inputValue.toLocaleLowerCase())
-      ),
-    [operations, inputValue]
-  );
+  const filteredOperations = operations.filter((op) => {
+    switch (op.type) {
+      case "boolean":
+      case "number":
+      case "string":
+      case "null":
+        return op.type.includes(inputValue.toLocaleLowerCase());
+      case "function":
+        return op.name.includes(inputValue.toLocaleUpperCase());
+      case "path":
+        return "data".includes(inputValue.toLocaleLowerCase());
+    }
+  });
 
-  useEffect(() => setHighlightedIndex(0), [filteredOperations]);
-
-  const highlightedOperation = filteredOperations[highlightedIndex];
+  useEffect(() => setHighlightedIndex(0), [inputValue]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -93,7 +113,7 @@ export const OperationSelect = (props: OperationSelectProps) => {
           setInputValue("");
         }}
       >
-        {props.operation?.name ?? ""}
+        {props.operation ? getOperationName(props.operation) : ""}
       </button>
 
       {isOpen && (
@@ -112,7 +132,7 @@ export const OperationSelect = (props: OperationSelectProps) => {
             autoFocus={true}
             ref={inputRef}
             value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            onChange={(e) => setInputValue(e.target.value ?? "")}
             onKeyDown={(e) => {
               switch (e.key) {
                 case "ArrowDown":
@@ -131,7 +151,11 @@ export const OperationSelect = (props: OperationSelectProps) => {
                   e.stopPropagation();
                   props.onChange(filteredOperations[highlightedIndex]);
                   setIsOpen(false);
-                  setInputValue(props.operation?.name ?? "");
+                  setInputValue(
+                    props.operation
+                      ? getOperationName(props.operation) ?? ""
+                      : ""
+                  );
                   buttonRef.current?.focus();
                   return;
                 }
@@ -142,7 +166,7 @@ export const OperationSelect = (props: OperationSelectProps) => {
             {filteredOperations.map((item, index) => (
               <li
                 className="list-none w-full px-4 grid items-center cursor-pointer text-grey-300"
-                key={item.name}
+                key={getOperationName(item)}
                 style={{
                   background:
                     highlightedIndex === index
@@ -156,29 +180,10 @@ export const OperationSelect = (props: OperationSelectProps) => {
                   buttonRef.current?.focus();
                 }}
               >
-                {item.name}
+                {getOperationName(item)}
               </li>
             ))}
           </ul>
-          {highlightedOperation?.description && (
-            <div
-              className={`
-              absolute right-0 top-0 
-              h-full w-80 p-4 
-              overflow-auto 
-              bg-grey-800 text-grey-200
-              rounded-r 
-              shadow-md 
-              translate-x-full 
-              border-0
-              border-l-2
-              border-grey-700
-              documentation
-            `}
-            >
-              {highlightedOperation.description}
-            </div>
-          )}
         </div>
       )}
     </div>

@@ -249,7 +249,7 @@ export class Canvas extends HTMLElement {
   }
 
   set data(data: ComponentData) {
-    if (!data.Variables || !data.Props) {
+    if (!data?.Variables || !data.Props) {
       return;
     }
     this.dataSignal.set(data);

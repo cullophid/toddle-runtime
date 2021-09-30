@@ -19,6 +19,7 @@ const fetchProjectComponents = async (slug) => {
             name
             props
             _project
+            _featureFlag
             root
             events
             variables

@@ -19,6 +19,7 @@ import * as JOIN from "./functions/JOIN";
 import * as LIST from "./functions/LIST";
 import * as LOWER from "./functions/LOWER";
 import * as MAP from "./functions/MAP";
+import * as REMOVE from "./functions/REMOVE";
 import * as MINUS from "./functions/MINUS";
 import * as MOD from "./functions/MOD";
 import * as MULTIPLY from "./functions/MULTIPLY";
@@ -77,6 +78,7 @@ export const functions: Record<
   MULTIPLY,
   NEQ,
   NOT,
+  REMOVE,
   GET,
   NUMBER,
   OR,

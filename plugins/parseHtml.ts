@@ -33,9 +33,9 @@ const elementToNode = (element: Element): NodeModel => {
       type: "element",
       tag: element.tagName,
       classList: element.className
-        ? element.className.split(/\s/g).map((name) => ({
+        ? element.className.split?.(/\s/g).map((name) => ({
             name: name,
-          }))
+          })) ?? []
         : [],
       attrs: Object.fromEntries(
         Array.from(element.attributes)

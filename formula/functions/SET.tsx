@@ -7,11 +7,11 @@ export const template: FunctionOperation = {
     { name: "Object", formula: { type: "null", name: "Null" } },
     {
       name: "Key",
-      formula: { type: "string", name: "String", value: "Item" },
+      formula: { type: "string", value: "Item" },
     },
     {
       name: "Value",
-      formula: { type: "string", name: "String", value: "Item" },
+      formula: { type: "string", value: "Item" },
     },
   ],
 };

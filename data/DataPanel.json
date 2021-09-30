@@ -12,7 +12,9 @@
           "ROOT": {
             "id": "ROOT",
             "type": "fragment",
-            "children": ["7WQmOL7lsKF0CgR0LaMzc"]
+            "children": [
+              "7WQmOL7lsKF0CgR0LaMzc"
+            ]
           },
           "7WQmOL7lsKF0CgR0LaMzc": {
             "id": "7WQmOL7lsKF0CgR0LaMzc",
@@ -168,6 +170,7 @@
     }
   ],
   "_project": "d41e9972-8714-4fed-af45-8407985afbe4",
+  "_featureFlag": null,
   "root": {
     "id": "hDv2K7aXJAXR8A8dREW76",
     "tag": "main",
@@ -266,7 +269,11 @@
                 "events": [],
                 "repeat": {
                   "name": "Data",
-                  "path": ["Props", "component", "props"],
+                  "path": [
+                    "Props",
+                    "component",
+                    "props"
+                  ],
                   "type": "path"
                 },
                 "children": [
@@ -277,7 +284,11 @@
                       "type": "formula",
                       "formula": {
                         "name": "Data",
-                        "path": ["ListItem", "Item", "name"],
+                        "path": [
+                          "ListItem",
+                          "Item",
+                          "name"
+                        ],
                         "type": "path"
                       }
                     }
@@ -310,7 +321,11 @@
                                 "name": "Object",
                                 "formula": {
                                   "name": "Data",
-                                  "path": ["Props", "componentData", "Props"],
+                                  "path": [
+                                    "Props",
+                                    "componentData",
+                                    "Props"
+                                  ],
                                   "type": "path"
                                 }
                               },
@@ -318,7 +333,11 @@
                                 "name": "Item",
                                 "formula": {
                                   "name": "Data",
-                                  "path": ["ListItem", "Item", "name"],
+                                  "path": [
+                                    "ListItem",
+                                    "Item",
+                                    "name"
+                                  ],
                                   "type": "path"
                                 }
                               }
@@ -403,7 +422,11 @@
                 "events": [],
                 "repeat": {
                   "name": "Data",
-                  "path": ["Props", "component", "variables"],
+                  "path": [
+                    "Props",
+                    "component",
+                    "variables"
+                  ],
                   "type": "path"
                 },
                 "children": [
@@ -414,7 +437,11 @@
                       "type": "formula",
                       "formula": {
                         "name": "Data",
-                        "path": ["ListItem", "Item", "name"],
+                        "path": [
+                          "ListItem",
+                          "Item",
+                          "name"
+                        ],
                         "type": "path"
                       }
                     }
@@ -454,7 +481,11 @@
                                 "name": "Item",
                                 "formula": {
                                   "name": "Data",
-                                  "path": ["ListItem", "Item", "name"],
+                                  "path": [
+                                    "ListItem",
+                                    "Item",
+                                    "name"
+                                  ],
                                   "type": "path"
                                 }
                               }
@@ -538,7 +569,11 @@
                 "events": [],
                 "repeat": {
                   "name": "Data",
-                  "path": ["Props", "component", "queries"],
+                  "path": [
+                    "Props",
+                    "component",
+                    "queries"
+                  ],
                   "type": "path"
                 },
                 "children": [
@@ -549,7 +584,11 @@
                       "type": "formula",
                       "formula": {
                         "name": "Data",
-                        "path": ["ListItem", "Item", "name"],
+                        "path": [
+                          "ListItem",
+                          "Item",
+                          "name"
+                        ],
                         "type": "path"
                       }
                     }

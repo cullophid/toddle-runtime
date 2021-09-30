@@ -307,6 +307,9 @@ export const insertNode = (root: NodeModel, id: string, newNode: NodeModel) => {
 };
 
 export const getNode = (root: NodeModel, id: string) => {
+  if (id.length === 0) {
+    return undefined;
+  }
   const path = id.split(".").map(Number);
   return path.slice(1).reduce((node: NodeModel | undefined, childIndex) => {
     switch (node?.type) {
