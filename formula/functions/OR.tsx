@@ -1,4 +1,8 @@
-import { applyFormula, FunctionOperation } from "../formula";
+import {
+  applyFormula,
+  FunctionDeclaration,
+  FunctionOperation,
+} from "../formula";
 
 export const template: FunctionOperation = {
   type: "function",
@@ -6,11 +10,11 @@ export const template: FunctionOperation = {
   arguments: [
     {
       name: "First",
-      formula: { type: "boolean", name: "Boolean", value: true },
+      formula: { type: "value", value: true },
     },
     {
       name: "Second",
-      formula: { type: "boolean", name: "Boolean", value: true },
+      formula: { type: "value", value: true },
     },
   ],
 };
@@ -24,3 +28,5 @@ export const resolver = (f: FunctionOperation, input: any) => {
 const isTruthy = (value: any) => {
   return value !== false && value !== undefined && value !== null;
 };
+
+export const OR: FunctionDeclaration = { template, resolver };

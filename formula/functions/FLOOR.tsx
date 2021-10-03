@@ -1,4 +1,8 @@
-import { applyFormula, FunctionOperation } from "../formula";
+import {
+  applyFormula,
+  FunctionDeclaration,
+  FunctionOperation,
+} from "../formula";
 
 export const template: FunctionOperation = {
   type: "function",
@@ -6,11 +10,11 @@ export const template: FunctionOperation = {
   arguments: [
     {
       name: "Input",
-      formula: { type: "number", name: "Number", value: 1 },
+      formula: { type: "value", value: 1 },
     },
     {
       name: "Decimals",
-      formula: { type: "number", name: "Number", value: 0 },
+      formula: { type: "value", value: 0 },
     },
   ],
 };
@@ -25,3 +29,5 @@ export const resolver = (f: FunctionOperation, input: any) => {
   const multiplier = Math.max(1, Math.pow(10, Number(b)));
   return Math.floor(Number(a) * multiplier) / multiplier;
 };
+
+export const FLOOR: FunctionDeclaration = { template, resolver };

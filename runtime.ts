@@ -247,12 +247,8 @@ export const renderComponent = ({
       component.functions?.map((f) => [f.name, f.value]) ?? []
     ),
   });
-  if (component.name === "/editor") {
-    (window as any).page = dataSignal;
-  }
-  if (component.name === "Editor") {
-    (window as any).comp = dataSignal;
-  }
+
+  (window as any)[component.name] = dataSignal;
 
   attributesSignal.subscribe((Attributes) =>
     dataSignal.set({
@@ -425,10 +421,8 @@ const createText = ({ parent, node, id, dataSignal, ctx }: RenderTextProps) => {
   }
   elem.setAttribute("data-node-type", "text");
   const cleanUp: Function[] = [];
-  if (value.type === "formula") {
-    const sig = dataSignal.map((data) =>
-      String(applyFormula(value.formula, data))
-    );
+  if (value.type !== "value") {
+    const sig = dataSignal.map((data) => String(applyFormula(value, data)));
     sig.subscribe((value) => (elem.innerText = value));
     cleanUp.push(() => sig.destroy());
   } else {
@@ -466,9 +460,7 @@ const createComponent = ({
   const attributesSignal = dataSignal.map((data) => {
     return mapObject(node.attrs, ([attr, value]) => [
       attr,
-      value.type === "formula"
-        ? applyFormula(value.formula, data)
-        : value.value,
+      value.type !== "value" ? applyFormula(value, data) : value.value,
     ]);
   });
   return renderComponent({
@@ -572,22 +564,26 @@ const createElement = ({
       case "value":
       case "src":
       case "type": {
-        if (value?.type === "formula") {
-          const o = dataSignal.map((data) =>
-            String(applyFormula(value.formula, data))
-          );
+        if (value.type === "value") {
+          (elem as any)[attr] = value?.value;
+        } else {
+          const o = dataSignal.map((data) => String(applyFormula(value, data)));
           o.subscribe((val) => {
             (elem as HTMLInputElement)[attr] = val;
           });
           cleanUp.push(() => o.destroy());
-        } else {
-          (elem as any)[attr] = value?.value;
         }
         break;
       }
       default: {
-        if (value?.type === "formula") {
-          const o = dataSignal.map((data) => applyFormula(value.formula, data));
+        if (value.type === "value") {
+          if (node.tag.indexOf("-") === -1) {
+            elem.setAttribute(attr, String(value?.value));
+          } else {
+            (elem as any)[attr] = value?.value;
+          }
+        } else {
+          const o = dataSignal.map((data) => applyFormula(value, data));
           o.subscribe((val) => {
             if (node.tag.indexOf("-") === -1) {
               elem.setAttribute(attr, val);
@@ -596,12 +592,6 @@ const createElement = ({
             }
           });
           cleanUp.push(() => o.destroy());
-        } else {
-          if (node.tag.indexOf("-") === -1) {
-            elem.setAttribute(attr, String(value?.value));
-          } else {
-            (elem as any)[attr] = value?.value;
-          }
         }
       }
     }
@@ -662,6 +652,12 @@ export const handleAction = (
 ) => {
   switch (action.type) {
     case "Update Variable": {
+      console.log(
+        "NEW VALUE",
+        action.value,
+        data,
+        applyFormula(action.value, data)
+      );
       ctx.dataSignal.set({
         ...ctx.dataSignal.value,
         Variables: {

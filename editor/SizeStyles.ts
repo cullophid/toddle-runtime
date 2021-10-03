@@ -106,11 +106,8 @@ export const SizeStyles: ComponentModel = {
                         value: "W",
                       },
                       value: {
-                        type: "formula",
-                        formula: {
-                          path: ["Props", "style", "width"],
-                          type: "path",
-                        },
+                        path: ["Props", "style", "width"],
+                        type: "path",
                       },
                     },
                     events: [
@@ -132,7 +129,7 @@ export const SizeStyles: ComponentModel = {
                                 {
                                   name: "Key",
                                   formula: {
-                                    type: "string",
+                                    type: "value",
                                     value: "width",
                                   },
                                 },
@@ -163,11 +160,8 @@ export const SizeStyles: ComponentModel = {
                         value: "H",
                       },
                       value: {
-                        type: "formula",
-                        formula: {
-                          path: ["Props", "style", "height"],
-                          type: "path",
-                        },
+                        path: ["Props", "style", "height"],
+                        type: "path",
                       },
                     },
                     events: [
@@ -189,7 +183,7 @@ export const SizeStyles: ComponentModel = {
                                 {
                                   name: "Key",
                                   formula: {
-                                    type: "string",
+                                    type: "value",
                                     value: "height",
                                   },
                                 },
@@ -234,11 +228,8 @@ export const SizeStyles: ComponentModel = {
                         value: "Min W",
                       },
                       value: {
-                        type: "formula",
-                        formula: {
-                          path: ["Props", "style", "minWidth"],
-                          type: "path",
-                        },
+                        path: ["Props", "style", "minWidth"],
+                        type: "path",
                       },
                     },
                     events: [
@@ -260,7 +251,7 @@ export const SizeStyles: ComponentModel = {
                                 {
                                   name: "Key",
                                   formula: {
-                                    type: "string",
+                                    type: "value",
                                     value: "minWidth",
                                   },
                                 },
@@ -291,11 +282,8 @@ export const SizeStyles: ComponentModel = {
                         value: "Min H",
                       },
                       value: {
-                        type: "formula",
-                        formula: {
-                          path: ["Props", "style", "minHeight"],
-                          type: "path",
-                        },
+                        path: ["Props", "style", "minHeight"],
+                        type: "path",
                       },
                     },
                     events: [
@@ -317,7 +305,7 @@ export const SizeStyles: ComponentModel = {
                                 {
                                   name: "Key",
                                   formula: {
-                                    type: "string",
+                                    type: "value",
                                     value: "minHeight",
                                   },
                                 },

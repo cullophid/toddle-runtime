@@ -16,7 +16,6 @@ export class FormulaEditor extends HTMLElement {
     return this._formula;
   }
   set formula(formula: Formula | undefined) {
-    console.log("SET FORMULA", formula);
     this._formula = formula;
     this.render();
   }

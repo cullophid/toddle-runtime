@@ -1,8 +1,8 @@
 import { ComponentModel } from "ComponentModel";
 
-export const TextRightPanel: ComponentModel = {
+export const TextPanel: ComponentModel = {
   id: "c9214756-fde3-44a7-98d8-477740d7fcb1",
-  name: "TextRightPanel",
+  name: "TextPanel",
   props: [
     {
       name: "node",
@@ -227,6 +227,7 @@ export const TextRightPanel: ComponentModel = {
               color: "var(--grey-100)",
               height: "8",
               display: "flex",
+              justifyContent: "space-between",
               position: "relative",
               alignItems: "center",
               paddingLeft: "2",
@@ -263,47 +264,19 @@ export const TextRightPanel: ComponentModel = {
                 classList: [],
               },
               {
-                tag: "input",
+                tag: "formula-editor",
                 type: "element",
                 attrs: {
-                  value: {
-                    type: "formula",
-                    formula: {
-                      name: "BOOLEAN",
-                      type: "function",
-                      arguments: [
-                        {
-                          name: "Input",
-                          formula: {
-                            path: ["Props", "node", "condition"],
-                            type: "path",
-                          },
-                        },
-                      ],
-                    },
+                  data: {
+                    path: ["Props", "data"],
+                    type: "path",
+                  },
+                  formula: {
+                    path: ["Props", "node", "condition"],
+                    type: "path",
                   },
                 },
-                style: {
-                  color: "var(--grey-100)",
-                  width: "0",
-                  border: "1px solid #ccc",
-                  height: "100%",
-                  display: "inline-block",
-                  flexGrow: 1,
-                  fontSize: "4",
-                  position: "relative",
-                  boxSizing: "border-box",
-                  alignItems: "center",
-                  flexShrink: 1,
-                  fontWeight: 600,
-                  paddingLeft: "0",
-                  borderRadius: 2,
-                  paddingRight: "0",
-                  borderTopWidth: "0",
-                  borderLeftWidth: "0",
-                  borderRightWidth: "0",
-                  borderBottomWidth: "0",
-                },
+                style: {},
                 events: [
                   {
                     type: "NodeEvent",
@@ -323,71 +296,7 @@ export const TextRightPanel: ComponentModel = {
                             {
                               name: "Key",
                               formula: {
-                                type: "string",
-                                value: "condition",
-                              },
-                            },
-                            {
-                              name: "Value",
-                              formula: {
-                                path: ["Event", "target", "value"],
-                                type: "path",
-                              },
-                            },
-                          ],
-                        },
-                        type: "Trigger Event",
-                        event: "updateNode",
-                      },
-                    ],
-                    trigger: "input",
-                    preventDefault: false,
-                    stopPropagation: false,
-                  },
-                ],
-                children: [],
-                classList: [],
-              },
-              {
-                tag: "formula-editor",
-                type: "element",
-                attrs: {
-                  data: {
-                    type: "formula",
-                    formula: {
-                      path: ["Props", "data"],
-                      type: "path",
-                    },
-                  },
-                  formula: {
-                    type: "formula",
-                    formula: {
-                      path: ["Props", "node", "condition"],
-                      type: "path",
-                    },
-                  },
-                },
-                style: {},
-                events: [
-                  {
-                    type: "NodeEvent",
-                    actions: [
-                      {
-                        data: {
-                          name: "SET",
-                          type: "function",
-                          arguments: [
-                            {
-                              name: "Object",
-                              formula: {
-                                path: ["Props"],
-                                type: "path",
-                              },
-                            },
-                            {
-                              name: "Key",
-                              formula: {
-                                type: "string",
+                                type: "value",
                                 value: "condition",
                               },
                             },
@@ -401,7 +310,7 @@ export const TextRightPanel: ComponentModel = {
                           ],
                         },
                         type: "Trigger Event",
-                        event: "updateNode",
+                        event: "nodeChanged",
                       },
                     ],
                     trigger: "update",
@@ -464,11 +373,22 @@ export const TextRightPanel: ComponentModel = {
                 type: "element",
                 attrs: {
                   value: {
-                    type: "formula",
-                    formula: {
-                      path: ["Props", "node", "value"],
-                      type: "path",
-                    },
+                    type: "function",
+                    name: "APPLY_FORMULA",
+                    arguments: [
+                      {
+                        formula: {
+                          type: "path",
+                          path: ["Props", "node", "value"],
+                        },
+                      },
+                      {
+                        formula: {
+                          type: "path",
+                          path: ["Props", "nodeData"],
+                        },
+                      },
+                    ],
                   },
                 },
                 style: {
@@ -511,24 +431,39 @@ export const TextRightPanel: ComponentModel = {
                             {
                               name: "Key",
                               formula: {
-                                type: "string",
+                                type: "value",
                                 value: "value",
                               },
                             },
                             {
                               name: "Value",
                               formula: {
-                                path: ["Event", "target", "value"],
-                                type: "path",
+                                type: "record",
+                                entries: [
+                                  {
+                                    name: "type",
+                                    formula: {
+                                      type: "value",
+                                      value: "value",
+                                    },
+                                  },
+                                  {
+                                    name: "value",
+                                    formula: {
+                                      path: ["Event", "target", "value"],
+                                      type: "path",
+                                    },
+                                  },
+                                ],
                               },
                             },
                           ],
                         },
                         type: "Trigger Event",
-                        event: "updateNode",
+                        event: "nodeChanged",
                       },
                     ],
-                    trigger: "input",
+                    trigger: "change",
                     preventDefault: false,
                     stopPropagation: false,
                   },
@@ -541,25 +476,12 @@ export const TextRightPanel: ComponentModel = {
                 type: "element",
                 attrs: {
                   data: {
-                    type: "formula",
-                    formula: {
-                      path: ["Props", "data"],
-                      type: "path",
-                    },
+                    path: ["Props", "nodeData"],
+                    type: "path",
                   },
                   formula: {
-                    type: "formula",
-                    formula: {
-                      path: ["Props", "node", "condition"],
-                      type: "path",
-                    },
-                  },
-                  component: {
-                    type: "formula",
-                    formula: {
-                      path: ["Props", "component"],
-                      type: "path",
-                    },
+                    path: ["Props", "node", "value"],
+                    type: "path",
                   },
                 },
                 style: {},
@@ -582,7 +504,7 @@ export const TextRightPanel: ComponentModel = {
                             {
                               name: "Key",
                               formula: {
-                                type: "string",
+                                type: "value",
                                 value: "value",
                               },
                             },
@@ -596,7 +518,7 @@ export const TextRightPanel: ComponentModel = {
                           ],
                         },
                         type: "Trigger Event",
-                        event: "updateNode",
+                        event: "nodeChanged",
                       },
                     ],
                     trigger: "update",

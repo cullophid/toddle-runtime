@@ -56,7 +56,7 @@ const moveExpression = (
           ...formula.arguments.slice(0, current),
           {
             ...formula.arguments[current],
-            formula: { type: "null" },
+            formula: { type: "value", value: null },
           },
           ...formula.arguments.slice(current + 1),
         ],
@@ -161,7 +161,16 @@ export const FormulaEditButton = (props: FormulaEditButtonProps) => {
         >
           <header className="h-10 bg-grey-800 flex justify-between items-center px-4 text-grey-200">
             {title}
-            <Dialog.Close>Close</Dialog.Close>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => {
+                  props.onChange(undefined);
+                }}
+              >
+                Clear
+              </button>
+              <Dialog.Close>Close</Dialog.Close>
+            </div>
           </header>
           <FormulaEditor
             formula={props.formula}
@@ -185,6 +194,7 @@ export const FormulaEditor = (props: Omit<Props, "onHide">) => {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const ref = useRef<HTMLDivElement>(null);
   const spaceKey = useKey(" ");
+
   useEffect(() => {
     setTimeout(() => ref.current?.focus(), 100);
   }, []);

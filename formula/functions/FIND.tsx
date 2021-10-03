@@ -1,11 +1,15 @@
-import { applyFormula, FunctionOperation } from "../formula";
+import {
+  applyFormula,
+  FunctionDeclaration,
+  FunctionOperation,
+} from "../formula";
 
 export const template: FunctionOperation = {
   type: "function",
   name: "FIND",
   arguments: [
-    { name: "List", formula: { type: "null", name: "Null" } },
-    { name: "Fx", formula: { type: "null", name: "Null" } },
+    { name: "List", formula: { type: "value", value: null } },
+    { name: "Fx", formula: { type: "value", value: null } },
   ],
 };
 
@@ -37,4 +41,10 @@ export const getArgumentInputData = (
   return Array.isArray(items)
     ? { ...input, Args: { item: items[0], index: 0 } }
     : input;
+};
+
+export const FIND: FunctionDeclaration = {
+  template,
+  resolver,
+  getArgumentInputData,
 };

@@ -30,7 +30,6 @@ export type ComponentVariable = {
   initialValue: string | number | boolean | Formula;
 };
 export type ComponentFunction = {
-  id: string;
   name: string;
   value: Formula;
 };

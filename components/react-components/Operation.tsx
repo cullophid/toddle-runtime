@@ -2,17 +2,14 @@ import React, { ComponentProps, HTMLAttributes, useState } from "react";
 import { OperationSelect } from "./OperationSelect";
 import {
   applyFormula,
-  BooleanOperation,
+  ValueOperation,
   Formula,
   FunctionArgument,
   FunctionOperation,
-  NumberOperation,
   PathOperation,
-  StringOperation,
   valueToString,
 } from "../../formula/formula";
-import { ComponentModel, NodeData } from "../../ComponentModel";
-import { functions } from "../../formula/functions";
+import { NodeData } from "../../ComponentModel";
 import { OperationArgInput } from "./OperationArgInput";
 
 export const Operation = (props: {
@@ -44,13 +41,13 @@ export const Operation = (props: {
         />
       </OperationHeader>
       {operation.type === "path" && <PathOp {...props} operation={operation} />}
-      {operation.type === "number" && (
+      {operation.type === "value" && typeof operation.value === "number" && (
         <NumberOp {...props} operation={operation} />
       )}
-      {operation.type === "string" && (
+      {operation.type === "value" && typeof operation.value && (
         <StringOp {...props} operation={operation} />
       )}
-      {operation.type === "boolean" && (
+      {operation.type === "value" && typeof operation.value && (
         <BooleanOp {...props} operation={operation} />
       )}
 
@@ -241,13 +238,13 @@ const Input = ({ className = "", ...props }: ComponentProps<"input">) => (
 
 const NumberOp = (props: {
   path: string;
-  operation: NumberOperation;
+  operation: ValueOperation;
   onChange: (operation: Formula) => void;
 }) => {
   return (
     <OperationSection>
       <Input
-        value={props.operation.value}
+        value={Number(props.operation.value)}
         onChange={(e) =>
           props.onChange({
             ...props.operation,
@@ -262,7 +259,7 @@ const NumberOp = (props: {
               props.onChange({
                 ...props.operation,
                 value:
-                  props.operation.value +
+                  Number(props.operation.value) +
                   (e.shiftKey ? 10 : e.altKey ? 0.1 : 1),
               });
               break;
@@ -271,7 +268,7 @@ const NumberOp = (props: {
               props.onChange({
                 ...props.operation,
                 value:
-                  props.operation.value -
+                  Number(props.operation.value) -
                   (e.shiftKey ? 10 : e.altKey ? 0.1 : 1),
               });
               break;
@@ -284,13 +281,13 @@ const NumberOp = (props: {
 
 const StringOp = (props: {
   path: string;
-  operation: StringOperation;
+  operation: ValueOperation;
   onChange: (expression: Formula) => void;
 }) => {
   return (
     <OperationSection>
       <Input
-        value={props.operation.value}
+        value={String(props.operation.value)}
         onChange={(e) =>
           props.onChange({
             ...props.operation,
@@ -303,7 +300,7 @@ const StringOp = (props: {
 };
 const BooleanOp = (props: {
   path: string;
-  operation: BooleanOperation;
+  operation: ValueOperation;
   onChange: (operation: Formula) => void;
 }) => {
   return (
@@ -355,13 +352,11 @@ const FunctionOp = (props: {
               operation={arg.formula}
               path={`${props.path}.${i}`}
               data={
-                props.operation.type === "function" &&
-                functions[props.operation.name]?.getArgumentInputData
-                  ? functions[props.operation.name]?.getArgumentInputData?.(
-                      props.operation,
-                      i,
-                      props.data
-                    )
+                props.operation.type === "function"
+                  ? window.toddle.formulas[
+                      props.operation.name
+                    ].getArgumentInputData?.(props.operation, i, props.data) ??
+                    props.data
                   : props.data
               }
               onChange={(formula) =>
@@ -371,7 +366,7 @@ const FunctionOp = (props: {
                     ...props.operation.arguments.slice(0, i),
                     {
                       ...arg,
-                      formula: formula ?? { type: "null", name: "Null" },
+                      formula: formula ?? { type: "value", value: null },
                     },
                     ...props.operation.arguments.slice(i + 1),
                   ],
@@ -388,7 +383,7 @@ const FunctionOp = (props: {
             onChange={(operation) => {
               if (
                 (operation.type === "function" && operation.name === "ID") ||
-                operation.type === "null"
+                (operation.type === "value" && operation.value === null)
               ) {
                 props.onChange(
                   props.operation.arguments[0]?.formula ?? {
@@ -403,7 +398,11 @@ const FunctionOp = (props: {
                 props.onChange({
                   ...operation,
                   arguments:
-                    firstArg && firstArg.formula.type !== "null"
+                    firstArg &&
+                    !(
+                      firstArg.formula.type === "value" &&
+                      firstArg.formula.value === null
+                    )
                       ? [
                           {
                             ...operation.arguments[0],

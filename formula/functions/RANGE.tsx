@@ -1,11 +1,15 @@
-import { applyFormula, FunctionOperation } from "../formula";
+import {
+  applyFormula,
+  FunctionDeclaration,
+  FunctionOperation,
+} from "../formula";
 
 export const template: FunctionOperation = {
   type: "function",
   name: "RANGE",
   arguments: [
-    { formula: { type: "number", name: "Number", value: 0 } },
-    { formula: { type: "number", name: "Number", value: 10 } },
+    { formula: { type: "value", value: 0 } },
+    { formula: { type: "value", value: 10 } },
   ],
   varArgs: false,
 };
@@ -26,3 +30,5 @@ export const resolver = (f: FunctionOperation, input: any) => {
   }
   return list;
 };
+
+export const RANGE: FunctionDeclaration = { template, resolver };

@@ -4,8 +4,8 @@ import { LinkDestination } from "./NodeModel";
 export type NodeEventModel = {
   type: "NodeEvent";
   trigger: string;
-  stopPropagation: boolean;
-  preventDefault: boolean;
+  stopPropagation?: boolean;
+  preventDefault?: boolean;
   actions: ActionModel[];
 };
 

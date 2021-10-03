@@ -1,17 +1,7 @@
 import { Formula } from "./formula/formula";
 import { ComponentEventModel, NodeEventModel } from "./EventModel";
-import { groupBy, last, mapValues } from "./util";
+import { groupBy } from "./util";
 import { CSSProperties } from "react";
-
-export type DataValue =
-  | {
-      type: "value";
-      value: unknown;
-    }
-  | {
-      type: "formula";
-      formula: Formula;
-    };
 
 export enum ContainerNodeTag {
   div = "div",
@@ -124,7 +114,7 @@ export type ElementNodeModel = {
   tag: string;
   classList: NodeClass[];
   href?: LinkDestination;
-  attrs: Record<string, DataValue | undefined>;
+  attrs: Record<string, Formula>;
   style: NodeStyleModel;
   styleVariables?: StyleVariable[];
   children: NodeModel[];
@@ -137,7 +127,7 @@ export type ComponentNodeModel = {
   condition?: Formula;
   repeat?: Formula;
   style?: undefined;
-  attrs: Record<string, DataValue>;
+  attrs: Record<string, Formula>;
   children: NodeModel[];
   events: ComponentEventModel[];
 };
@@ -146,7 +136,7 @@ export type TextNodeModel = {
   type: "text";
   condition?: Formula;
   repeat?: Formula;
-  value: DataValue;
+  value: Formula;
 };
 
 export type LinkDestination = {

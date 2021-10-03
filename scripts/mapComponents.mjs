@@ -1,6 +1,5 @@
 import fs from "fs";
 const updateComponent = (component) => {
-  console.log(component);
   const convertNode = (node) => {
     switch (node.type) {
       case "text":

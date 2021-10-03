@@ -273,11 +273,8 @@ export const PreviewPanel: ComponentModel = {
                       {
                         type: "text",
                         value: {
-                          type: "formula",
-                          formula: {
-                            path: ["ListItem", "Item", "name"],
-                            type: "path",
-                          },
+                          path: ["ListItem", "Item", "name"],
+                          type: "path",
                         },
                       },
                       {
@@ -297,27 +294,24 @@ export const PreviewPanel: ComponentModel = {
                           {
                             type: "text",
                             value: {
-                              type: "formula",
-                              formula: {
-                                name: "GET",
-                                type: "function",
-                                arguments: [
-                                  {
-                                    name: "Object",
-                                    formula: {
-                                      path: ["Props", "componentData", "Props"],
-                                      type: "path",
-                                    },
+                              name: "GET",
+                              type: "function",
+                              arguments: [
+                                {
+                                  name: "Object",
+                                  formula: {
+                                    path: ["Props", "componentData", "Props"],
+                                    type: "path",
                                   },
-                                  {
-                                    name: "Item",
-                                    formula: {
-                                      path: ["ListItem", "Item", "name"],
-                                      type: "path",
-                                    },
+                                },
+                                {
+                                  name: "Item",
+                                  formula: {
+                                    path: ["ListItem", "Item", "name"],
+                                    type: "path",
                                   },
-                                ],
-                              },
+                                },
+                              ],
                             },
                           },
                         ],
@@ -399,11 +393,8 @@ export const PreviewPanel: ComponentModel = {
                       {
                         type: "text",
                         value: {
-                          type: "formula",
-                          formula: {
-                            path: ["ListItem", "Item", "name"],
-                            type: "path",
-                          },
+                          path: ["ListItem", "Item", "name"],
+                          type: "path",
                         },
                       },
                       {
@@ -418,31 +409,28 @@ export const PreviewPanel: ComponentModel = {
                           {
                             type: "text",
                             value: {
-                              type: "formula",
-                              formula: {
-                                name: "GET",
-                                type: "function",
-                                arguments: [
-                                  {
-                                    name: "Object",
-                                    formula: {
-                                      path: [
-                                        "Props",
-                                        "componentData",
-                                        "Variables",
-                                      ],
-                                      type: "path",
-                                    },
+                              name: "GET",
+                              type: "function",
+                              arguments: [
+                                {
+                                  name: "Object",
+                                  formula: {
+                                    path: [
+                                      "Props",
+                                      "componentData",
+                                      "Variables",
+                                    ],
+                                    type: "path",
                                   },
-                                  {
-                                    name: "Item",
-                                    formula: {
-                                      path: ["ListItem", "Item", "name"],
-                                      type: "path",
-                                    },
+                                },
+                                {
+                                  name: "Item",
+                                  formula: {
+                                    path: ["ListItem", "Item", "name"],
+                                    type: "path",
                                   },
-                                ],
-                              },
+                                },
+                              ],
                             },
                           },
                         ],
@@ -523,11 +511,8 @@ export const PreviewPanel: ComponentModel = {
                       {
                         type: "text",
                         value: {
-                          type: "formula",
-                          formula: {
-                            path: ["ListItem", "Item", "name"],
-                            type: "path",
-                          },
+                          path: ["ListItem", "Item", "name"],
+                          type: "path",
                         },
                       },
                     ],

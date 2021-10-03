@@ -11,8 +11,9 @@ window.toddle.actions.editorLoaded = (data: unknown, ctx: ComponentContext) => {
     console.error("Editor Loaded Action: Could not find component");
     return;
   }
+  const queryParams = locationSignal.get().query;
   const Props = Object.fromEntries(
-    component.props.map((prop) => [prop.name, prop.initialValue])
+    component.props.map((prop) => [prop.name, queryParams?.[prop.name]])
   );
 
   const Functions = Object.fromEntries(
@@ -87,20 +88,27 @@ window.toddle.actions.editorLoaded = (data: unknown, ctx: ComponentContext) => {
         component,
       },
     });
-    // ctx.mutations.updateComponent?.({
-    //   update_Component_by_pk___set__name: component.name,
-    //   update_Component_by_pk___set__nodes: component.root,
-    //   update_Component_by_pk___set__props: component.props,
-    //   update_Component_by_pk___set__events: component.events,
-    //   update_Component_by_pk__pk_columns__id: component.id,
-    //   update_Component_by_pk___set__functions: component.functions,
-    //   update_Component_by_pk___set__variables: component.variables,
-    // });
+    ctx.mutations.updateComponent?.({
+      update_Component_by_pk___set__name: component.name,
+      update_Component_by_pk___set__root: component.root,
+      update_Component_by_pk___set__props: component.props,
+      update_Component_by_pk___set__events: component.events,
+      update_Component_by_pk__pk_columns__id: component.id,
+      update_Component_by_pk___set__functions: component.functions,
+      update_Component_by_pk___set__variables: component.variables,
+    });
   };
 
   document.addEventListener("keydown", (event) => {
+    const target = event.target;
+    if (
+      target instanceof HTMLElement &&
+      (target.tagName === "INPUT" || target.contentEditable == "true")
+    ) {
+      console.log("TARGET");
+      return;
+    }
     const data = ctx.dataSignal.get();
-    const { selectedNodeId } = data.Variables;
     switch (event.key) {
       case "Backspace": {
         const component = data.Variables.component as

@@ -1,20 +1,16 @@
+import "./plugins";
+import "./formula/functions/index";
+import "./saveComponents";
+
 import { renderComponent } from "./runtime";
 import { Project } from "./ComponentModel";
 
 import { locationSignal } from "./router";
 import { insertTheme } from "./theme";
-import { Canvas } from "./components/canvas-iframe";
 
 import { insertFonts, insertStyles } from "./style";
-import { StyleEditor } from "./components/style-editor";
-import { ElementCatalog } from "./components/element-catalog/element-catalog";
-import { ElementAttributes } from "./components/element-attributes";
-import { ElementEvents } from "./components/element-events";
-import { FormulaEditor } from "./components/formula-editor";
 
 import { components } from "./editor/index";
-import "./plugins";
-import "./saveComponents";
 
 const page = {
   id: "a7c8ee64-0dbf-45a1-b62a-9417d5d565ee",

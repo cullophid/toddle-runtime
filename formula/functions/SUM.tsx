@@ -1,9 +1,13 @@
-import { applyFormula, FunctionOperation } from "../formula";
+import {
+  applyFormula,
+  FunctionDeclaration,
+  FunctionOperation,
+} from "../formula";
 
 export const template: FunctionOperation = {
   type: "function",
   name: "SUM",
-  arguments: [{ name: "List", formula: { type: "null", name: "Null" } }],
+  arguments: [{ name: "List", formula: { type: "value", value: null } }],
 };
 
 export const resolver = (f: FunctionOperation, input: any) => {
@@ -12,3 +16,5 @@ export const resolver = (f: FunctionOperation, input: any) => {
     ? items.reduce((result, item, index) => result + item)
     : null;
 };
+
+export const SUM: FunctionDeclaration = { template, resolver };

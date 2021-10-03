@@ -1,13 +1,17 @@
-import { applyFormula, FunctionOperation } from "../formula";
+import {
+  applyFormula,
+  FunctionDeclaration,
+  FunctionOperation,
+} from "../formula";
 
 export const template: FunctionOperation = {
   type: "function",
   name: "JOIN",
   arguments: [
-    { name: "List", formula: { type: "null", name: "Null" } },
+    { name: "List", formula: { type: "value", value: null } },
     {
       name: "Separator",
-      formula: { type: "string", name: "String", value: ", " },
+      formula: { type: "value", value: ", " },
     },
   ],
 };
@@ -18,3 +22,5 @@ export const resolver = (f: FunctionOperation, input: any) => {
     ? list.join(String(applyFormula(f.arguments[1]?.formula, input)))
     : "";
 };
+
+export const JOIN: FunctionDeclaration = { template, resolver };

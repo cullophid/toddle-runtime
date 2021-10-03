@@ -1,11 +1,13 @@
-import { FunctionOperation } from "../formula";
+import { FunctionDeclaration, FunctionOperation } from "../formula";
 
 export const template: FunctionOperation = {
   type: "function",
   name: "ID",
-  arguments: [{ formula: { type: "null", name: "Null" } }],
+  arguments: [{ formula: { type: "value", value: null } }],
 };
 
 export const resolver = (f: FunctionOperation, input: any) => {
   return input;
 };
+
+export const ID: FunctionDeclaration = { template, resolver };

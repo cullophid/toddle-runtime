@@ -23,11 +23,8 @@ export const TextButton: ComponentModel = {
         type: "element",
         attrs: {
           disabled: {
-            type: "formula",
-            formula: {
-              path: ["Props", "disabled"],
-              type: "path",
-            },
+            path: ["Props", "disabled"],
+            type: "path",
           },
         },
         style: {
@@ -66,11 +63,8 @@ export const TextButton: ComponentModel = {
           {
             type: "text",
             value: {
-              type: "formula",
-              formula: {
-                path: ["Props", "Text"],
-                type: "path",
-              },
+              path: ["Props", "Text"],
+              type: "path",
             },
           },
         ],

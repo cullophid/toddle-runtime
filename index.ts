@@ -1,29 +1,17 @@
+import "./plugins";
+import "./formula/functions/index";
 import { ComponentContext, renderComponent } from "./runtime";
-import { ComponentModel, NodeData, Project } from "./ComponentModel";
-import {
-  ComponentNodeModel,
-  componentNodeType,
-  getNode,
-  NodeModel,
-} from "./NodeModel";
+import { ComponentModel, Project } from "./ComponentModel";
 
 import { locationSignal } from "./router";
 import { insertTheme } from "./theme";
-import { Canvas } from "./components/canvas-iframe";
-import { applyFormula } from "./formula/formula";
+import { FunctionDeclaration } from "./formula/formula";
 import { insertFonts, insertStyles } from "./style";
-import { StyleEditor } from "./components/style-editor";
-import { ElementCatalog } from "./components/element-catalog/element-catalog";
-import { ElementAttributes } from "./components/element-attributes";
-import { ElementEvents } from "./components/element-events";
-import { FormulaEditor } from "./components/formula-editor";
-import "./plugins";
 
 declare global {
   interface Window {
-    TODDLE_FUNCTIONS: Record<string, Function>;
     toddle: {
-      formulas: Record<string, Function>;
+      formulas: Record<string, FunctionDeclaration>;
       actions: Record<string, (data: unknown, ctx: ComponentContext) => void>;
       components: ComponentModel[];
       project?: Project;
@@ -31,13 +19,6 @@ declare global {
     };
   }
 }
-window.toddle = {
-  formulas: {},
-  actions: {},
-  components: [],
-  data: {},
-};
-window.TODDLE_FUNCTIONS = window.toddle.formulas;
 
 const DEFAULT_SLUG = "toddle";
 
@@ -143,13 +124,6 @@ const fetchPage = (slug: string, path: string) => {
 };
 
 const main = () => {
-  customElements.define("element-attributes", ElementAttributes, {});
-  customElements.define("element-events", ElementEvents, {});
-  customElements.define("style-editor", StyleEditor, {});
-  customElements.define("element-catalog", ElementCatalog, {});
-  customElements.define("canvas-iframe", Canvas, {});
-  customElements.define("formula-editor", FormulaEditor, {});
-
   const [, subDomain] = /(.*)\.toddle.dev/.exec(window.location.hostname) ?? [];
   const slug = subDomain ? subDomain : DEFAULT_SLUG;
   const root = document.getElementById("App");

@@ -1,4 +1,5 @@
-import { functions } from "./functions";
+import { NodeData } from "ComponentModel";
+import "./functions/index";
 
 export type PathOperation = {
   type: "path";
@@ -16,6 +17,7 @@ export type FunctionOperation = {
   arguments: FunctionArgument[];
   varArgs?: boolean;
 };
+
 export type RecordEntry = {
   name: string;
   value: Formula;
@@ -26,33 +28,26 @@ export type RecordOperation = {
   entries: FunctionArgument[];
 };
 
-export type NumberOperation = {
-  type: "number";
-  value: number;
-};
-
-export type StringOperation = {
-  type: "string";
-  value: string;
-};
-
-export type BooleanOperation = {
-  type: "boolean";
-  value: boolean;
-};
-
-export type NullOperation = {
-  type: "null";
+export type ValueOperation = {
+  type: "value";
+  value: string | number | boolean | null | object;
 };
 
 export type Formula =
   | FunctionOperation
   | RecordOperation
   | PathOperation
-  | NumberOperation
-  | StringOperation
-  | BooleanOperation
-  | NullOperation;
+  | ValueOperation;
+
+export type FunctionDeclaration = {
+  template: FunctionOperation;
+  resolver: (f: FunctionOperation, data: NodeData) => unknown;
+  getArgumentInputData?: (
+    f: FunctionOperation,
+    argIndex: number,
+    input: any
+  ) => NodeData;
+};
 
 export const isFormula = (f: any): f is Formula => {
   return f && typeof f === "object" && f.type;
@@ -66,9 +61,7 @@ export const applyFormula = (
     return formula;
   }
   switch (formula.type) {
-    case "number":
-    case "string":
-    case "boolean":
+    case "value":
       return formula.value;
     case "path": {
       if (formula.path[0] === "Functions") {
@@ -86,8 +79,13 @@ export const applyFormula = (
         input
       );
     }
-    case "function":
-      return functions[formula.name]?.resolver(formula, input);
+    case "function": {
+      const func = window.toddle.formulas[formula.name];
+      if (func) {
+        return func?.resolver(formula, input);
+      }
+      return;
+    }
     case "record":
       return Object.fromEntries(
         formula.entries.map((entry) => [
@@ -95,8 +93,6 @@ export const applyFormula = (
           applyFormula(entry.formula, input),
         ])
       );
-    case "null":
-      return null;
   }
 };
 

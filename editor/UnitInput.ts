@@ -57,11 +57,8 @@ export const UnitInput: ComponentModel = {
               {
                 type: "text",
                 value: {
-                  type: "formula",
-                  formula: {
-                    path: ["Props", "label"],
-                    type: "path",
-                  },
+                  path: ["Props", "label"],
+                  type: "path",
                 },
               },
             ],
@@ -72,27 +69,24 @@ export const UnitInput: ComponentModel = {
             type: "element",
             attrs: {
               value: {
-                type: "formula",
-                formula: {
-                  name: "DEFAULT",
-                  type: "function",
-                  arguments: [
-                    {
-                      name: "Value",
-                      formula: {
-                        path: ["Props", "value"],
-                        type: "path",
-                      },
+                name: "DEFAULT",
+                type: "function",
+                arguments: [
+                  {
+                    name: "Value",
+                    formula: {
+                      path: ["Props", "value"],
+                      type: "path",
                     },
-                    {
-                      name: "Default",
-                      formula: {
-                        type: "string",
-                        value: "none",
-                      },
+                  },
+                  {
+                    name: "Default",
+                    formula: {
+                      type: "value",
+                      value: "none",
                     },
-                  ],
-                },
+                  },
+                ],
               },
             },
             style: {

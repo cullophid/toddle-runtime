@@ -52,6 +52,277 @@ export const ElementAttributes: ComponentModel = {
         children: [
           {
             type: "element",
+            tag: "label",
+            attrs: {},
+            style: {},
+            events: [],
+            classList: [],
+            children: [
+              {
+                type: "text",
+                value: {
+                  type: "value",
+                  value: "Show",
+                },
+              },
+            ],
+          },
+          {
+            type: "element",
+            tag: "formula-editor",
+            attrs: {
+              formula: {
+                type: "path",
+                path: ["Props", "node", "show"],
+              },
+              data: {
+                type: "path",
+                path: ["Props", "nodeData"],
+              },
+            },
+            style: {},
+            events: [
+              {
+                type: "NodeEvent",
+                trigger: "update",
+                actions: [
+                  {
+                    type: "Trigger Event",
+                    event: "nodeChanged",
+                    data: {
+                      type: "function",
+                      name: "SET",
+                      arguments: [
+                        {
+                          formula: {
+                            type: "path",
+                            path: ["Props", "node"],
+                          },
+                        },
+                        {
+                          formula: {
+                            type: "value",
+                            value: "show",
+                          },
+                        },
+                        {
+                          formula: {
+                            type: "path",
+                            path: ["Event", "detail"],
+                          },
+                        },
+                      ],
+                    },
+                  },
+                  {
+                    type: "Debug",
+                    label: "formula change",
+                    data: {
+                      type: "path",
+                      path: ["Event", "detail"],
+                    },
+                  },
+                ],
+                preventDefault: false,
+                stopPropagation: false,
+              },
+            ],
+            classList: [],
+            children: [],
+          },
+        ],
+      },
+      {
+        type: "element",
+        tag: "div",
+        attrs: {},
+        style: {
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        },
+        events: [],
+        classList: [],
+        children: [
+          {
+            type: "element",
+            tag: "label",
+            attrs: {},
+            style: {},
+            events: [],
+            classList: [],
+            children: [
+              {
+                type: "text",
+                value: {
+                  type: "value",
+                  value: "Repeat",
+                },
+              },
+            ],
+          },
+          {
+            type: "element",
+            tag: "formula-editor",
+            attrs: {
+              formula: {
+                type: "path",
+                path: ["Props", "node", "repeat"],
+              },
+              data: {
+                type: "path",
+                path: ["Props", "nodeData"],
+              },
+            },
+            style: {},
+            events: [
+              {
+                type: "NodeEvent",
+                trigger: "update",
+                actions: [
+                  {
+                    type: "Trigger Event",
+                    event: "nodeChanged",
+                    data: {
+                      type: "function",
+                      name: "SET",
+                      arguments: [
+                        {
+                          formula: {
+                            type: "path",
+                            path: ["Props", "node"],
+                          },
+                        },
+                        {
+                          formula: {
+                            type: "value",
+                            value: "repeat",
+                          },
+                        },
+                        {
+                          formula: {
+                            type: "path",
+                            path: ["Event", "detail"],
+                          },
+                        },
+                      ],
+                    },
+                  },
+                  {
+                    type: "Debug",
+                    label: "formula change",
+                    data: {
+                      type: "path",
+                      path: ["Event", "detail"],
+                    },
+                  },
+                ],
+                preventDefault: false,
+                stopPropagation: false,
+              },
+            ],
+            classList: [],
+            children: [],
+          },
+        ],
+      },
+      {
+        type: "element",
+        tag: "div",
+        attrs: {},
+        style: {
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: "2",
+        },
+        events: [],
+        classList: [],
+        children: [
+          {
+            type: "element",
+            tag: "label",
+            attrs: {},
+            style: {},
+            events: [],
+            classList: [],
+            children: [
+              {
+                type: "text",
+                value: {
+                  type: "value",
+                  value: "Tag",
+                },
+              },
+            ],
+          },
+          {
+            type: "element",
+            tag: "input",
+            attrs: {
+              value: {
+                type: "path",
+                path: ["Props", "node", "tag"],
+              },
+            },
+            children: [],
+            style: {},
+            classList: [],
+            events: [
+              {
+                type: "NodeEvent",
+                trigger: "change",
+                actions: [
+                  {
+                    type: "Trigger Event",
+                    event: "nodeChanged",
+                    data: {
+                      type: "function",
+                      name: "SET",
+                      arguments: [
+                        {
+                          formula: {
+                            type: "path",
+                            path: ["Props", "node"],
+                          },
+                        },
+                        {
+                          formula: {
+                            type: "value",
+                            value: "tag",
+                          },
+                        },
+                        {
+                          formula: {
+                            type: "path",
+                            path: ["Event", "target", "value"],
+                          },
+                        },
+                      ],
+                    },
+                  },
+                ],
+                preventDefault: false,
+                stopPropagation: false,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "element",
+        tag: "div",
+        attrs: {},
+        style: {
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        },
+        events: [],
+        classList: [],
+        children: [
+          {
+            type: "element",
             tag: "h2",
             attrs: {},
             style: {},
@@ -93,7 +364,7 @@ export const ElementAttributes: ComponentModel = {
                         },
                         {
                           formula: {
-                            type: "string",
+                            type: "value",
                             value: "attrs",
                           },
                         },
@@ -110,14 +381,14 @@ export const ElementAttributes: ComponentModel = {
                               },
                               {
                                 formula: {
-                                  type: "string",
+                                  type: "value",
                                   value: "untitled",
                                 },
                               },
                               {
                                 formula: {
-                                  type: "string",
-                                  value: "empty",
+                                  type: "value",
+                                  value: { type: "value", value: "empty" },
                                 },
                               },
                             ],
@@ -186,11 +457,8 @@ export const ElementAttributes: ComponentModel = {
                 tag: "input",
                 attrs: {
                   value: {
-                    type: "formula",
-                    formula: {
-                      type: "path",
-                      path: ["ListItem", "Item", "0"],
-                    },
+                    type: "path",
+                    path: ["ListItem", "Item", "0"],
                   },
                 },
                 style: {
@@ -199,6 +467,13 @@ export const ElementAttributes: ComponentModel = {
                   backgroundColor: "var(--grey-600)",
                 },
                 events: [
+                  {
+                    type: "NodeEvent",
+                    trigger: "input",
+                    actions: [],
+                    stopPropagation: true,
+                    preventDefault: false,
+                  },
                   {
                     type: "NodeEvent",
                     trigger: "change",
@@ -218,7 +493,7 @@ export const ElementAttributes: ComponentModel = {
                             },
                             {
                               formula: {
-                                type: "string",
+                                type: "value",
                                 value: "attrs",
                               },
                             },
@@ -278,11 +553,22 @@ export const ElementAttributes: ComponentModel = {
                 tag: "input",
                 attrs: {
                   value: {
-                    type: "formula",
-                    formula: {
-                      type: "path",
-                      path: ["ListItem", "Item", "1", "value"],
-                    },
+                    type: "function",
+                    name: "APPLY_FORMULA",
+                    arguments: [
+                      {
+                        formula: {
+                          type: "path",
+                          path: ["ListItem", "Item", "1"],
+                        },
+                      },
+                      {
+                        formula: {
+                          type: "path",
+                          path: ["Props", "nodeData"],
+                        },
+                      },
+                    ],
                   },
                 },
                 style: {
@@ -291,6 +577,13 @@ export const ElementAttributes: ComponentModel = {
                   backgroundColor: "var(--grey-600)",
                 },
                 events: [
+                  {
+                    type: "NodeEvent",
+                    trigger: "keydown",
+                    actions: [],
+                    stopPropagation: true,
+                    preventDefault: false,
+                  },
                   {
                     type: "NodeEvent",
                     trigger: "change",
@@ -310,7 +603,7 @@ export const ElementAttributes: ComponentModel = {
                             },
                             {
                               formula: {
-                                type: "string",
+                                type: "value",
                                 value: "attrs",
                               },
                             },
@@ -338,7 +631,7 @@ export const ElementAttributes: ComponentModel = {
                                         {
                                           name: "type",
                                           formula: {
-                                            type: "string",
+                                            type: "value",
                                             value: "value",
                                           },
                                         },
@@ -372,51 +665,12 @@ export const ElementAttributes: ComponentModel = {
 
                 attrs: {
                   formula: {
-                    type: "formula",
-                    formula: {
-                      type: "function",
-                      name: "IF",
-                      arguments: [
-                        {
-                          formula: {
-                            type: "function",
-                            name: "EQ",
-                            arguments: [
-                              {
-                                formula: {
-                                  type: "path",
-                                  path: ["ListItem", "Item", "1", "type"],
-                                },
-                              },
-                              {
-                                formula: {
-                                  type: "string",
-                                  value: "formula",
-                                },
-                              },
-                            ],
-                          },
-                        },
-                        {
-                          formula: {
-                            type: "path",
-                            path: ["ListItem", "Item", "1"],
-                          },
-                        },
-                        {
-                          formula: {
-                            type: "null",
-                          },
-                        },
-                      ],
-                    },
+                    type: "path",
+                    path: ["ListItem", "Item", "1"],
                   },
                   data: {
-                    type: "formula",
-                    formula: {
-                      type: "path",
-                      path: ["Props", "nodeData"],
-                    },
+                    type: "path",
+                    path: ["Props", "nodeData"],
                   },
                 },
                 style: {},
@@ -440,7 +694,7 @@ export const ElementAttributes: ComponentModel = {
                             },
                             {
                               formula: {
-                                type: "string",
+                                type: "value",
                                 value: "attrs",
                               },
                             },
@@ -463,61 +717,8 @@ export const ElementAttributes: ComponentModel = {
                                   },
                                   {
                                     formula: {
-                                      type: "function",
-                                      name: "FROM_ENTRIES",
-                                      arguments: [
-                                        {
-                                          formula: {
-                                            type: "function",
-                                            name: "LIST",
-                                            arguments: [
-                                              {
-                                                formula: {
-                                                  type: "function",
-                                                  name: "LIST",
-                                                  arguments: [
-                                                    {
-                                                      formula: {
-                                                        type: "string",
-                                                        value: "type",
-                                                      },
-                                                    },
-                                                    {
-                                                      formula: {
-                                                        type: "string",
-                                                        value: "formula",
-                                                      },
-                                                    },
-                                                  ],
-                                                },
-                                              },
-                                              {
-                                                formula: {
-                                                  type: "function",
-                                                  name: "LIST",
-                                                  arguments: [
-                                                    {
-                                                      formula: {
-                                                        type: "string",
-                                                        value: "formula",
-                                                      },
-                                                    },
-                                                    {
-                                                      formula: {
-                                                        type: "path",
-                                                        path: [
-                                                          "Event",
-                                                          "detail",
-                                                        ],
-                                                      },
-                                                    },
-                                                  ],
-                                                },
-                                              },
-                                            ],
-                                          },
-                                        },
-                                      ],
+                                      type: "path",
+                                      path: ["Event", "detail"],
                                     },
                                   },
                                 ],
@@ -568,7 +769,7 @@ export const ElementAttributes: ComponentModel = {
                             },
                             {
                               formula: {
-                                type: "string",
+                                type: "value",
                                 value: "attrs",
                               },
                             },

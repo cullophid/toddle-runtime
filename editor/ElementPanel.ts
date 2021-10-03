@@ -153,7 +153,7 @@ export const ElementPanel: ComponentModel = {
                         {
                           name: "Second",
                           formula: {
-                            type: "string",
+                            type: "value",
                             value: "Style",
                           },
                         },
@@ -250,7 +250,7 @@ export const ElementPanel: ComponentModel = {
                         {
                           name: "Second",
                           formula: {
-                            type: "string",
+                            type: "value",
                             value: "Attributes",
                           },
                         },
@@ -347,7 +347,7 @@ export const ElementPanel: ComponentModel = {
                         {
                           name: "Second",
                           formula: {
-                            type: "string",
+                            type: "value",
                             value: "Events",
                           },
                         },
@@ -376,11 +376,8 @@ export const ElementPanel: ComponentModel = {
                 type: "component",
                 attrs: {
                   style: {
-                    type: "formula",
-                    formula: {
-                      path: ["Props", "node", "style"],
-                      type: "path",
-                    },
+                    path: ["Props", "node", "style"],
+                    type: "path",
                   },
                 },
                 events: [
@@ -402,7 +399,7 @@ export const ElementPanel: ComponentModel = {
                             {
                               name: "Key",
                               formula: {
-                                type: "string",
+                                type: "value",
                                 value: "style",
                               },
                             },
@@ -433,7 +430,7 @@ export const ElementPanel: ComponentModel = {
                             {
                               name: "Key",
                               formula: {
-                                type: "string",
+                                type: "value",
                                 value: "style",
                               },
                             },
@@ -463,54 +460,51 @@ export const ElementPanel: ComponentModel = {
                     value: "Value",
                   },
                   styles: {
-                    type: "formula",
-                    formula: {
-                      name: "DEFAULT",
-                      type: "function",
-                      arguments: [
-                        {
-                          name: "Value",
-                          formula: {
-                            path: ["Props", "node", "style"],
-                            type: "path",
-                          },
+                    name: "DEFAULT",
+                    type: "function",
+                    arguments: [
+                      {
+                        name: "Value",
+                        formula: {
+                          path: ["Props", "node", "style"],
+                          type: "path",
                         },
-                        {
-                          name: "Default",
-                          formula: {
-                            name: "FROM_ENTRIES",
-                            type: "function",
-                            arguments: [
-                              {
-                                name: "List",
-                                formula: {
-                                  name: "LIST",
-                                  type: "function",
-                                  varArgs: true,
-                                  arguments: [
-                                    {
-                                      formula: {
-                                        name: "LIST",
-                                        type: "function",
-                                        varArgs: true,
-                                        arguments: [
-                                          {
-                                            formula: {
-                                              type: "string",
-                                              value: "",
-                                            },
+                      },
+                      {
+                        name: "Default",
+                        formula: {
+                          name: "FROM_ENTRIES",
+                          type: "function",
+                          arguments: [
+                            {
+                              name: "List",
+                              formula: {
+                                name: "LIST",
+                                type: "function",
+                                varArgs: true,
+                                arguments: [
+                                  {
+                                    formula: {
+                                      name: "LIST",
+                                      type: "function",
+                                      varArgs: true,
+                                      arguments: [
+                                        {
+                                          formula: {
+                                            type: "value",
+                                            value: "",
                                           },
-                                        ],
-                                      },
+                                        },
+                                      ],
                                     },
-                                  ],
-                                },
+                                  },
+                                ],
                               },
-                            ],
-                          },
+                            },
+                          ],
                         },
-                      ],
-                    },
+                      },
+                    ],
                   },
                 },
                 style: {},
@@ -533,7 +527,7 @@ export const ElementPanel: ComponentModel = {
                             {
                               name: "Key",
                               formula: {
-                                type: "string",
+                                type: "value",
                                 value: "style",
                               },
                             },
@@ -574,7 +568,7 @@ export const ElementPanel: ComponentModel = {
                 {
                   name: "Second",
                   formula: {
-                    type: "string",
+                    type: "value",
                     value: "Style",
                   },
                 },
@@ -598,25 +592,16 @@ export const ElementPanel: ComponentModel = {
                 type: "component",
                 attrs: {
                   node: {
-                    type: "formula",
-                    formula: {
-                      path: ["Props", "node"],
-                      type: "path",
-                    },
+                    path: ["Props", "node"],
+                    type: "path",
                   },
                   nodeData: {
-                    type: "formula",
-                    formula: {
-                      path: ["Props", "nodeData"],
-                      type: "path",
-                    },
+                    path: ["Props", "nodeData"],
+                    type: "path",
                   },
                   component: {
-                    type: "formula",
-                    formula: {
-                      path: ["Props", "component"],
-                      type: "path",
-                    },
+                    path: ["Props", "component"],
+                    type: "path",
                   },
                 },
                 events: [
@@ -653,7 +638,7 @@ export const ElementPanel: ComponentModel = {
                 {
                   name: "Second",
                   formula: {
-                    type: "string",
+                    type: "value",
                     value: "Attributes",
                   },
                 },
@@ -677,25 +662,16 @@ export const ElementPanel: ComponentModel = {
                 type: "element",
                 attrs: {
                   node: {
-                    type: "formula",
-                    formula: {
-                      path: ["Props", "node"],
-                      type: "path",
-                    },
+                    path: ["Props", "node"],
+                    type: "path",
                   },
                   nodeData: {
-                    type: "formula",
-                    formula: {
-                      path: ["Props", "nodeData"],
-                      type: "path",
-                    },
+                    path: ["Props", "nodeData"],
+                    type: "path",
                   },
                   component: {
-                    type: "formula",
-                    formula: {
-                      path: ["Props", "component"],
-                      type: "path",
-                    },
+                    path: ["Props", "component"],
+                    type: "path",
                   },
                 },
                 style: {},
@@ -733,7 +709,7 @@ export const ElementPanel: ComponentModel = {
                     {
                       name: "Second",
                       formula: {
-                        type: "string",
+                        type: "value",
                         value: "Events",
                       },
                     },
@@ -756,7 +732,7 @@ export const ElementPanel: ComponentModel = {
                 {
                   name: "Second",
                   formula: {
-                    type: "string",
+                    type: "value",
                     value: "Events",
                   },
                 },

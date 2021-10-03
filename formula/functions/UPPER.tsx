@@ -1,4 +1,8 @@
-import { applyFormula, FunctionOperation } from "../formula";
+import {
+  applyFormula,
+  FunctionDeclaration,
+  FunctionOperation,
+} from "../formula";
 
 export const template: FunctionOperation = {
   type: "function",
@@ -6,7 +10,7 @@ export const template: FunctionOperation = {
   arguments: [
     {
       name: "String",
-      formula: { type: "string", name: "String", value: "string" },
+      formula: { type: "value", value: "string" },
     },
   ],
 };
@@ -16,3 +20,5 @@ export const resolver = (f: FunctionOperation, input: any) => {
     applyFormula(f.arguments[0]?.formula, input)
   ).toLocaleUpperCase();
 };
+
+export const UPPER: FunctionDeclaration = { template, resolver };

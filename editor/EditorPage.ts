@@ -28,83 +28,52 @@ export const EditorPage: ComponentModel = {
     name: "Editor",
     attrs: {
       project: {
-        type: "formula",
-        formula: {
-          type: "path",
-          path: ["Queries", "project", "data", "projects", "0"],
-        },
+        type: "path",
+        path: ["Queries", "project", "data", "projects", "0"],
       },
       component: {
-        type: "formula",
-        formula: {
-          path: ["Variables", "component"],
-          type: "path",
-        },
+        path: ["Variables", "component"],
+        type: "path",
       },
       components: {
-        type: "formula",
-        formula: {
-          path: ["Queries", "components", "data", "components"],
-          type: "path",
-        },
+        path: ["Queries", "components", "data", "components"],
+        type: "path",
       },
       selectedNodeId: {
-        type: "formula",
-        formula: {
-          type: "path",
-          path: ["Variables", "selectedNodeId"],
-        },
+        type: "path",
+        path: ["Variables", "selectedNodeId"],
       },
       selectedNode: {
-        type: "formula",
-        formula: {
-          name: "CUSTOM_FUNCTION",
-          type: "function",
-          arguments: [
-            {
-              name: "Function",
-              formula: {
-                type: "string",
-                value: "getNode",
-              },
+        name: "GET_NODE",
+        type: "function",
+        arguments: [
+          {
+            name: "Root",
+            formula: {
+              path: ["Variables", "component", "root"],
+              type: "path",
             },
-            {
-              name: "Root",
-              formula: {
-                path: ["Variables", "component", "root"],
-                type: "path",
-              },
+          },
+          {
+            name: "nodeId",
+            formula: {
+              path: ["Variables", "selectedNodeId"],
+              type: "path",
             },
-            {
-              name: "nodeId",
-              formula: {
-                path: ["Variables", "selectedNodeId"],
-                type: "path",
-              },
-            },
-          ],
-        },
+          },
+        ],
       },
-      selectedNodeData: {
-        type: "formula",
-        formula: {
-          type: "path",
-          path: ["Variables", "componentData"],
-        },
+      componentData: {
+        type: "path",
+        path: ["Variables", "componentData"],
       },
       highlightedNodeId: {
-        type: "formula",
-        formula: {
-          path: ["Variables", "highlightedNode"],
-          type: "path",
-        },
+        path: ["Variables", "highlightedNode"],
+        type: "path",
       },
       view: {
-        type: "formula",
-        formula: {
-          type: "path",
-          path: ["Props", "view"],
-        },
+        type: "path",
+        path: ["Props", "view"],
       },
     },
     children: [],
@@ -191,7 +160,7 @@ export const EditorPage: ComponentModel = {
                 {
                   type: "Debug",
                   data: {
-                    type: "string",
+                    type: "value",
                     value: "SAVED",
                   },
                 },
@@ -210,6 +179,20 @@ export const EditorPage: ComponentModel = {
           },
         ],
         trigger: "componentChanged",
+      },
+      {
+        type: "ComponentEvent",
+        actions: [
+          {
+            type: "Update Variable",
+            value: {
+              path: ["Event"],
+              type: "path",
+            },
+            variableName: "componentData",
+          },
+        ],
+        trigger: "componentDataChanged",
       },
     ],
   },
@@ -930,7 +913,7 @@ export const EditorPage: ComponentModel = {
                             {
                               name: "Second",
                               formula: {
-                                type: "string",
+                                type: "value",
                                 value: "/",
                               },
                             },

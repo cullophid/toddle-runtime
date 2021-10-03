@@ -25,7 +25,7 @@ export const Editor: ComponentModel = {
       initialValue: "0.0",
     },
     {
-      name: "nodeData",
+      name: "componentData",
       initialValue: { Variables: {}, Props: {} },
     },
     {
@@ -190,7 +190,7 @@ export const Editor: ComponentModel = {
                         {
                           name: "Second",
                           formula: {
-                            type: "string",
+                            type: "value",
                             value: "design",
                           },
                         },
@@ -291,7 +291,7 @@ export const Editor: ComponentModel = {
                         {
                           name: "Second",
                           formula: {
-                            type: "string",
+                            type: "value",
                             value: "data",
                           },
                         },
@@ -392,7 +392,7 @@ export const Editor: ComponentModel = {
                         {
                           name: "Second",
                           formula: {
-                            type: "string",
+                            type: "value",
                             value: "preview",
                           },
                         },
@@ -409,18 +409,12 @@ export const Editor: ComponentModel = {
             type: "component",
             attrs: {
               component: {
-                type: "formula",
-                formula: {
-                  path: ["Props", "component", "name"],
-                  type: "path",
-                },
+                path: ["Props", "component", "name"],
+                type: "path",
               },
               projectId: {
-                type: "formula",
-                formula: {
-                  path: ["Queries", "project", "data", "projects", "0", "id"],
-                  type: "path",
-                },
+                path: ["Props", "project", "id"],
+                type: "path",
               },
             },
             events: [
@@ -436,15 +430,16 @@ export const Editor: ComponentModel = {
                     paramName: "component",
                   },
                   {
-                    type: "Update Variable",
-                    value: {
+                    type: "Trigger Event",
+                    event: "componentChanged",
+                    data: {
                       type: "function",
                       name: "FIND",
                       arguments: [
                         {
                           name: "List",
                           formula: {
-                            path: ["Functions", "components"],
+                            path: ["Props", "components"],
                             type: "path",
                           },
                         },
@@ -473,7 +468,6 @@ export const Editor: ComponentModel = {
                         },
                       ],
                     },
-                    variableName: "component",
                   },
                 ],
                 trigger: "change",
@@ -552,39 +546,24 @@ export const Editor: ComponentModel = {
             type: "component",
             attrs: {
               component: {
-                type: "formula",
-                formula: {
-                  path: ["Props", "component"],
-                  type: "path",
-                },
+                path: ["Props", "component"],
+                type: "path",
               },
               components: {
-                type: "formula",
-                formula: {
-                  path: ["Props", "components"],
-                  type: "path",
-                },
+                path: ["Props", "components"],
+                type: "path",
               },
               selectedNode: {
-                type: "formula",
-                formula: {
-                  path: ["Props", "selectedNode"],
-                  type: "path",
-                },
+                path: ["Props", "selectedNode"],
+                type: "path",
               },
               selectedNodeId: {
-                type: "formula",
-                formula: {
-                  path: ["Props", "selectedNodeId"],
-                  type: "path",
-                },
+                path: ["Props", "selectedNodeId"],
+                type: "path",
               },
               highlightedNodeId: {
-                type: "formula",
-                formula: {
-                  path: ["Props", "highlightedNodeId"],
-                  type: "path",
-                },
+                path: ["Props", "highlightedNodeId"],
+                type: "path",
               },
             },
             events: [
@@ -650,43 +629,28 @@ export const Editor: ComponentModel = {
             events: [],
             children: [
               {
-                tag: "canvas-iframe",
+                tag: "design-canvas",
                 type: "element",
                 attrs: {
                   data: {
-                    type: "formula",
-                    formula: {
-                      path: ["Props", "componentData"],
-                      type: "path",
-                    },
+                    path: ["Props", "componentData"],
+                    type: "path",
                   },
                   component: {
-                    type: "formula",
-                    formula: {
-                      path: ["Props", "component"],
-                      type: "path",
-                    },
+                    path: ["Props", "component"],
+                    type: "path",
                   },
                   components: {
-                    type: "formula",
-                    formula: {
-                      path: ["Props", "components"],
-                      type: "path",
-                    },
+                    path: ["Props", "components"],
+                    type: "path",
                   },
                   selectedNodeId: {
-                    type: "formula",
-                    formula: {
-                      path: ["Props", "selectedNodeId"],
-                      type: "path",
-                    },
+                    path: ["Props", "selectedNodeId"],
+                    type: "path",
                   },
                   highlightedNodeId: {
-                    type: "formula",
-                    formula: {
-                      path: ["Props", "highlightedNodeId"],
-                      type: "path",
-                    },
+                    path: ["Props", "highlightedNodeId"],
+                    type: "path",
                   },
                 },
                 style: {
@@ -766,7 +730,7 @@ export const Editor: ComponentModel = {
                     {
                       name: "b",
                       formula: {
-                        type: "string",
+                        type: "value",
                         value: "element",
                       },
                     },
@@ -774,25 +738,36 @@ export const Editor: ComponentModel = {
                 },
                 attrs: {
                   node: {
-                    type: "formula",
-                    formula: {
-                      type: "path",
-                      path: ["Props", "selectedNode"],
-                    },
+                    type: "path",
+                    path: ["Props", "selectedNode"],
                   },
                   nodeData: {
-                    type: "formula",
-                    formula: {
-                      type: "path",
-                      path: ["Props", "nodeData"],
-                    },
+                    type: "function",
+                    name: "GET_NODE_DATA",
+                    arguments: [
+                      {
+                        formula: {
+                          type: "path",
+                          path: ["Props", "component", "root"],
+                        },
+                      },
+                      {
+                        formula: {
+                          type: "path",
+                          path: ["Props", "selectedNodeId"],
+                        },
+                      },
+                      {
+                        formula: {
+                          type: "path",
+                          path: ["Props", "componentData"],
+                        },
+                      },
+                    ],
                   },
                   component: {
-                    type: "formula",
-                    formula: {
-                      path: ["Props", "component"],
-                      type: "path",
-                    },
+                    path: ["Props", "component"],
+                    type: "path",
                   },
                 },
                 events: [
@@ -815,21 +790,225 @@ export const Editor: ComponentModel = {
                             },
                             {
                               formula: {
-                                type: "string",
+                                type: "value",
                                 value: "root",
                               },
                             },
                             {
                               formula: {
                                 type: "function",
-                                name: "CUSTOM_FUNCTION",
+                                name: "UPDATE_NODE",
                                 arguments: [
                                   {
                                     formula: {
-                                      type: "string",
-                                      value: "updateNode",
+                                      type: "path",
+                                      path: ["Props", "component", "root"],
                                     },
                                   },
+                                  {
+                                    formula: {
+                                      type: "path",
+                                      path: ["Props", "selectedNodeId"],
+                                    },
+                                  },
+                                  {
+                                    formula: {
+                                      type: "path",
+                                      path: ["Event"],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                ],
+                children: [],
+              },
+              {
+                name: "ComponentPanel",
+                type: "component",
+                condition: {
+                  type: "function",
+                  name: "EQ",
+                  arguments: [
+                    {
+                      name: "a",
+                      formula: {
+                        type: "path",
+                        path: ["Props", "selectedNode", "type"],
+                      },
+                    },
+                    {
+                      name: "b",
+                      formula: {
+                        type: "value",
+                        value: "component",
+                      },
+                    },
+                  ],
+                },
+                attrs: {
+                  node: {
+                    type: "path",
+                    path: ["Props", "selectedNode"],
+                  },
+                  nodeData: {
+                    type: "function",
+                    name: "GET_NODE_DATA",
+                    arguments: [
+                      {
+                        formula: {
+                          type: "path",
+                          path: ["Props", "component", "root"],
+                        },
+                      },
+                      {
+                        formula: {
+                          type: "path",
+                          path: ["Props", "selectedNodeId"],
+                        },
+                      },
+                      {
+                        formula: {
+                          type: "path",
+                          path: ["Props", "componentData"],
+                        },
+                      },
+                    ],
+                  },
+                  component: {
+                    path: ["Props", "component"],
+                    type: "path",
+                  },
+                },
+                events: [
+                  {
+                    type: "ComponentEvent",
+                    trigger: "nodeChanged",
+                    actions: [
+                      {
+                        type: "Trigger Event",
+                        event: "componentChanged",
+                        data: {
+                          type: "function",
+                          name: "SET",
+                          arguments: [
+                            {
+                              formula: {
+                                type: "path",
+                                path: ["Props", "component"],
+                              },
+                            },
+                            {
+                              formula: {
+                                type: "value",
+                                value: "root",
+                              },
+                            },
+                            {
+                              formula: {
+                                type: "function",
+                                name: "UPDATE_NODE",
+                                arguments: [
+                                  {
+                                    formula: {
+                                      type: "path",
+                                      path: ["Props", "component", "root"],
+                                    },
+                                  },
+                                  {
+                                    formula: {
+                                      type: "path",
+                                      path: ["Props", "selectedNodeId"],
+                                    },
+                                  },
+                                  {
+                                    formula: {
+                                      type: "path",
+                                      path: ["Event"],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                ],
+                children: [],
+              },
+              {
+                name: "TextPanel",
+                type: "component",
+                condition: {
+                  type: "function",
+                  name: "EQ",
+                  arguments: [
+                    {
+                      name: "a",
+                      formula: {
+                        type: "path",
+                        path: ["Props", "selectedNode", "type"],
+                      },
+                    },
+                    {
+                      name: "b",
+                      formula: {
+                        type: "value",
+                        value: "text",
+                      },
+                    },
+                  ],
+                },
+                attrs: {
+                  node: {
+                    type: "path",
+                    path: ["Props", "selectedNode"],
+                  },
+                  nodeData: {
+                    type: "path",
+                    path: ["Functions", "selectedNodeData"],
+                  },
+                  component: {
+                    path: ["Props", "component"],
+                    type: "path",
+                  },
+                },
+                events: [
+                  {
+                    type: "ComponentEvent",
+                    trigger: "nodeChanged",
+                    actions: [
+                      {
+                        type: "Trigger Event",
+                        event: "componentChanged",
+                        data: {
+                          type: "function",
+                          name: "SET",
+                          arguments: [
+                            {
+                              formula: {
+                                type: "path",
+                                path: ["Props", "component"],
+                              },
+                            },
+                            {
+                              formula: {
+                                type: "value",
+                                value: "root",
+                              },
+                            },
+                            {
+                              formula: {
+                                type: "function",
+                                name: "UPDATE_NODE",
+                                arguments: [
                                   {
                                     formula: {
                                       type: "path",
@@ -878,7 +1057,7 @@ export const Editor: ComponentModel = {
             {
               name: "Second",
               formula: {
-                type: "string",
+                type: "value",
                 value: "design",
               },
             },
@@ -890,25 +1069,16 @@ export const Editor: ComponentModel = {
         type: "component",
         attrs: {
           project: {
-            type: "formula",
-            formula: {
-              path: ["Queries", "project", "data", "projects", "0"],
-              type: "path",
-            },
+            path: ["Props", "project"],
+            type: "path",
           },
           component: {
-            type: "formula",
-            formula: {
-              path: ["Variables", "component"],
-              type: "path",
-            },
+            path: ["Props", "component"],
+            type: "path",
           },
           componentData: {
-            type: "formula",
-            formula: {
-              path: ["Variables", "componentData"],
-              type: "path",
-            },
+            path: ["Props", "componentData"],
+            type: "path",
           },
         },
         events: [
@@ -942,12 +1112,115 @@ export const Editor: ComponentModel = {
             {
               name: "Second",
               formula: {
-                type: "string",
+                type: "value",
                 value: "data",
               },
             },
           ],
         },
+      },
+      {
+        tag: "main",
+        type: "element",
+        attrs: {},
+        style: {
+          flex: 1,
+        },
+        classList: [],
+        events: [],
+        condition: {
+          type: "function",
+          name: "EQ",
+          arguments: [
+            {
+              formula: {
+                type: "path",
+                path: ["Props", "view"],
+              },
+            },
+            {
+              formula: {
+                type: "value",
+                value: "preview",
+              },
+            },
+          ],
+        },
+        children: [
+          {
+            tag: "preview-canvas",
+            type: "element",
+            attrs: {
+              data: {
+                path: ["Props", "componentData"],
+                type: "path",
+              },
+              component: {
+                path: ["Props", "component"],
+                type: "path",
+              },
+              components: {
+                path: ["Props", "components"],
+                type: "path",
+              },
+              selectedNodeId: {
+                path: ["Props", "selectedNodeId"],
+                type: "path",
+              },
+              highlightedNodeId: {
+                path: ["Props", "highlightedNodeId"],
+                type: "path",
+              },
+            },
+            style: {
+              width: "100%",
+              height: "100%",
+              padding: "2",
+              display: "block",
+              position: "relative",
+            },
+            events: [
+              {
+                type: "NodeEvent",
+                actions: [
+                  {
+                    type: "Trigger Event",
+                    event: "componentDataChanged",
+                    data: {
+                      type: "function",
+                      name: "SET",
+                      arguments: [
+                        {
+                          formula: {
+                            type: "path",
+                            path: ["Props", "componentData"],
+                          },
+                        },
+                        {
+                          formula: {
+                            type: "value",
+                            value: "Variables",
+                          },
+                        },
+                        {
+                          formula: {
+                            type: "path",
+                            path: ["Event", "detail"],
+                          },
+                        },
+                      ],
+                    },
+                  },
+                ],
+                trigger: "variablesChanged",
+                preventDefault: false,
+                stopPropagation: false,
+              },
+            ],
+            children: [],
+            classList: [],
+          },
+        ],
       },
     ],
     classList: [],
@@ -959,6 +1232,34 @@ export const Editor: ComponentModel = {
       initialValue: "",
     },
   ],
-  functions: [],
+  functions: [
+    {
+      name: "selectedNodeData",
+      value: {
+        type: "function",
+        name: "GET_NODE_DATA",
+        arguments: [
+          {
+            formula: {
+              type: "path",
+              path: ["Props", "component", "root"],
+            },
+          },
+          {
+            formula: {
+              type: "path",
+              path: ["Props", "selectedNodeId"],
+            },
+          },
+          {
+            formula: {
+              type: "path",
+              path: ["Props", "componentData"],
+            },
+          },
+        ],
+      },
+    },
+  ],
   queries: [],
 };

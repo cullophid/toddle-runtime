@@ -25,29 +25,20 @@ export const DataPanel: ComponentModel = {
                   value: "none",
                 },
                 width: {
-                  type: "formula",
-                  formula: {
-                    path: ["Props", "size"],
-                    type: "path",
-                  },
+                  path: ["Props", "size"],
+                  type: "path",
                 },
                 xmlns: {
                   type: "value",
                   value: "http://www.w3.org/2000/svg",
                 },
                 height: {
-                  type: "formula",
-                  formula: {
-                    path: ["Props", "size"],
-                    type: "path",
-                  },
+                  path: ["Props", "size"],
+                  type: "path",
                 },
                 stroke: {
-                  type: "formula",
-                  formula: {
-                    path: ["Props", "color"],
-                    type: "path",
-                  },
+                  path: ["Props", "color"],
+                  type: "path",
                 },
                 viewBox: {
                   type: "value",
@@ -403,11 +394,8 @@ export const DataPanel: ComponentModel = {
                   {
                     type: "text",
                     value: {
-                      type: "formula",
-                      formula: {
-                        path: ["ListItem", "Item", "name"],
-                        type: "path",
-                      },
+                      path: ["ListItem", "Item", "name"],
+                      type: "path",
                     },
                   },
                   {
@@ -427,27 +415,24 @@ export const DataPanel: ComponentModel = {
                       {
                         type: "text",
                         value: {
-                          type: "formula",
-                          formula: {
-                            name: "GET",
-                            type: "function",
-                            arguments: [
-                              {
-                                name: "Object",
-                                formula: {
-                                  path: ["Props", "componentData", "Props"],
-                                  type: "path",
-                                },
+                          name: "GET",
+                          type: "function",
+                          arguments: [
+                            {
+                              name: "Object",
+                              formula: {
+                                path: ["Props", "componentData", "Props"],
+                                type: "path",
                               },
-                              {
-                                name: "Item",
-                                formula: {
-                                  path: ["ListItem", "Item", "name"],
-                                  type: "path",
-                                },
+                            },
+                            {
+                              name: "Item",
+                              formula: {
+                                path: ["ListItem", "Item", "name"],
+                                type: "path",
                               },
-                            ],
-                          },
+                            },
+                          ],
                         },
                       },
                     ],
@@ -529,11 +514,8 @@ export const DataPanel: ComponentModel = {
                   {
                     type: "text",
                     value: {
-                      type: "formula",
-                      formula: {
-                        path: ["ListItem", "Item", "name"],
-                        type: "path",
-                      },
+                      path: ["ListItem", "Item", "name"],
+                      type: "path",
                     },
                   },
                   {
@@ -548,27 +530,24 @@ export const DataPanel: ComponentModel = {
                       {
                         type: "text",
                         value: {
-                          type: "formula",
-                          formula: {
-                            name: "GET",
-                            type: "function",
-                            arguments: [
-                              {
-                                name: "Object",
-                                formula: {
-                                  path: ["Props", "componentData", "Variables"],
-                                  type: "path",
-                                },
+                          name: "GET",
+                          type: "function",
+                          arguments: [
+                            {
+                              name: "Object",
+                              formula: {
+                                path: ["Props", "componentData", "Variables"],
+                                type: "path",
                               },
-                              {
-                                name: "Item",
-                                formula: {
-                                  path: ["ListItem", "Item", "name"],
-                                  type: "path",
-                                },
+                            },
+                            {
+                              name: "Item",
+                              formula: {
+                                path: ["ListItem", "Item", "name"],
+                                type: "path",
                               },
-                            ],
-                          },
+                            },
+                          ],
                         },
                       },
                     ],
@@ -649,11 +628,8 @@ export const DataPanel: ComponentModel = {
                   {
                     type: "text",
                     value: {
-                      type: "formula",
-                      formula: {
-                        path: ["ListItem", "Item", "name"],
-                        type: "path",
-                      },
+                      path: ["ListItem", "Item", "name"],
+                      type: "path",
                     },
                   },
                 ],

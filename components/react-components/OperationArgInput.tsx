@@ -2,10 +2,8 @@ import React, { useMemo, useRef, useState } from "react";
 import { NodeData } from "../../ComponentModel";
 import {
   applyFormula,
-  BooleanOperation,
+  ValueOperation,
   Formula,
-  NumberOperation,
-  StringOperation,
   valueToString,
 } from "../../formula/formula";
 import { useEffect } from "react";
@@ -18,34 +16,28 @@ type Props = {
   data: NodeData;
 };
 
-const getItems = (
-  input: string
-): Array<StringOperation | NumberOperation | BooleanOperation> => {
-  const items: Array<StringOperation | NumberOperation | BooleanOperation> = [];
+const getItems = (input: string): Array<ValueOperation> => {
+  const items: Array<ValueOperation> = [];
   if ("true".includes(input.toLocaleLowerCase())) {
     items.push({
-      type: "boolean",
-      name: "Boolean",
+      type: "value",
       value: true,
     });
   }
   if ("false".includes(input.toLocaleLowerCase())) {
     items.push({
-      type: "boolean",
-      name: "Boolean",
+      type: "value",
       value: false,
     });
   }
   if (input !== "" && Number.isNaN(Number(input)) === false) {
     items.push({
-      type: "number",
-      name: "Number",
+      type: "value",
       value: Number(input),
     });
   }
   items.push({
-    type: "string",
-    name: "String",
+    type: "value",
     value: input,
   });
   return items;
@@ -144,7 +136,9 @@ export const OperationArgInput = (props: Props) => {
                 }
               `}
             >
-              <div className="text-grey-400 text-xs">{item.name}</div>
+              <div className="text-grey-400 text-xs">
+                {item === null ? "Null" : typeof item.value}
+              </div>
               {String(item.value)}
             </li>
           ))}

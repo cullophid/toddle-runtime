@@ -1,9 +1,8 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Formula } from "../../formula/formula";
-import { clamp } from "lodash";
-import { functions } from "../../formula/functions";
+import { capitalize, clamp } from "lodash";
 
-const functionOperations: Formula[] = Object.values(functions)
+const functionOperations: Formula[] = Object.values(window.toddle.formulas)
   .map((f) => f.template)
   .filter((f) => !(f.type === "function" && f.name === "ID"));
 
@@ -14,21 +13,20 @@ export type OperationSelectProps = {
 
 const getOperationName = (op: Formula): string => {
   switch (op.type) {
-    case "boolean":
-    case "number":
-    case "string":
-    case "null":
+    case "value":
+      return capitalize(op.value === null ? "null" : typeof op.value);
     case "record":
       return op.type;
     case "function":
       return op.name;
     case "path":
-      return "data";
+      return "Data";
   }
 };
 const operations: Formula[] = [
   {
-    type: "null",
+    type: "value",
+    value: null,
   },
   {
     type: "path",
@@ -53,25 +51,25 @@ export const OperationSelect = (props: OperationSelectProps) => {
     }
   }, [props.operation]);
 
-  useEffect(() => {
-    if (
-      isOpen === false &&
-      props.operation?.type === "function" &&
-      props.operation.name === "ID"
-    ) {
-      props.onChange({
-        type: "null",
-      });
-    }
-  }, [isOpen]);
+  // useEffect(() => {
+  //   if (
+  //     isOpen === false &&
+  //     props.operation?.type === "function" &&
+  //     props.operation.name === "ID"
+  //   ) {
+  //     props.onChange({
+  //       type: "value",
+  //       value: null,
+  //     });
+  //   }
+  // }, [isOpen]);
 
   const filteredOperations = operations.filter((op) => {
     switch (op.type) {
-      case "boolean":
-      case "number":
-      case "string":
-      case "null":
-        return op.type.includes(inputValue.toLocaleLowerCase());
+      case "value": {
+        const type = op.value === null ? "null" : typeof op.value;
+        return type.includes(inputValue.toLocaleLowerCase());
+      }
       case "function":
         return op.name.includes(inputValue.toLocaleUpperCase());
       case "path":
@@ -175,8 +173,8 @@ export const OperationSelect = (props: OperationSelectProps) => {
                 }}
                 onMouseOver={() => setHighlightedIndex(index)}
                 onClickCapture={(e) => {
-                  props.onChange(item);
                   setIsOpen(false);
+                  props.onChange(item);
                   buttonRef.current?.focus();
                 }}
               >

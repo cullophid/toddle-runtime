@@ -1,13 +1,17 @@
-import { applyFormula, FunctionOperation } from "../formula";
+import {
+  applyFormula,
+  FunctionDeclaration,
+  FunctionOperation,
+} from "../formula";
 
 export const template: FunctionOperation = {
   type: "function",
   name: "SPLIT",
   arguments: [
-    { name: "Input", formula: { type: "string", name: "String", value: "" } },
+    { name: "Input", formula: { type: "value", value: "" } },
     {
       name: "Delimiter",
-      formula: { type: "string", name: "String", value: "" },
+      formula: { type: "value", value: "" },
     },
   ],
 };
@@ -21,3 +25,4 @@ export const resolver = (f: FunctionOperation, input: any) => {
   }
   return inputString;
 };
+export const SPLIT: FunctionDeclaration = { template, resolver };

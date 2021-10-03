@@ -81,34 +81,31 @@ export const AddressBar: ComponentModel = {
         type: "element",
         attrs: {
           value: {
-            type: "formula",
-            formula: {
-              name: "IF",
-              type: "function",
-              arguments: [
-                {
-                  name: "If",
-                  formula: {
-                    path: ["Variables", "isOpen"],
-                    type: "path",
-                  },
+            name: "IF",
+            type: "function",
+            arguments: [
+              {
+                name: "If",
+                formula: {
+                  path: ["Variables", "isOpen"],
+                  type: "path",
                 },
-                {
-                  name: "Then",
-                  formula: {
-                    path: ["Variables", "search"],
-                    type: "path",
-                  },
+              },
+              {
+                name: "Then",
+                formula: {
+                  path: ["Variables", "search"],
+                  type: "path",
                 },
-                {
-                  name: "Else",
-                  formula: {
-                    path: ["Props", "component"],
-                    type: "path",
-                  },
+              },
+              {
+                name: "Else",
+                formula: {
+                  path: ["Props", "component"],
+                  type: "path",
                 },
-              ],
-            },
+              },
+            ],
           },
         },
         style: {
@@ -325,11 +322,8 @@ export const AddressBar: ComponentModel = {
                   {
                     type: "text",
                     value: {
-                      type: "formula",
-                      formula: {
-                        path: ["ListItem", "Item", "name"],
-                        type: "path",
-                      },
+                      path: ["ListItem", "Item", "name"],
+                      type: "path",
                     },
                   },
                   {
@@ -349,34 +343,31 @@ export const AddressBar: ComponentModel = {
                       {
                         type: "text",
                         value: {
-                          type: "formula",
-                          formula: {
-                            name: "IF",
-                            type: "function",
-                            arguments: [
-                              {
-                                name: "If",
-                                formula: {
-                                  path: ["ListItem", "Item", "page"],
-                                  type: "path",
-                                },
+                          name: "IF",
+                          type: "function",
+                          arguments: [
+                            {
+                              name: "If",
+                              formula: {
+                                path: ["ListItem", "Item", "page"],
+                                type: "path",
                               },
-                              {
-                                name: "Then",
-                                formula: {
-                                  type: "string",
-                                  value: "Page",
-                                },
+                            },
+                            {
+                              name: "Then",
+                              formula: {
+                                type: "value",
+                                value: "Page",
                               },
-                              {
-                                name: "Else",
-                                formula: {
-                                  type: "string",
-                                  value: "Component",
-                                },
+                            },
+                            {
+                              name: "Else",
+                              formula: {
+                                type: "value",
+                                value: "Component",
                               },
-                            ],
-                          },
+                            },
+                          ],
                         },
                       },
                     ],
@@ -602,4 +593,14 @@ export const AddressBar: ComponentModel = {
       },
     },
   ],
+  onLoad: {
+    type: "ComponentEvent",
+    trigger: "ComponentLoaded",
+    actions: [
+      {
+        name: "addressBarLoaded",
+        type: "Custom",
+      },
+    ],
+  },
 };

@@ -1,13 +1,17 @@
-import { applyFormula, FunctionOperation } from "../formula";
+import {
+  applyFormula,
+  FunctionDeclaration,
+  FunctionOperation,
+} from "../formula";
 
 export const template: FunctionOperation = {
   type: "function",
   name: "INCLUDES",
   arguments: [
-    { name: "String", formula: { type: "string", name: "String", value: "" } },
+    { name: "String", formula: { type: "value", value: "" } },
     {
       name: "Sub String",
-      formula: { type: "string", name: "String", value: "" },
+      formula: { type: "value", value: "" },
     },
   ],
 };
@@ -19,3 +23,5 @@ export const resolver = (f: FunctionOperation, input: any) => {
     ? baseString.includes(subString)
     : null;
 };
+
+export const INCLUDES: FunctionDeclaration = { template, resolver };

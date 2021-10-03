@@ -1,13 +1,17 @@
-import { applyFormula, FunctionOperation } from "../formula";
+import {
+  applyFormula,
+  FunctionDeclaration,
+  FunctionOperation,
+} from "../formula";
 
 export const template: FunctionOperation = {
   type: "function",
   name: "REMOVE",
   arguments: [
-    { name: "Object", formula: { type: "null", name: "Null" } },
+    { name: "Object", formula: { type: "value", value: null } },
     {
       name: "Key",
-      formula: { type: "string", value: "Item" },
+      formula: { type: "value", value: "Item" },
     },
   ],
 };
@@ -27,3 +31,5 @@ export const resolver = (f: FunctionOperation, input: any) => {
   }
   return null;
 };
+
+export const REMOVE: FunctionDeclaration = { template, resolver };

@@ -1,4 +1,8 @@
-import { applyFormula, FunctionOperation } from "../formula";
+import {
+  applyFormula,
+  FunctionDeclaration,
+  FunctionOperation,
+} from "../formula";
 
 export const template: FunctionOperation = {
   type: "function",
@@ -6,7 +10,7 @@ export const template: FunctionOperation = {
   arguments: [
     {
       name: "Number",
-      formula: { type: "number", name: "Number", value: 1 },
+      formula: { type: "value", value: 1 },
     },
   ],
 };
@@ -19,3 +23,4 @@ export const resolver = (f: FunctionOperation, input: any) => {
   }
   return Math.sqrt(Number(n));
 };
+export const SQRT: FunctionDeclaration = { template, resolver };

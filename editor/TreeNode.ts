@@ -283,7 +283,7 @@ export const TreeNode: ComponentModel = {
                     {
                       name: "Second",
                       formula: {
-                        type: "string",
+                        type: "value",
                         value: "element",
                       },
                     },
@@ -319,7 +319,7 @@ export const TreeNode: ComponentModel = {
                     {
                       name: "Second",
                       formula: {
-                        type: "string",
+                        type: "value",
                         value: "component",
                       },
                     },
@@ -355,7 +355,7 @@ export const TreeNode: ComponentModel = {
                     {
                       name: "Second",
                       formula: {
-                        type: "string",
+                        type: "value",
                         value: "text",
                       },
                     },
@@ -380,165 +380,162 @@ export const TreeNode: ComponentModel = {
                   {
                     type: "text",
                     value: {
-                      type: "formula",
-                      formula: {
-                        name: "IF",
-                        type: "function",
-                        arguments: [
-                          {
-                            name: "If",
-                            formula: {
-                              name: "EQ",
-                              type: "function",
-                              arguments: [
-                                {
-                                  name: "First",
-                                  formula: {
-                                    name: "GET",
-                                    type: "function",
-                                    arguments: [
-                                      {
-                                        name: "Object",
-                                        formula: {
-                                          path: ["Props", "node"],
-                                          type: "path",
-                                        },
+                      name: "IF",
+                      type: "function",
+                      arguments: [
+                        {
+                          name: "If",
+                          formula: {
+                            name: "EQ",
+                            type: "function",
+                            arguments: [
+                              {
+                                name: "First",
+                                formula: {
+                                  name: "GET",
+                                  type: "function",
+                                  arguments: [
+                                    {
+                                      name: "Object",
+                                      formula: {
+                                        path: ["Props", "node"],
+                                        type: "path",
                                       },
-                                      {
-                                        name: "Item",
-                                        formula: {
-                                          type: "string",
-                                          value: "type",
-                                        },
+                                    },
+                                    {
+                                      name: "Item",
+                                      formula: {
+                                        type: "value",
+                                        value: "type",
                                       },
-                                    ],
-                                  },
+                                    },
+                                  ],
                                 },
-                                {
-                                  name: "Second",
-                                  formula: {
-                                    type: "string",
-                                    value: "element",
-                                  },
+                              },
+                              {
+                                name: "Second",
+                                formula: {
+                                  type: "value",
+                                  value: "element",
                                 },
-                              ],
-                            },
+                              },
+                            ],
                           },
-                          {
-                            name: "Then",
-                            formula: {
-                              name: "CONCAT",
-                              type: "function",
-                              varArgs: true,
-                              arguments: [
-                                {
-                                  formula: {
-                                    type: "string",
-                                    value: "<",
-                                  },
+                        },
+                        {
+                          name: "Then",
+                          formula: {
+                            name: "CONCAT",
+                            type: "function",
+                            varArgs: true,
+                            arguments: [
+                              {
+                                formula: {
+                                  type: "value",
+                                  value: "<",
                                 },
-                                {
-                                  formula: {
-                                    path: ["Props", "node", "tag"],
-                                    type: "path",
-                                  },
+                              },
+                              {
+                                formula: {
+                                  path: ["Props", "node", "tag"],
+                                  type: "path",
                                 },
-                                {
-                                  formula: {
-                                    type: "string",
-                                    value: ">",
-                                  },
+                              },
+                              {
+                                formula: {
+                                  type: "value",
+                                  value: ">",
                                 },
-                              ],
-                            },
+                              },
+                            ],
                           },
-                          {
-                            name: "Else",
-                            formula: {
-                              name: "IF",
-                              type: "function",
-                              arguments: [
-                                {
-                                  name: "If",
-                                  formula: {
-                                    name: "EQ",
-                                    type: "function",
-                                    arguments: [
-                                      {
-                                        name: "First",
-                                        formula: {
-                                          path: ["Props", "node", "type"],
-                                          type: "path",
-                                        },
+                        },
+                        {
+                          name: "Else",
+                          formula: {
+                            name: "IF",
+                            type: "function",
+                            arguments: [
+                              {
+                                name: "If",
+                                formula: {
+                                  name: "EQ",
+                                  type: "function",
+                                  arguments: [
+                                    {
+                                      name: "First",
+                                      formula: {
+                                        path: ["Props", "node", "type"],
+                                        type: "path",
                                       },
-                                      {
-                                        name: "Second",
-                                        formula: {
-                                          type: "string",
-                                          value: "fragment",
-                                        },
+                                    },
+                                    {
+                                      name: "Second",
+                                      formula: {
+                                        type: "value",
+                                        value: "fragment",
                                       },
-                                    ],
-                                  },
+                                    },
+                                  ],
                                 },
-                                {
-                                  name: "Then",
-                                  formula: {
-                                    type: "string",
-                                    value: "<>",
-                                  },
+                              },
+                              {
+                                name: "Then",
+                                formula: {
+                                  type: "value",
+                                  value: "<>",
                                 },
-                                {
-                                  name: "Else",
-                                  formula: {
-                                    name: "IF",
-                                    type: "function",
-                                    arguments: [
-                                      {
-                                        name: "If",
-                                        formula: {
-                                          name: "EQ",
-                                          type: "function",
-                                          arguments: [
-                                            {
-                                              name: "First",
-                                              formula: {
-                                                path: ["Props", "node", "type"],
-                                                type: "path",
-                                              },
+                              },
+                              {
+                                name: "Else",
+                                formula: {
+                                  name: "IF",
+                                  type: "function",
+                                  arguments: [
+                                    {
+                                      name: "If",
+                                      formula: {
+                                        name: "EQ",
+                                        type: "function",
+                                        arguments: [
+                                          {
+                                            name: "First",
+                                            formula: {
+                                              path: ["Props", "node", "type"],
+                                              type: "path",
                                             },
-                                            {
-                                              name: "Second",
-                                              formula: {
-                                                type: "string",
-                                                value: "component",
-                                              },
+                                          },
+                                          {
+                                            name: "Second",
+                                            formula: {
+                                              type: "value",
+                                              value: "component",
                                             },
-                                          ],
-                                        },
+                                          },
+                                        ],
                                       },
-                                      {
-                                        name: "Then",
-                                        formula: {
-                                          path: ["Props", "node", "name"],
-                                          type: "path",
-                                        },
+                                    },
+                                    {
+                                      name: "Then",
+                                      formula: {
+                                        path: ["Props", "node", "name"],
+                                        type: "path",
                                       },
-                                      {
-                                        name: "Else",
-                                        formula: {
-                                          type: "string",
-                                          value: "Text",
-                                        },
+                                    },
+                                    {
+                                      name: "Else",
+                                      formula: {
+                                        type: "value",
+                                        value: "Text",
                                       },
-                                    ],
-                                  },
+                                    },
+                                  ],
                                 },
-                              ],
-                            },
+                              },
+                            ],
                           },
-                        ],
-                      },
+                        },
+                      ],
                     },
                   },
                 ],
@@ -649,7 +646,7 @@ export const TreeNode: ComponentModel = {
                     },
                     {
                       formula: {
-                        type: "string",
+                        type: "value",
                         value: "rem",
                       },
                     },
@@ -699,76 +696,61 @@ export const TreeNode: ComponentModel = {
                     type: "component",
                     attrs: {
                       id: {
-                        type: "formula",
-                        formula: {
-                          name: "CONCAT",
-                          type: "function",
-                          varArgs: true,
-                          arguments: [
-                            {
-                              formula: {
-                                path: ["Props", "id"],
-                                type: "path",
-                              },
+                        name: "CONCAT",
+                        type: "function",
+                        varArgs: true,
+                        arguments: [
+                          {
+                            formula: {
+                              path: ["Props", "id"],
+                              type: "path",
                             },
-                            {
-                              formula: {
-                                type: "string",
-                                value: ".",
-                              },
+                          },
+                          {
+                            formula: {
+                              type: "value",
+                              value: ".",
                             },
-                            {
-                              formula: {
-                                path: ["ListItem", "Index"],
-                                type: "path",
-                              },
+                          },
+                          {
+                            formula: {
+                              path: ["ListItem", "Index"],
+                              type: "path",
                             },
-                          ],
-                        },
+                          },
+                        ],
                       },
                       node: {
-                        type: "formula",
-                        formula: {
-                          path: ["ListItem", "Item"],
-                          type: "path",
-                        },
+                        path: ["ListItem", "Item"],
+                        type: "path",
                       },
                       indent: {
-                        type: "formula",
-                        formula: {
-                          name: "ADD",
-                          type: "function",
-                          arguments: [
-                            {
-                              name: "First",
-                              formula: {
-                                path: ["Props", "indent"],
-                                type: "path",
-                              },
+                        name: "ADD",
+                        type: "function",
+                        arguments: [
+                          {
+                            name: "First",
+                            formula: {
+                              path: ["Props", "indent"],
+                              type: "path",
                             },
-                            {
-                              name: "Second",
-                              formula: {
-                                type: "number",
-                                value: 1,
-                              },
+                          },
+                          {
+                            name: "Second",
+                            formula: {
+                              type: "value",
+                              value: 1,
                             },
-                          ],
-                        },
+                          },
+                        ],
                       },
                       selectedNodeId: {
-                        type: "formula",
-                        formula: {
-                          path: ["Props", "selectedNodeId"],
-                          type: "path",
-                        },
+                        path: ["Props", "selectedNodeId"],
+                        type: "path",
                       },
                       highlightedNodeId: {
-                        type: "formula",
-                        formula: {
-                          path: ["Props", "highlightedNodeId"],
-                          type: "path",
-                        },
+                        path: ["Props", "highlightedNodeId"],
+                        type: "path",
                       },
                     },
                     events: [
@@ -830,7 +812,7 @@ export const TreeNode: ComponentModel = {
           {
             name: "Input",
             formula: {
-              type: "boolean",
+              type: "value",
               value: true,
             },
           },

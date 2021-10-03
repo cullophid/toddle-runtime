@@ -3,9 +3,9 @@ import { ComponentData, ComponentModel } from "../ComponentModel";
 import { signal, Signal } from "../signal";
 import { insertFonts, insertStyles } from "../style";
 import { insertTheme } from "../theme";
-import { ComponentNodeModel, getNode } from "../NodeModel";
+import { getNode } from "../NodeModel";
 
-export class Canvas extends HTMLElement {
+export class DesignCanvas extends HTMLElement {
   _component?: ComponentModel;
   _components?: ComponentModel[];
   dataSignal: Signal<ComponentData>;
@@ -25,6 +25,8 @@ export class Canvas extends HTMLElement {
     this.iframe.style.pointerEvents = "none";
     this.iframe.style.width = "100%";
     this.iframe.style.height = "100%";
+
+    this.iframe.onload = () => this.render();
 
     this.shadowRoot?.appendChild(this.iframe);
 
@@ -205,7 +207,9 @@ export class Canvas extends HTMLElement {
     }
     if (this.highlightedNodeId === nodeId) {
       this.highlightOverlay.style.display = "none";
+      return;
     }
+
     const elem = this.iframe?.contentDocument?.querySelector(
       `[data-id="${nodeId}"]`
     );
@@ -224,6 +228,7 @@ export class Canvas extends HTMLElement {
       node.type === "text" ? "dashed" : "solid";
   }
   renderOverlay() {}
+
   set component(component: ComponentModel | undefined) {
     this._component = component;
     this.render();

@@ -31,29 +31,20 @@ export const IconChevronRight: ComponentModel = {
             value: "none",
           },
           width: {
-            type: "formula",
-            formula: {
-              path: ["Props", "size"],
-              type: "path",
-            },
+            path: ["Props", "size"],
+            type: "path",
           },
           xmlns: {
             type: "value",
             value: "http://www.w3.org/2000/svg",
           },
           height: {
-            type: "formula",
-            formula: {
-              path: ["Props", "size"],
-              type: "path",
-            },
+            path: ["Props", "size"],
+            type: "path",
           },
           stroke: {
-            type: "formula",
-            formula: {
-              path: ["Props", "color"],
-              type: "path",
-            },
+            path: ["Props", "color"],
+            type: "path",
           },
           viewBox: {
             type: "value",

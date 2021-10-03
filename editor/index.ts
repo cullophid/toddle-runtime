@@ -14,18 +14,22 @@ import { MainMenu } from "./MainMenu";
 import { PreviewPanel } from "./PreviewPanel";
 import { SizeStyles } from "./SizeStyles";
 import { TextButton } from "./TextButton";
-import { TextRightPanel } from "./TextRightPanel";
+import { TextPanel } from "./TextPanel";
 import { TreeNode } from "./TreeNode";
 import { UnitInput } from "./UnitInput";
 import { IconRepeat } from "./IconRepeat";
 import { IconEvent } from "./IconEvent";
 import { ElementAttributes } from "./ElementAtributes";
+import { ComponentPanel } from "./ComponentPanel";
+import { ComponentAttributes } from "./ComponentAtributes";
 export const components = [
   EditorPage,
   AddressBar,
   DataPanel,
   Editor,
   ElementPanel,
+  ComponentPanel,
+  ComponentAttributes,
   ElementAttributes,
   IconChevronDown,
   IconChevronRight,
@@ -40,7 +44,7 @@ export const components = [
   PreviewPanel,
   SizeStyles,
   TextButton,
-  TextRightPanel,
+  TextPanel,
   TreeNode,
   UnitInput,
 ];

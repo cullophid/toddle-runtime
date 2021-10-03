@@ -104,7 +104,7 @@ const reset = `
   body {
         margin:0;
         height:100%;
-        font-family:sans-serif;
+        font-family: sans-serif;
       }
       input, button {
         border:none;

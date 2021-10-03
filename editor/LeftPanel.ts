@@ -21,6 +21,10 @@ export const LeftPanel: ComponentModel = {
       initialValue: { type: "element", tag: "div" },
     },
     {
+      name: "selectedNodeId",
+      initialValue: "0",
+    },
+    {
       name: "nodeData",
       initialValue: { Variables: {}, Props: {} },
     },
@@ -133,7 +137,7 @@ export const LeftPanel: ComponentModel = {
                 actions: [
                   {
                     type: "Update Variable",
-                    value: "true",
+                    value: { type: "value", value: true },
                     condition: {
                       type: "path",
                       path: ["Props", "selectedNode"],
@@ -169,29 +173,20 @@ export const LeftPanel: ComponentModel = {
             value: "0",
           },
           node: {
-            type: "formula",
-            formula: {
-              path: ["Props", "component", "root"],
-              type: "path",
-            },
+            path: ["Props", "component", "root"],
+            type: "path",
           },
           indent: {
             type: "value",
             value: 1,
           },
           selectedNodeId: {
-            type: "formula",
-            formula: {
-              path: ["Props", "selectedNodeId"],
-              type: "path",
-            },
+            path: ["Props", "selectedNodeId"],
+            type: "path",
           },
           highlightedNodeId: {
-            type: "formula",
-            formula: {
-              path: ["Props", "highlightedNodeId"],
-              type: "path",
-            },
+            path: ["Props", "highlightedNodeId"],
+            type: "path",
           },
         },
         events: [
@@ -231,25 +226,16 @@ export const LeftPanel: ComponentModel = {
         type: "element",
         attrs: {
           component: {
-            type: "formula",
-            formula: {
-              path: ["Props", "component"],
-              type: "path",
-            },
+            path: ["Props", "component"],
+            type: "path",
           },
           components: {
-            type: "formula",
-            formula: {
-              path: ["Props", "components"],
-              type: "path",
-            },
+            path: ["Props", "components"],
+            type: "path",
           },
           selectedNodeId: {
-            type: "formula",
-            formula: {
-              path: ["Props", "selectedNodeId"],
-              type: "path",
-            },
+            path: ["Props", "selectedNodeId"],
+            type: "path",
           },
         },
         style: {},

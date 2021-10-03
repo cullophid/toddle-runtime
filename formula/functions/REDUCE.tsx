@@ -1,12 +1,16 @@
-import { applyFormula, FunctionOperation } from "../formula";
+import {
+  applyFormula,
+  FunctionDeclaration,
+  FunctionOperation,
+} from "../formula";
 
 export const template: FunctionOperation = {
   type: "function",
   name: "REDUCE",
   arguments: [
-    { name: "List", formula: { type: "null", name: "Null" } },
-    { name: "Fx", formula: { type: "null", name: "Null" } },
-    { name: "Init", formula: { type: "null", name: "Null" } },
+    { name: "List", formula: { type: "value", value: null } },
+    { name: "Fx", formula: { type: "value", value: null } },
+    { name: "Init", formula: { type: "value", value: null } },
   ],
 };
 
@@ -46,4 +50,10 @@ export const getArgumentInputData = (
         },
       }
     : input;
+};
+
+export const REDUCE: FunctionDeclaration = {
+  template,
+  resolver,
+  getArgumentInputData,
 };

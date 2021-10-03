@@ -1,12 +1,16 @@
-import { applyFormula, FunctionOperation } from "../formula";
+import {
+  applyFormula,
+  FunctionDeclaration,
+  FunctionOperation,
+} from "../formula";
 
 export const template: FunctionOperation = {
   type: "function",
   name: "SUBSTRING",
   arguments: [
-    { formula: { type: "string", name: "String", value: "" } },
-    { formula: { type: "number", name: "Number", value: 0 } },
-    { formula: { type: "null", name: "Null" } },
+    { formula: { type: "value", value: "" } },
+    { formula: { type: "value", value: 0 } },
+    { formula: { type: "value", value: null } },
   ],
 };
 
@@ -18,3 +22,5 @@ export const resolver = (f: FunctionOperation, input: any) => {
     ? inputString.slice(startIndex, endIndex)
     : null;
 };
+
+export const SUBSTRING: FunctionDeclaration = { template, resolver };

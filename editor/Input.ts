@@ -41,11 +41,8 @@ export const Input: ComponentModel = {
           {
             type: "text",
             value: {
-              type: "formula",
-              formula: {
-                path: ["Props", "Label"],
-                type: "path",
-              },
+              path: ["Props", "Label"],
+              type: "path",
             },
           },
           {
@@ -53,18 +50,12 @@ export const Input: ComponentModel = {
             type: "element",
             attrs: {
               value: {
-                type: "formula",
-                formula: {
-                  path: ["Props", "Value"],
-                  type: "path",
-                },
+                path: ["Props", "Value"],
+                type: "path",
               },
               autoFocus: {
-                type: "formula",
-                formula: {
-                  path: ["Props", "autoFocus"],
-                  type: "path",
-                },
+                path: ["Props", "autoFocus"],
+                type: "path",
               },
             },
             style: {
